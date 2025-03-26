@@ -12,8 +12,8 @@ function App() {
   const [fa,setFa] = useState([{'Week':'init'}])
   const [records,setRecords] = useState({})
 
-  const yearMin = 2012
-  const currentYear = new Date().getFullYear() -1;
+  const yearMin = 2012 
+  const currentYear = new Date().getFullYear() -1-1;
   const weekMax =18
   const names2012 = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Kevin', 'Eric',
     'Nick', 'Jake Knapke', 'Brenna', 'Uncle Steve', 'Regan Crone', 'RJ', 'Claire', 'Lance', 'Adam', 'Nate']
@@ -24,6 +24,7 @@ function App() {
   const lameDucks = ['t0','Rick Melgard','Andre Simonson','Uncle Steve','Regan Crone','Jake Knapke']
   const teamnos = [1, 2, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17]
   const defunct = [0, 3, 5, 6, 8, 9] 
+  const allNames = [...new Set([...names,...names2012,...names2022])]
  
   const vars = {'currentYear':currentYear,
     'names':names, 
@@ -33,7 +34,8 @@ function App() {
     'teamNos':teamnos,
     'defunct':defunct,
     'yearMin':yearMin,
-    'weekMax':weekMax
+    'weekMax':weekMax,
+    'allNames':allNames
   }
    
   let outTest = []    
@@ -65,26 +67,32 @@ function App() {
   //     <div style={{width:40,float:'left',backgroundColor:'blue'}}><p key={'t2s1'+i} >{proj[i].ProTeam}</p></div>
   //     <div style={{width:40,float:'left',backgroundColor:'green'}}><p key={'t1s12'+i} >{proj[i].PlayerRosterSlot}</p></div>
   // </div> )    
-  // }    
-  
-  function Test(){ 
+  // }        
+
+  function Test(){
     CallESPNRaw(vars,setRaw)
-  }   
-  function Test2(){ 
-    CallESPNProj(vars,setProj)
-  }    
-  function Test3(){ 
-    CallESPNFa(vars,setFa)
-  }   
-  function Test4(){  
+  }  
+  function Test2(){  
+    CallESPNProj(vars,setProj)   
+  } 
+  function Test3(){  
+    CallESPNFa(vars,setFa) 
+  }  
+  function Test4(){ 
     GetRecords(vars,records,setRecords,raw,proj,fa)
   }               
-  // console.log(fa)
-  console.log(raw)       
-  // console.log(proj)       
-  return (    
-    <div className="App">  
-      <header className="App-header">
+  // console.log(fa) 
+  // console.log(raw)     
+  console.log(proj)   
+  // const a =  []
+  // console.log(a.concat([['a','b']])) 
+  // const b = {1:10,2:20,3:5,4:2,5:10}     
+  // const result = Object.entries(b).reduce((a, b) => a[1] > b[1] ? a : b)[0]   
+  // console.log(result)                    
+  // console.log(proj)                                                   
+  return (                      
+    <div className="App">         
+      <header className="App-header"> 
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.asdf
@@ -94,7 +102,7 @@ function App() {
         <button onClick={()=>Test4()}>testrecords</button>
         {outTest2}
         <button onClick={()=>Test()}>test</button>
-        <a
+        <a 
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
@@ -105,6 +113,7 @@ function App() {
       </header>
     </div>
   );
-} 
-
+}  
+ 
 export default App;
+               

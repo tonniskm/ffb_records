@@ -7,9 +7,11 @@ export function CallESPNRaw(vars,setRaw){
     // const year = 2012
     for (let year=vars.yearMin;year<=vars.currentYear;year++){
         out[year] = []
-        // let url = 'https://mocktion-site.vercel.app/call/'+year.toString()
-        const url = 'http://localhost:5432/call/'+year.toString()
+        let url = 'https://mocktion-site.vercel.app/call/'+year.toString()
+        // const url = 'http://localhost:5432/call/'+year.toString()
         // if (year>2012){continue}
+        // console.log(year)
+        try{
         fetch(url
         ).then(res=>res.json()).then(json=>{
         if(year<2018){json=json[year-vars.yearMin]['schedule']}
@@ -80,6 +82,7 @@ export function CallESPNRaw(vars,setRaw){
         }//end for each game
         
     })// end res.json
+}catch(err){console.log(err)}
     //end res.json
     }//end for years
 setRaw(out)

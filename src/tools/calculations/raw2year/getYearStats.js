@@ -1,3 +1,4 @@
+import { StandardDeviation } from "../other"
 
 
 export default function GetYearStats(vars,raw,proj,fa,year,tables){
@@ -12,7 +13,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
         'oppo reg total','W','L','T','pct','high','oppo high','low','oppo low',
         'biggest W','biggest L','closest W','closest L','low W','high L','oppo high L','oppo low W','close W','close L',
         'L over 100','W under 80','ind records','Beat Low Score','Lost to High Score','Record vs Mid',
-        'Beat 2nd','Lost to 2nd Last']
+        'Beat 2nd','Lost to 2nd Last','reg pt diff']
     //define record types
     const set0 = ['high','oppo high','biggest W','biggest L','high L','oppo high L']
     const sethigh = ['low','oppo low','low W','oppo low W','closest W','closest L']
@@ -37,8 +38,8 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     let deweyDoes = 'none'
     let champ = 'none'
     let regPoints = []
-    let shootOut = [0,[]]
-    let badShootOut = [999,[]]
+    let shootOut = [0,[],[]]
+    let badShootOut = [999,[],[]]
     let highL = [0,[]]
     let lowW = [999,[]]
     let weekTots = []
@@ -83,7 +84,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
 
         //if its a real game
         if(t2!='BYE'&&type!='lame'){
-            if(Object.keys(weekScores).indexOf(week)>-1){
+            if(Object.keys(weekScores).indexOf(week.toString())>-1){
                 weekScores[week].push(score1)
                 weekScores[week].push(score2)
             }else{weekScores[week] = [score1,score2]}
@@ -113,7 +114,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                     highScores[week-1] = Math.max(highScores[week-1],score1,score2)
                 }else{highScores.push(Math.max(score1,score2))}
                 if(lowScores.length>=week){
-                    lowScores[week-1] = Math.min(highScores[week-1],score1,score2)
+                    lowScores[week-1] = Math.min(lowScores[week-1],score1,score2)
                 }else{lowScores.push(Math.min(score1,score2))}
                 if(weekTots.length>=week){
                     weekTots[week-1] += score1 + score2
@@ -193,13 +194,120 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                 }
                 if (leagueSize == 10&&type=='L2'){deweyDoes = loser}else if(leagueSize == 12&&type=='L3'){deweyDoes = loser}
                 }//end if not a tie
-                if (shootOut[0] == score1 + score2){shootOut[1].append([names[t1],names[t2]])}
-                else if (shootOut[0] < score1 + score2){shootOut = [score1 + score2,[names[t1],names[t2]]]}
-                if (badShootOut[0] == score1 + score2){badShootOut[1].append([names[t1],names[t2]])}
-                else if (badShootOut[0] > score1 + score2){badShootOut = [score1 + score2, [names[t1],names[t2]]]}
+                if (shootOut[0] == score1 + score2){shootOut[1].push([t1,t2]);shootOut[2].push(week)}
+                else if (shootOut[0] < score1 + score2){shootOut = [score1 + score2,[t1,t2],[week]]}
+                if (badShootOut[0] == score1 + score2){badShootOut[1].push([t1,t2]);badShootOut[2].push(week)}
+                else if (badShootOut[0] > score1 + score2){badShootOut = [score1 + score2, [t1,t2],[week]]}
             }//end if not a bye
 
         }//end if type is lame
+
+    }// end for each line
+    let rankList = {}
+    const rankKeys = ['Beat Low Score','Lost to High Score','Record vs Mid','Beat 2nd','Lost to 2nd Last']
+    let activePlayers = {}
+    for (let i=0;i<rankKeys.length;i++){
+        scores[rankKeys[i]] = {}
+        scores['Record vs Mid'] = {}
+        for (let n=0;n<names.length;n++){
+            scores[rankKeys[i]][names[n]] = 0
+            scores['Record vs Mid'][names[n]] = [0,0,0]
+        }  
     }
+    for(let i=0;i<Object.keys(weekScores).length;i++){
+        let key = Object.keys(weekScores)[i]
+        let week = key //from py
+        rankList[key] = {} 
+        for (let n=0;n<names.length;n++){
+        rankList[key][names[n]] = 'none'  
+        }
+        activePlayers[week] = weekScores[week].length
+        let sortedScores = [...weekScores[week]].sort((a, b) => a - b);
+        for (let n=0;n<names.length;n++){
+            let s = tables.scores[year][names[n]][week]
+            if (s!=undefined && s != 'none' && s != 'BYE' && s != 'lame' && tables.types[year][names[n]][week] == 'REG'){
+                rankList[key][names[n]] = sortedScores.indexOf(s) + 1
+                // if(year==2024){console.log({1:s,2:rankList,3:sortedScores,4:sortedScores.indexOf(s)})}
+            } 
+        }
+        // if(year==2024){console.log({1:rankList,2:sortedScores})
+        // rankList.append(0)}
+        for (let n=0;n<names.length;n++){
+            let r1 = rankList[key][names[n]]
+            if(r1 == 'none'){continue}
+            let s1 = tables.scores[year][names[n]][week]
+            let oppo = tables.oppos[year][names[n]][week]
+            let s2 = tables.oppoScores[year][oppo][week]
+            let r2 = rankList[key][oppo]
+            let active = activePlayers[key]
+            let mid = Math.floor(active/2)
+            let midScore = [...weekScores[week]].sort((a, b) => a - b)[mid-1]
+            let highMidScore = [...weekScores[week]].sort((a, b) => a - b)[mid]
+            let out = 'na'
+            let name = names[n]
+            let test = {1:weekScores,2:week,3:year,4:r1,5:r2,6:active,7:rankList,8:sortedScores}
+            // if(year==2024){console.log(test)}
+            if (r2 == active - 1 && r1 == active){scores['Beat 2nd'][name] += 1}
+            if (r2 == 2 && r1 == 1){scores['Lost to 2nd Last'][name] += 1}
+            if (r2 == active && r1 < active){scores['Lost to High Score'][name] += 1}
+            if (r2 == 1 && r1 > 1){scores['Beat Low Score'][name] += 1}
+            if (s1 > midScore){scores['Record vs Mid'][name][0] += 1
+                out = 'W'}
+            else if (s1 == highMidScore){scores['Record vs Mid'][name][2] += 1
+                out = 'T'}
+            else{
+                scores['Record vs Mid'][name][1] += 1
+                out = 'L'}
+        }//for each name
+    }//for each week score
+    const postProcess = ['reg STD','high scores','low scores','seed','last until','KO by']
+    for(let n=0;n<names.length;n++){
+        let name = names[n]
+        let team = name //team is teamno from py
+        let item = pointList[team] //from py
+        if (item.length > 1){scores['reg STD'][team] = StandardDeviation(item)}
+        else{scores['reg STD'][team] = 'none'}
+        if (scores['games played'][team] > 0){
+            scores['pct'][team] = (scores['W'][team] + scores["T"][team]/2)/(scores['W'][team]+scores['L'][team]
+            +scores['T'][team])}
+        for (let i=0;i<item.length;i++){
+            let week = i
+            let score = item[week]
+            if (highScores.length -1 >= week){
+                if (highScores[week] <= score){scores['high scores'][team] += 1}
+                if (lowScores[week] >= score){scores['low scores'][team] += 1}
+            }
+    }
+    }//end each name
+    //cleanup
+    for(let i=0;i<set0;i++){
+        let item = set0[i]
+        let list = scores[item]
+        for(let j=0;j<list.length;j++){
+            let value = list[j]
+            if(value==0){scores[item][j] = 'none'}
+        }
+    }
+    for(let j=0;j<sethigh;j++){
+        let item = sethigh[j]
+        let list = scores[item]
+        for(let i=0;i<list.length;i++){
+            let value = list[i]
+            if(value==0){scores[item][i] = 'none'}
+        }
+    }
+    for (let n=0;n<names.length;n++){
+        let team = names[n]
+        scores['reg pt diff'][team] = scores['reg total'][team] - scores['oppo reg total'][team]
+        if (scores['seed'][team] != 'none'){
+            if (scores['seed'][team] > 6){scores['last until'][team] = 'P0'}
+        }
+    }
+// console.log(year)
 // console.log(scores) 
+return {'scores':scores,
+    'other':{'champ':champ,'deweyDoes':deweyDoes,'shootOut':shootOut,'badShootOut':badShootOut,
+        'highL':highL,'lowW':lowW,'regPoints':regPoints,'weekTots':weekTots,'leagueSize':leagueSize
+    }
+}
 }
