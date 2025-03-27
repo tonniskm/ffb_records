@@ -105,6 +105,14 @@ export function DictMax(dict){
     }
     return maxValue
 }
+export function DictKeysWithValue(dict,value){
+    let out = []
+    for(const key in dict){
+        if(dict[key]==value){out.push(key)}
+    }
+    return out
+}
+
 export function DictMin(dict){
     let minValue;
     for(const [key, value] of Object.entries(dict)) {

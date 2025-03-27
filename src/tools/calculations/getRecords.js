@@ -52,5 +52,6 @@ export default function GetRecords(vars,records,setRecords,raw,proj,fa){
  out['projAwards'] = projAwards
  const playerStats = getPlayerStats(vars,raw,proj,out,tables)
  out['playerStats'] = playerStats    
- console.log(out)        
-}                                                              
+ console.log(out)      
+ setRecords(out)    
+}                                                                   

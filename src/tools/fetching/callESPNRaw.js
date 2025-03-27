@@ -2,17 +2,19 @@
 
 
 
-export function CallESPNRaw(vars,setRaw){
+export function CallESPNRaw(vars,setRaw,loading,setLoading){
     let out = {}
     // const year = 2012
+    let promises = []
     for (let year=vars.yearMin;year<=vars.currentYear;year++){
         out[year] = []
+
         let url = 'https://mocktion-site.vercel.app/call/'+year.toString()
         // const url = 'http://localhost:5432/call/'+year.toString()
         // if (year>2012){continue}
         // console.log(year)
-        try{
-        fetch(url
+        // try{
+        promises.push(fetch(url
         ).then(res=>res.json()).then(json=>{
         if(year<2018){json=json[year-vars.yearMin]['schedule']}
         let playoffStart = 1000
@@ -82,9 +84,22 @@ export function CallESPNRaw(vars,setRaw){
         }//end for each game
         
     })// end res.json
-}catch(err){console.log(err)}
+)//end fetch
+//}catch(err){console.log(err)}
     //end res.json
     }//end for years
-setRaw(out)
+Promise.all(promises).then(()=>{
+
+    setRaw(out)
+    // function Update(x){
+    //     // console.log('update raw')
+    //     x.raw = true
+    //     return x
+    // }
+    // let newLoading = {...loading}
+    // newLoading['raw'] = true
+    // console.log({1:'raw',2:newLoading})
+    // setLoading((prev)=>Update(prev))
+})    
 
 }//end func

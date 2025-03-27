@@ -1,9 +1,10 @@
 
 
-export function CallESPNProj(vars,setProj){
+export function CallESPNProj(vars,setProj,loading,setLoading){
     let out = {}
     // const year = 2024
     // const week = 1
+    let promises = []
     for(let year=2018;year<=vars.currentYear;year++){
         out[year] = []
         for(let week=1;week<=vars.weekMax;week++){
@@ -13,7 +14,7 @@ export function CallESPNProj(vars,setProj){
     const leagueSize = 12
     const playerSlots = {0: 'QB', 4: 'WR', 2: 'RB', 23: 'FLEX', 6: 'TE', 16: 'D/ST', 17: 'K', 20: 'Bench', 21: 'IR'}
     const defaultPosID = {1: 'QB', 3: 'WR', 2: 'RB', 4: 'TE', 16: 'D/ST', 5: 'K'}
-    fetch(url).then(res=>res.json()).then(json=>{
+    promises.push(fetch(url).then(res=>res.json()).then(json=>{
         // console.log(Object.keys(json))
         for (let team=0;team<leagueSize;team++){ //for each team in teh league
             if(json['teams'].length<=team){continue}
@@ -43,7 +44,15 @@ export function CallESPNProj(vars,setProj){
             } // end for each roster slot
         }//end for each team
     })//end fetch
+)//end promise
 }//end week
 }//end year
-setProj(out)
+Promise.all(promises).then(()=>{
+
+    setProj(out)
+})
+// let newLoading = {...loading}
+// newLoading['proj'] = true
+// console.log({1:'proj',2:newLoading})
+// setLoading(newLoading)
 }

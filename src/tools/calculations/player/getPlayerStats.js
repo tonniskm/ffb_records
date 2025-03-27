@@ -1,4 +1,4 @@
-import { ChooseNames, SortNRank, UnpackProjLine } from "../other"
+import { ChooseNames, DictKeysWithValue, DictMax, DictMin, SortNRank, UnpackProjLine } from "../other"
 
 
 export function getPlayerStats(vars,raw,projIn,input,tables){
@@ -465,8 +465,150 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
         }
 
 
+    }//for list4
+
+    // flexcounts
+    let flexCounts = {'RB':0,'WR':0,'TE':0}
+    let flexRecords = {'RB':[0,0,0],'WR':[0,0,0],'TE':[0,0,0]}
+
+    for (const year in rawProjIn){
+        const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])
+        const types = tables.types[year]
+        const outcomes = tables.outcomes[year]
+        const scores = tables.scores[year]
+        const opponent = tables.oppos[year]
+        const oppoScores = tables.oppoScores[year]
+        const yearNames = ChooseNames(vars,year)
+        for(const line of rawProjIn[year]){
+            const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
+            if(slot!='FLEX'){continue}
+            if(week>lastWeek){continue}
+            const outcome = outcomes[team][week]
+            if(outcome=='BYE'){continue}
+            const type = types[team][week]
+            if(type=='BYE'||type=='lame'){continue}
+            for(const posType of ['RB','WR','TE']){
+                if(pos!=posType){continue}
+                flexCounts[posType] += 1
+                const outcomeTypes = ['W','L','T']
+                for(let i=0;i<3;i++){
+                    const outcomeType = outcomeTypes[i]
+                    if(outcome==outcomeType){flexRecords[posType][i] += 1}
+                }
+            }
+        } 
+    }
+    awards.push({'title':'Flex comparison','counts':{'RB':flexCounts['RB'],'WR':flexCounts['WR'],'TE':flexCounts['TE']},
+    'rates':{'RB':(flexCounts['RB'][0]+flexCounts['RB'][1]/2)/Math.max(1,flexCounts['RB'][0]+flexCounts['RB'][1]+flexCounts['RB'][2]),
+        'WR':(flexCounts['WR'][0]+flexCounts['WR'][1]/2)/Math.max(1,flexCounts['WR'][0]+flexCounts['WR'][1]+flexCounts['WR'][2]),
+        'TE':(flexCounts['TE'][0]+flexCounts['TE'][1]/2)/Math.max(1,flexCounts['TE'][0]+flexCounts['TE'][1]+flexCounts['TE'][2]),
+    }
+    })
+
+    //ownedTable
+    let ownedTable = {}
+    for(const name of names){
+        ownedTable[name] = {}
+        const owned = teamTracker[name].length
+        let started = 0
+        for(const line of teamTracker[name]){
+            if(line['weeks started'] > 0){
+                started += 1
+            }
+        }
+        ownedTable[name]['owned'] = owned
+        ownedTable[name]['started'] = started
+    }
+    let ownedInYears = {}
+    for(const name of names){
+        ownedInYears[name] = {'owned':{},'started':{}}
+    }
+    for(const year in rawProjIn){
+        let alreadyCounted = {}
+        let alreadyCountedStart = {}
+        const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])
+        const types = tables.types[year]
+        const outcomes = tables.outcomes[year]
+        const scores = tables.scores[year]
+        const opponent = tables.oppos[year]
+        const oppoScores = tables.oppoScores[year]
+        const yearNames = ChooseNames(vars,year)
+        for(const name of names){
+            ownedInYears[name]['owned'][year] = 0
+            ownedInYears[name]['started'][year] = 0
+            alreadyCounted[name] = []
+            alreadyCountedStart[name] = []
+        }
+        for(const line of rawProjIn[year]){
+            const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
+            if(slot!='FLEX'){continue}
+            if(week>lastWeek){continue}
+            const outcome = outcomes[team][week]
+            // if(outcome=='BYE'){continue}
+            const type = types[team][week]
+            // if(type=='BYE'||type=='lame'){continue}
+            if(type=='lame'){continue}
+            if(!alreadyCounted[team].includes(nflName)){
+                alreadyCounted[team].push(nflName)
+                ownedInYears[team]['owned'][year] += 1
+            }
+            if(!alreadyCountedStart[team].includes(nflName)&&slot!='Bench'&&slot!='IR'&&type!='lame'&&type!='BYE'){
+                alreadyCountedStart[team].push(nflName)
+                ownedInYears[team]['started'][year] += 1
+            }
+        }
     }
 
+    const ownedList = [
+        ["Gotta Catch 'Em All!",'The person who has owned the most unique players','ownedTable','owned', 'max'],
+        ['Tinkerer','The person who has started the most unique players','ownedTable','started', 'max'],
+        ["What's a Drop/Add?",'The person who has owned the fewest unique players','ownedTable','owned', 'min'],
+        ['Never Tinkerer','The person who has started the fewest unique players','ownedTable', 'started','min'],
+        ['Diversity Today','The most players a person has owned in one year','ownedInYears','owned','max'],
+        ['A Stable Life','The fewest players a person has owned in one year','ownedInYears', 'owned', 'min'],
+        ["Who's On My Team Again?",'The most players a person has started in one year','ownedInYears', 'started', 'max'],
+        ['Same Old Same Old','The fewest players a person has started in one year','ownedInYears','started', 'min'],
+        ['Never Injured','The person with the lowest maximum unique people started in a year','ownedInYears','started', 'min','maxOnly'],
+        ['Streamer','The person who has the highest minimum unique people started in a year','ownedInYears','started', 'max','minOnly'],
+        ["I Haven't Learned to do Drop/Adds",'The person who has the lowest maximum unique players owned in a year','ownedInYears','owned', 'min','maxOnly'],
+        ['Frantic Tinkerer','The person who has the highest minimum unique players owned in a year','ownedInYears','owned', 'max','minOnly']
+    ]
+    for(const item of ownedList){
+        let vals = []
+        let onlyVals = []
+        for(const name of names){
+            if(vars.lameDucks.includes(name)){continue}
+            if(item[2]=='ownedTable'){
+                const value=ownedTable[name][item[3]]
+                onlyVals.push(value)
+                vals.push({'value':value,'name':name})
+            }else{
+            if(item[5]=='maxOnly'||item[5]=='minOnly'){
+                let value
+                if(item[5]=='maxOnly'){
+                    const maxValue = DictMax(ownedInYears[name][item[3]])
+                    const meta = DictKeysWithValue(ownedInYears[name][item[3]],maxValue)
+                    onlyVals.push(maxValue)
+                    vals.push({'value':maxValue,'years':meta,'name':name})
+                }else{//minOnly
+                    const minValue = DictMin(ownedInYears[name][item[3]])
+                    const meta = DictKeysWithValue(ownedInYears[name][item[3]],minValue)
+                    onlyVals.push(minValue)
+                    vals.push({'value':minValue,'years':meta,'name':name})
+                }
+            }else{
+                for(const year in ownedInYears[name]['owned']){
+                    let value
+                    value=ownedInYears[name][item[3]][year]
+                    onlyVals.push(value)
+                    vals.push({'value':value,'year':year,'name':name})
+                }
+            }
+            }
+        }
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3])})
+    }
+    
 
 return awards  
 }
