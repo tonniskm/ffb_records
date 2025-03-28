@@ -10,7 +10,8 @@ import { NamePicker } from './tools/outputs/misc';
 import { winnerWeek } from './tools/outputs/winnerWeek';
 import { winnerGame } from './tools/outputs/winnerGame';
 import { winnerYear } from './tools/outputs/winnerYear';
-// import { styleSheet } from './tools/styles/styles'; 
+import { recordTable } from './tools/outputs/recordTable';
+// import { styleSheet } from './tools/styles/styles';  
 
 function App() {
   const [raw,setRaw] = useState([{'Week':'init'}])
@@ -45,7 +46,7 @@ function App() {
   for(let i=yearMin;i<=currentYear;i++){activeYears.push(i)}
   const macroTypes = ['Records','Summary']
   const summaryTypes = ['']
-  const awardTypes = ['Name','Game','Week','Year',]
+  const awardTypes = ['Name','Game','Week','Year','Proj','Player']
  
   const vars = {'currentYear':currentYear,
     'names':names, 
@@ -61,23 +62,27 @@ function App() {
   const allFocus = {
     'name':focusName,
     'week':focusWeek,
-    'year':focusYear
+    'year':focusYear 
   }
   let outTest = []
+  let shownRecords = []
   if(records.nameAwards!=undefined){
-    if(awardType=='Name'){outTest = winnerName(records.nameAwards,focusName) }
-    if(awardType=='Game'){outTest = winnerGame(records.gameAwards,allFocus,5)} 
-    if(awardType=='Week'){outTest = winnerWeek(records.weekAwards,allFocus,5)} 
-    if(awardType=='Year'){outTest = winnerYear(records.yearAwards,allFocus,5)} 
-
-  }
+    if(awardType=='Name'){shownRecords = records.nameAwards }
+    if(awardType=='Game'){shownRecords = records.gameAwards }
+    if(awardType=='Week'){shownRecords = records.weekAwards }
+    if(awardType=='Year'){shownRecords = records.yearAwards }
+    if(awardType=='Proj'){shownRecords = records.projAwards }
+    if(awardType=='Player'){shownRecords = records.playerStats }
+     
+    outTest = recordTable(shownRecords,allFocus,5)
+  } 
   useEffect(()=>{ 
-    CallESPNRaw(vars,setRaw,loading,setLoading)
-    // CallESPNProj(vars,setProj,loading,setLoading) 
+    if(raw['Week']!='init'){CallESPNRaw(vars,setRaw,loading,setLoading)}
+    // CallESPNProj(vars,setProj,loading,setLoading)  
   },[]) 
   useEffect(()=>{ 
     // CallESPNRaw(vars,setRaw,loading,setLoading)
-    CallESPNProj(vars,setProj,loading,setLoading) 
+    if(proj['Week']!='init'){CallESPNProj(vars,setProj,loading,setLoading)}
   },[]) 
 
   useEffect(()=>{ 
@@ -103,35 +108,37 @@ function App() {
   function Test3(){  
     CallESPNFa(vars,setFa) 
   }  
-  function Test4(){ 
+  function Test4(){  
     GetRecords(vars,records,setRecords,raw,proj,fa)
   }               
   // console.log(fa) 
-  // console.log(raw)  
-  // console.log(proj)   
-  // console.log(loading) 
-  console.log(records)
-  // console.log([1,2,3].slice(0,10))
-  // console.log(a.concat([['a','b']]))  
-  // const b = {1:10,2:20,3:5,4:2,5:10}     
-  // const result = Object.entries(b).reduce((a, b) => a[1] > b[1] ? a : b)[0]   
-  // console.log(result)                      
-  // console.log(proj)                                                       
-  return (                       
+  const a = {}
+  const b = {}
+  // a['test'] = b.test 
+  // console.log(a.test==0)     
+  // if(a.test==undefined){a['test']=2}   
+  // console.log(a.test)    
+  // console.log(raw)     
+  // console.log(proj)            
+  // console.log({1:isNaN('3')})               
+  console.log(records)         
+                                                            
+  return (                          
     <div className="App">         
       <header className="App-header"> 
-        {/* <div>{loading['raw']}</div> */}
+        {/* <div>{loading['raw']}</div> */} 
         <img src={logo} className="App-logo" alt="logo" />
+        <button onClick={()=>Test4()}>testrecords</button>
         <NamePicker title={'Awards Type: '} selecting={setAwardType} options={awardTypes} key={'a'}></NamePicker>
         <NamePicker title={'Focus On Player: '} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
         <NamePicker title={'Week: '} selecting={setFocusWeek} options={activeWeeks} key={'week'}></NamePicker>
-        <NamePicker title={'Year: '} selecting={setFocusYear} options={activeYears} key={'year'}></NamePicker>
+        <NamePicker title={'Year: '} selecting={setFocusYear} options={activeYears} key={'yearp'}></NamePicker>
         <div className='tableContainer'>
           {outTest}
         </div>
         <button onClick={()=>Test2()}>testproj</button>
         <button onClick={()=>Test3()}>testfa</button>
-        <button onClick={()=>Test4()}>testrecords</button>
+
         <button onClick={()=>Test()}>test</button>
         <a 
           className="App-link"

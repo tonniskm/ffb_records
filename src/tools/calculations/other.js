@@ -55,6 +55,7 @@ export function GetOtherTables(vars,raw){
                 outcome[year][names[parseInt(t2)]][week] = "W"
             }
         }
+        if(t2=='BYE'){outcome[year][names[t1]][week]='BYE'}
         types[year][names[t1]][week] = type
         if(t2!='BYE'){types[year][names[parseInt(t2)]][week] = type}
     }

@@ -71,7 +71,8 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     }
     for (const key of comparedKeys){
         for(const name of names){
-            scores[key][name] = [scores[key][name],[]]
+            // scores[key][name] = [scores[key][name],[]]
+            scores[key] = []
         }
     }
     let projections = {}
@@ -128,15 +129,18 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
             for (const item of comparedKeys){
                 const value = getValue(item,score1,score2,proj1,proj2)
                 if (getEligible(item,result) ==1){
-                    const comparison = Compare(scores[item][i][0],item,value,minKeys)
-                    const out = [value, [{'week': week, 'score': score1, 'oscore': score2, 'proj': proj1, 'oproj': proj2,
-                                    'oname': opponent,'name':name}]]
-                    if (comparison == "TIE"){
-                        scores[item][i][1].push(out[1][0])
-                    }
-                    else if (comparison == "replace"){
-                        scores[item][i] = out
-                    }
+                    scores[item].push({'value':value,'week':week,'score':score1,'oscore':score2,'proj':proj1,'oproj':proj2
+                        ,'oname':opponent,'name':name,'year':year
+                    })
+                    // const comparison = Compare(scores[item][i][0],item,value,minKeys)
+                    // const out = [value, [{'week': week, 'score': score1, 'oscore': score2, 'proj': proj1, 'oproj': proj2,
+                    //                 'oname': opponent,'name':name}]]
+                    // if (comparison == "TIE"){
+                    //     scores[item][i][1].push(out[1][0])
+                    // }
+                    // else if (comparison == "replace"){
+                    //     scores[item][i] = out
+                    // }
                 }
             }
         }//for week

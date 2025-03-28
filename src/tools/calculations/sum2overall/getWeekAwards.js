@@ -22,7 +22,7 @@ export function getWeekAwards(vars,input){
         for(const line of vals){
             line['rank'] = sorted.indexOf(line.value) + 1
         }
-        weekAwards.push({'title':item[0],'desc':item[1],'values':vals})
+        weekAwards.push({'title':item[0],'desc':item[1],'values':vals,'meta':['year','week']})
     }
     return weekAwards
 

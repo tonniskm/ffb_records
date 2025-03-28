@@ -74,7 +74,7 @@ export function getGameAwards(vars,raw){
                 if(item[2]=='smax'){value=Math.max(score1,score2);owner=winner}
                 if(item[2]=='smin'){value=Math.min(score1,score2);if(t1==winner){owner=t2}else{owner=t1}}
                 onlyVals[item[0]].push(value)
-                vals[item[0]].push({'week':week,'year':year,'owner':owner,'value':value})
+                vals[item[0]].push({'week':week,'year':year,'name':owner,'value':value})
             }
         }//for game
     }//for year
@@ -85,7 +85,11 @@ export function getGameAwards(vars,raw){
             line['rank'] = sorted.indexOf(line.value) + 1
 
     }
-    gameAwards.push({'title':item[0],'desc':item[1],'values':vals[item[0]]})
+    let meta
+    const wrongMeta = ['King of the Rock','Noodle Armed']
+    if(wrongMeta.includes(item[0])){meta=['name','year','week']}
+    else{meta=['year','week','t1','t2','s1','s2']}
+    gameAwards.push({'title':item[0],'desc':item[1],'values':vals[item[0]],'meta':meta})
     }//award
 
 

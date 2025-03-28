@@ -18,14 +18,15 @@ export function getOverallStatsProj(vars,input){
         }
     }
     for (const key of comparedKeys){
-        for(const name of names){
-            if(minKeys.includes(key)){
-                overall[key][name]['value'] = 999999
-            }else{
-                overall[key][name]['value'] = -1000
-                overall[key][name]['meta'] = []
-            }
-        }
+        overall[key] = []
+        // for(const name of names){
+        //     if(minKeys.includes(key)){
+        //         overall[key][name]['value'] = 999999
+        //     }else{
+        //         overall[key][name]['value'] = -1000
+        //         overall[key][name]['meta'] = []
+        //     }
+        // }
     }
     for (const year in projStatsRaw){
         const projStats = projStatsRaw[year]['scores']
@@ -33,25 +34,30 @@ export function getOverallStatsProj(vars,input){
             const i = name
             if(name in projStats[addKeys[1]]){
                 for(const item of addKeys){overall[item][i]['value'] += projStats[item][i]}
-                for(const item of comparedKeys){
-                    const value = projStats[item][i][0]
-                    const fullValue = projStats[item][i]
-                    for(let dict of fullValue[1]){dict['year']=year}
-                    const metaValue = fullValue[1]
 
-                    if (overall[item][i]['value'] == value){overall[item][i]['meta'].push(metaValue)}
-                    if (minKeys.includes(item)){
-                        if (value < overall[item][i]['value']){
-                            overall[item][i]['value'] = value
-                            overall[item][i]['meta'] = fullValue[1]}
-                    }else{
-                        if (value > overall[item][i]['value']){
-                            overall[item][i]['value'] = value
-                            overall[item][i]['meta'] = fullValue[1]}
-                    }
+                    // const value = projStats[item][i][0]
+                    // const fullValue = projStats[item][i]
+                    // for(let dict of fullValue[1]){dict['year']=year}
+                    // const metaValue = fullValue[1]
+
+                    // if (overall[item][i]['value'] == value){overall[item][i]['meta'].push(metaValue)}
+                    // if (minKeys.includes(item)){
+                    //     if (value < overall[item][i]['value']){
+                    //         overall[item][i]['value'] = value
+                    //         overall[item][i]['meta'] = fullValue[1]}
+                    // }else{
+                    //     if (value > overall[item][i]['value']){
+                    //         overall[item][i]['value'] = value
+                    //         overall[item][i]['meta'] = fullValue[1]}
+                    // }
                 }
-            }else{continue} //name not active this year
+            else{continue} //name not active this year
         }//names
+        for(const item of comparedKeys){
+            for(const line of projStats[item]){
+                overall[item].push(line)
+            }
+        }
     }//year
     const list = ['Proj to Win %','Beat Proj %','Oppo Beats Proj %','Proj to W W %','Proj to L W %']
     for (const item of list){

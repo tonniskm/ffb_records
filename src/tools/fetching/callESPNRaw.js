@@ -9,8 +9,8 @@ export function CallESPNRaw(vars,setRaw,loading,setLoading){
     for (let year=vars.yearMin;year<=vars.currentYear;year++){
         out[year] = []
 
-        let url = 'https://mocktion-site.vercel.app/call/'+year.toString()
-        // const url = 'http://localhost:5432/call/'+year.toString()
+        // let url = 'https://mocktion-site.vercel.app/call/'+year.toString()
+        const url = 'http://localhost:5432/call/'+year.toString()
         // if (year>2012){continue}
         // console.log(year)
         // try{

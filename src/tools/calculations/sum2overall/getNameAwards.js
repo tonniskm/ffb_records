@@ -1,4 +1,4 @@
-import { DictRanks } from "../other"
+import { DictRanks, SortNRank } from "../other"
 
 
 
@@ -50,20 +50,27 @@ export function getNameAwards(vars,input){
         ['Needs a Good Matchup','The worst record vs the median score','Pct vs Mid','min']
     ]
     for(const item of list){
-        let vals = {}
+        let vals = []
+        let onlyVals = []
         for(const name of vars.allNames){
             const ind = name
             if(vars.lameDucks.includes(name)){continue}
+            let value,onlyValue
             if(item[3]=='sp1'){//bills
-                vals[name] = overallStats['Finals'][ind]-overallStats['Championships'][ind]
+                // vals[name] = overallStats['Finals'][ind]-overallStats['Championships'][ind]
+                onlyValue = overallStats['Finals'][ind]-overallStats['Championships'][ind]
             }
             else if(item[3]=='sp2'){//friend
-                vals[name] = overallStats['pct'][ind] * overallStats['Reg Season Pts'][ind] / Math.max(1,overallStats['Reg Season Pts Allowed'][ind])
+                // vals[name] = overallStats['pct'][ind] * overallStats['Reg Season Pts'][ind] / Math.max(1,overallStats['Reg Season Pts Allowed'][ind])
+                onlyValue = overallStats['pct'][ind] * overallStats['Reg Season Pts'][ind] / Math.max(1,overallStats['Reg Season Pts Allowed'][ind])
             }else{
-                vals[name] = overallStats[item[2]][name]
+                // vals[name] = overallStats[item[2]][name]
+                onlyValue = overallStats[item[2]][name]
             }
+            onlyVals.push(onlyValue)
+            vals.push({'value':onlyValue,'name':name})
         }
-        awards.push({'title':item[0],'desc':item[1],'ranks':DictRanks(vals,item[3]),'values':vals})
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3]),'meta':['name']})
     }
      
     return awards

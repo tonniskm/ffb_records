@@ -30,7 +30,7 @@ export function getNameYearAwards(vars,input){
     for(const line of vals){
         line['rank'] = sorted.indexOf(line.val) + 1
     }
-    awards.push({'title':item[0],'desc':item[1],'values':vals})
+    awards.push({'title':item[0],'desc':item[1],'values':vals,'meta':['name','year']})
     }
     return awards
 }

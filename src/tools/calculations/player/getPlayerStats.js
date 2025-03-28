@@ -44,6 +44,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             const outcome = outcomes[team][week]
             let oppo = opponent[team][week]
             let oppoScore = oppoScores[team][week]
+            
 
             // const isAppend = 0
             let score, proj
@@ -119,20 +120,21 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             if (outcome == "W"){isW=1}else{isW=0}
             if( outcome == "L"){isL=1}else{isL=0}
             if (outcome == "T"){isT=1}else{isT=0}
-            if (outcome == "BYE"){isBye = 1}else{isBye=0}
+            if (outcome == "BYE"||outcome==undefined){isBye = 1}else{isBye=0}
             if (rosterSpot == 'FLEX'){isFlex = 1}else{isFlex=0}
             if (rosterSpot=='Bench' || rosterSpot=='IR'){isBench = 1}else{isBench=0}
             if (rosterSpot == 'IR'){isIR = 1}else{isIR=0}
-            if (outcome != 'BYE'){
+            if (outcome != 'BYE'&&outcome!=undefined){
                 if (rawScore > rawProject){beatProj = 1}else{beatProj=0}
                 if (!['Bench','IR'].includes(rosterSpot)){ isStart = 1}else{isStart=0}
-                if (rawScore > rawProject && isStart ==1){ starterBeatProj = 1}
+                if (rawScore > rawProject && isStart ==1){ starterBeatProj = 1}else{starterBeatProj=0}
                 if (oppo==undefined ||oppo=='BYE'){continue}
                 // oppoScore = scores[year][week][int(oppo)]
             }
             else{
                 rawScore = 0;rawProject = 0 //#don't score points when you are on bye
                 oppo = 0;oppoScore = 0
+                beatProj=0;starterBeatProj=0;isStart=0;isBye=1
             }
             if( isStart == 1 && isW == 1){startW= 1}else{startW=0}
             if (isStart == 1 && isL == 1){startL = 1}else{startL=0}
@@ -255,7 +257,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
                 const gp = line['record'][0]+line['record'][1]+line['record'][2]
                 if(pos!=line.pos || gp<minGames){continue}
                 const value = line[item[2]]
-                vals.push({'value':value,'name':line.name,meta:{'record':line['record']}})
+                vals.push({'value':value,'name':line.name,'meta':{'record':line['record']}})
                 onlyVals.push(value)
             }
             const new1 = {'title':item[0],'values':SortNRank(onlyVals,vals,item[3])}
@@ -329,7 +331,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             vals.push({'name':name,'value':value})
             onlyVals.push(value)
         }
-        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3])})
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3]),'meta':['name']})
     }
     const list2 = [
         ['Negative Nancy1','The person who has gotten a negative score the most','timesNegative','max'],
@@ -344,7 +346,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             vals.push({'name':name,'value':value})
             onlyVals.push(value)
         }
-        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3])})
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3]),'meta':['name']})
     }
     const list3 = [
         ['Here We Go Again','The player with the most weeks owned by the same team','Most Owned Player'],
@@ -373,50 +375,53 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             // vals.push({'name':name,'value':value,'meta':meta})
             // onlyVals.push(value)
         }
-        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3])})
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3]),'meta':['name','meta']})
     }
 
     //player awards
     const minGames1 = 20
     const lowMinGames = 5
     const list4 = [
-        ['Took the Slow Train from Philly','The player with the most teams in one year','teamInYear','all','max','special'],
-        ['I Get Around','The player who has been on the most teams','teams','all','max','normal'],
-        ['I Also Get Around','The player who has been on the most teams no D/ST','teams','noDST','max','normal'],
-        ['Never not Working','The player who has been started the most','starts','all','max','normal'],
-        ['Riding the Pine','The player who has been on the bench the most','benches','all','max','normal'],
-        ['Gun Show','The Player who has been flexed the most','flexes','all','max','normal'],
-        ['The Winner','The Player with the most wins','record','all','max','normal'],
-        ['Actual Winner','The player with the most wins while starting','recordStarting','all','max','normal'],
-        ['Consistent Winner','The player with the highest winrate (min '+minGames1.toString()+' games played)','record','all','max','normal'],
-        ['Actual Consistent Winner','The player with the highest winrate while starting (min '+minGames1.toString()+' games played)','recordStarting','all','max','normal'],
-        ['Well Rested','The player with the most byes','byes','all','max','normal'],
-        ['The Bread Winner','The player with the most championships','rings','all','max','normal'],
-        ['The Absolute Worst','The player with the most Dewey Does titles','deweyDoesTimes','all','max','normal'],
-        ['Consistent QB','The QB with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','QB','max','rate'],
-        ['Consistent RB','The RB with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','RB','max','rate'],
-        ['Consistent WR','The WR with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','WR','max','rate'],
-        ['Consistent TE','The TE with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','TE','max','rate'],
-        ['Consistent D/ST','The D/ST with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','D/ST','max','rate'],
-        ['Consistent K','The K with the highest winrate (min '+minGames1.toString()+' games played)','recordStarting','K','max','rate'],
-        ['Toxic Player','The Player with the worst overall winrate (min '+minGames1.toString()+' games played)','all','min','rate'],
-        ['Toxic Starter','The Player with the worst winrate starting (min '+minGames1.toString()+' games played)','all','min','rate'],
-        ['Toxic QB','The QB with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','QB','min','rate'],
-        ['Toxic RB','The RB with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','RB','min','rate'],
-        ['Toxic WR','The WR with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','WR','min','rate'],
-        ['Toxic TE','The TE with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','TE','min','rate'],
-        ['Toxic K','The K with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','D/ST','min','rate'],
-        ['Toxic D/ST','The D/ST with the worst winrate starting (min '+minGames1.toString()+' games played)','recordStarting','K','min','rate'],
-        ['What is Victory?','The most weeks owned without a win','record','all','max','normal'],
-        ["Someday I'll win",'The most starts without a win','recordStarting','all','max','normal'],
-        ['WAR!','The player with the highest WAR','war','all','max','normal'],
-        ['What is it good for?','The player with the lowest WAR','war','all','min','normal'],
-        ['HUH!','The player with the highest WAR per game started (min '+lowMinGames.toString()+' games played)','warRate','all','max','normal'],
-        ['Absolutely Nothing!','The player with the lowest WAR per game started (min '+lowMinGames.toString()+ ' games played)','warRate','all','min','normal'],
-        ['Negative Nancy','The Player who has score negative the most','timesNegative','all','max','normal'],
-        ['Real Negative Nancy','The non D/ST who has score negative the most','timesNegative','noDST','max','normal'],
-        ['Top Dawg','The highest score ever recorded','highScore','all','max','normal'],
-        ['Bad Day','The worst score ever recorded','lowScore','all','min','normal']
+        ['Took the Slow Train from Philly','The player with the most teams in one year','teamInYear','all','max','special',0,['name','year','teams']],
+        ['I Get Around','The player who has been on the most teams','teams','all','max','normal',0,['name','teams']],
+        ['I Also Get Around','The player who has been on the most teams no D/ST','teams','noDST','max','normal',0,['name','teams']],
+        ['Never not Working','The player who has been started the most','starts','all','max','normal',0,['name']],
+        ['Riding the Pine','The player who has been on the bench the most','benches','all','max','normal',0,['name']],
+        ['Gun Show','The Player who has been flexed the most','flexes','all','max','normal',0,['name']],
+        ['The Winner','The Player with the most wins','record','all','max','W',0,['name']],
+        ['The Biggest Loser','The player with the most losses','record','all','max','L',0,['name']],
+        ['Actual Winner','The player with the most wins while starting','recordStarting','all','max','W',0,['name']],
+        ['The Actual Biggest Loser','The player with the most losses while starting','recordStarting','all','max','L',0,['name']],
+        ['Consistent Winner','The player with the highest winrate (min '+minGames1.toString()+' games played)','record','all','max','rate',minGames1,['name','record']],
+        ['Actual Consistent Winner','The player with the highest winrate while starting (min '+lowMinGames.toString()+' games started)','recordStarting','all','max','rate',lowMinGames,['name','recordStarting']],
+        ['Well Rested','The player with the most byes','byes','all','max','normal',0,['name']],
+        ['The Bread Winner','The player with the most championships','rings','all','max','normal',0,['name']],
+        ['The Absolute Worst','The player with the most Dewey Does titles','deweyDoesTimes','all','max','normal',0,['name']],
+        ['Consistent QB','The QB with the highest winrate (min '+lowMinGames.toString()+' games started)','recordStarting','QB','max','rate',lowMinGames,['name','recordStarting']],
+        ['Consistent RB','The RB with the highest winrate (min '+lowMinGames.toString()+' games started)','recordStarting','RB','max','rate',lowMinGames,['name','recordStarting']],
+        ['Consistent WR','The WR with the highest winrate (min '+lowMinGames.toString()+' games started)','recordStarting','WR','max','rate',lowMinGames,['name','recordStarting']],
+        ['Consistent TE','The TE with the highest winrate (min '+lowMinGames.toString()+' games started)','recordStarting','TE','max','rate',lowMinGames,['name','recordStarting']],
+        ['Consistent D/ST','The D/ST with the highest winrate (min '+lowMinGames.toString()+' games started','recordStarting','D/ST','max','rate',lowMinGames,['name','recordStarting']],
+        ['Consistent K','The K with the highest winrate (min '+lowMinGames.toString()+' games started)','recordStarting','K','max','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic Player','The Player with the worst overall winrate (min '+minGames1.toString()+' games played)','record','all','min','rate',minGames1,['name','record']],
+        ['Toxic Starter','The Player with the worst winrate starting (min '+lowMinGames.toString()+' games started)','recordStarting','all','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic QB','The QB with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','QB','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic RB','The RB with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','RB','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic WR','The WR with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','WR','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic TE','The TE with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','TE','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic K','The K with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','K','min','rate',lowMinGames,['name','recordStarting']],
+        ['Toxic D/ST','The D/ST with the worst winrate starting (min '+lowMinGames.toString()+' games played)','recordStarting','D/ST','min','rate',lowMinGames,['name','recordStarting']],
+        ['What is Victory?','The most weeks owned without a win','record','all','max','special1',0,['name']],
+        ["Someday I'll win",'The most starts without a win','recordStarting','all','max','special1',0,['name']],
+        ['WAR!','The player with the highest WAR','war','all','max','normal',0,['name']],
+        ['HUH!','The player with the highest WAR per game started (min '+lowMinGames.toString()+' games played)','warRate','all','max','normal',lowMinGames,['name']],
+        ['What is it good for?','The player with the lowest WAR','war','all','min','normal',0,['name']],
+        ['Absolutely Nothing!','The player with the lowest WAR per game started (min '+lowMinGames.toString()+ ' games played)','warRate','all','min','normal',lowMinGames,['name']],
+        ['Negative Nancy','The Player who has score negative the most','timesNegative','all','max','normal',0,['name']],
+        ['Real Negative Nancy','The non D/ST who has score negative the most','timesNegative','noDST','max','normal',0,['name']],
+        ['Top Dawg','The highest score ever recorded','highScore','all','max','normal',0,['name']],
+        ['Bad Day','The worst score ever recorded','lowScore','all','min','normal',0,['name']],
+        ['Bad Day1','The worst score ever recorded (no D/ST)','lowScore','noDST','min','normal',0,['name']]
     ]
     const winRateList = ['Consistent Winner','Actual Consistent Winner','Consistent QB','Consistent RB','Consistent WR',
         'Consistent TE','Consistent D/ST','Consistent K','Toxic Player','Toxic Starter','Toxic QB','Toxic RB','Toxic WR',
@@ -428,18 +433,38 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
     for(const item of list4){
         let vals = []
         let onlyVals = []
+        let meta = item[7]
         if(item[5]=='special'){//'Took the Slow Train from Philly'
             for(const line of playerTracker){
+                if(item[6]==lowMinGames&&line.starts<lowMinGames){continue}
+                if(item[6]==minGames1&&line.record[0]+line.record[1]+line.record[2]<minGames1){continue}
                 for(const year of line['years']){
                         let onlyValue, value
-                        onlyValue = line['teamInYear'].length
-                        value = {'value':onlyValue,'name':line['name'],'teams':line['teamInYear'],'year':year}
+                        onlyValue = line['teamInYear'][year].length
+                        value = {'value':onlyValue,'name':line['name'],'teams':line['teamInYear'][year],'year':year}
                         onlyVals.push(onlyValue)
                         vals.push(value)
                     }
                 }
-            }else{//other items
+            }
+            else if(item[5]=='special1'){//someday i will win
                 for(const line of playerTracker){
+                    if(item[6]==lowMinGames&&line.starts<lowMinGames){continue}
+                    if(item[6]==minGames1&&line.record[0]+line.record[1]+line.record[2]<minGames1){continue}
+                    if(line.record[0]>0){continue}
+                    let onlyValue, value
+                    if(item[0]=="Someday I'll win"){
+                        onlyValue=line.starts
+                    }else{onlyValue=line.starts+line.benches}
+                    value = {'value':onlyValue,'name':line['name']}
+                    onlyVals.push(onlyValue)
+                        vals.push(value)
+                }
+            }
+            else{//other items
+                for(const line of playerTracker){
+                    if(item[6]==lowMinGames&&line.starts<lowMinGames){continue}
+                    if(item[6]==minGames1&&line.record[0]+line.record[1]+line.record[2]<minGames1){continue}
                     let onlyValue, value
                     const pos = line['pos']
                     const posID = item[3]
@@ -449,20 +474,34 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
                     if(posID=='noDST'&&pos=='D/ST'){continue}
                     else if(poses.includes(posID)&&pos!=posID){continue}
                     if(valID=='rate'){//need winrate,not wins
-                        onlyValue = (line[key][0]+line[key][1]/2)/Math.max(1,line[key][0]+line[key][1]+line[key][2])
-                        value = {'value':onlyValue,'name':line['name'],'record':line[key]}
-                    }else{//just compare values, no calculations
+                        onlyValue = (line[key][0]+line[key][2]/2)/Math.max(1,line[key][0]+line[key][1]+line[key][2])
+                        value = {'value':onlyValue,'name':line['name']}
+                        for(const metaType of meta){value[metaType]=line[metaType]}
+                    }
+                    else if(key=='teams'){
+                        onlyValue = line[key].length
+                        value = {'value':onlyValue,'name':line['name']}
+                        for(const metaType of meta){value[metaType]=line[metaType]}
+                    }
+                    else if(['W','L','T'].includes(item[5])){
+                        const index = ['W','L','T'].indexOf(item[5])
+                        onlyValue = line[key][index]
+                        value = {'value':onlyValue,'name':line.name}
+                        for(const metaType of meta){value[metaType]=line[metaType]}
+                    }
+                    else{//just compare values, no calculations
                         onlyValue = line[key]
                         value = {'value':onlyValue,'name':line['name']}
+                        for(const metaType of meta){value[metaType]=line[metaType]}
                     }
-                    
+                    if(isNaN(onlyValue)){console.log({1:value,2:line,3:item})}
                     vals.push(value)
                     onlyVals.push(onlyValue)
                 }
     
-
-            awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[4])})
-        }
+                // console.log({1:meta,2:item})
+            }
+            awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[4]),'meta':meta})
 
 
     }//for list4
@@ -499,10 +538,10 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
         } 
     }
     awards.push({'title':'Flex comparison','counts':{'RB':flexCounts['RB'],'WR':flexCounts['WR'],'TE':flexCounts['TE']},
-    'rates':{'RB':(flexCounts['RB'][0]+flexCounts['RB'][1]/2)/Math.max(1,flexCounts['RB'][0]+flexCounts['RB'][1]+flexCounts['RB'][2]),
-        'WR':(flexCounts['WR'][0]+flexCounts['WR'][1]/2)/Math.max(1,flexCounts['WR'][0]+flexCounts['WR'][1]+flexCounts['WR'][2]),
-        'TE':(flexCounts['TE'][0]+flexCounts['TE'][1]/2)/Math.max(1,flexCounts['TE'][0]+flexCounts['TE'][1]+flexCounts['TE'][2]),
-    }
+    'rates':{'RB':(flexCounts['RB'][0]+flexCounts['RB'][2]/2)/Math.max(1,flexCounts['RB'][0]+flexCounts['RB'][1]+flexCounts['RB'][2]),
+        'WR':(flexCounts['WR'][0]+flexCounts['WR'][2]/2)/Math.max(1,flexCounts['WR'][0]+flexCounts['WR'][1]+flexCounts['WR'][2]),
+        'TE':(flexCounts['TE'][0]+flexCounts['TE'][2]/2)/Math.max(1,flexCounts['TE'][0]+flexCounts['TE'][1]+flexCounts['TE'][2]),
+    },'meta':[]
     })
 
     //ownedTable
@@ -541,7 +580,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
         }
         for(const line of rawProjIn[year]){
             const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
-            if(slot!='FLEX'){continue}
+            // if(slot!='FLEX'){continue}
             if(week>lastWeek){continue}
             const outcome = outcomes[team][week]
             // if(outcome=='BYE'){continue}
@@ -583,21 +622,22 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
                 onlyVals.push(value)
                 vals.push({'value':value,'name':name})
             }else{
-            if(item[5]=='maxOnly'||item[5]=='minOnly'){
+            if(item[5]=='maxOnly'||item[5]=='minOnly'){//only names?
                 let value
                 if(item[5]=='maxOnly'){
                     const maxValue = DictMax(ownedInYears[name][item[3]])
                     const meta = DictKeysWithValue(ownedInYears[name][item[3]],maxValue)
                     onlyVals.push(maxValue)
-                    vals.push({'value':maxValue,'years':meta,'name':name})
+                    vals.push({'value':maxValue,'year':meta,'name':name})
                 }else{//minOnly
                     const minValue = DictMin(ownedInYears[name][item[3]])
                     const meta = DictKeysWithValue(ownedInYears[name][item[3]],minValue)
                     onlyVals.push(minValue)
-                    vals.push({'value':minValue,'years':meta,'name':name})
+                    vals.push({'value':minValue,'year':meta,'name':name})
                 }
             }else{
                 for(const year in ownedInYears[name]['owned']){
+                    if(ownedInYears[name]['owned'][year]<=0){continue}
                     let value
                     value=ownedInYears[name][item[3]][year]
                     onlyVals.push(value)
@@ -606,9 +646,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
             }
             }
         }
-        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[3])})
+        let meta
+        if(item[2]=='ownedTable'){meta=['name']}else{meta=['name','year']}
+        awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[4]),'meta':meta})
     }
     
-
+console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
 return awards  
 }
