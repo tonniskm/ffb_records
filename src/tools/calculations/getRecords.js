@@ -22,7 +22,7 @@ export default function GetRecords(vars,records,setRecords,raw,proj,fa){
  let scores = tables.scores  
  let types = tables.types   
  let oppoScores = tables.oppoScores         
- console.log(tables)      
+//  console.log(tables)      
  for(let year=vars.yearMin;year<=vars.currentYear;year++){ 
     const yearStats = GetYearStats(vars,raw,proj,fa,year,tables) 
     out['year'][year] = yearStats['scores']   
@@ -54,6 +54,6 @@ export default function GetRecords(vars,records,setRecords,raw,proj,fa){
  const playerStats = getPlayerStats(vars,raw,proj,out,tables)
  out['playerStats'] = playerStats.awards
  out['fantasyTeams'] = playerStats.fantasyTeams 
- console.log(out)        
+//  console.log(out)        
  setRecords(out)        
 }                                                                            

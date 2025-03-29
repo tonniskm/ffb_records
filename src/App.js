@@ -30,7 +30,7 @@ function App() {
   const [focusName,setFocusName] = useState('All')
   const [focusWeek,setFocusWeek] = useState('All')
   const [summaryYear,setSummaryYear] = useState('All')
-  const [numToShow,setNumToShow] = useState(5)
+  const [numToShow,setNumToShow] = useState(3)
 
   const [loading,setLoading] = useState({'raw':false,'proj':false,'fa':true})
   const [didMount,setDidMount] = useState(false)
@@ -63,18 +63,20 @@ function App() {
   
   const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} options={macroTypes} key={'m'}></NamePicker>
   const pickSumYear = <NamePicker title={'Year: '} selecting={setSummaryYear} options={summaryYears} key={'st'}></NamePicker>
-  const pickAward= <NamePicker title={'Awards Type: '} showAll={true} selecting={setAwardType} options={awardTypes} key={'a'}></NamePicker>
-  const pickName = <NamePicker title={'Focus On Player: '} showAll={true} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
+  const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} options={awardTypes} key={'a'}></NamePicker>
+  const pickName = <NamePicker title={'Filter Selected Score Column: '} showAll={true} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
   const pickWeek = <NamePicker title={'Week: '} showAll={true} selecting={setFocusWeek} options={activeWeeks} key={'week'}></NamePicker>
-  const pickYear = <NamePicker title={'Year: '} showAll={true} selecting={setSelectedYear} options={activeYears} key={'yearp'}></NamePicker>
+  const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} options={activeYears} key={'yearp'}></NamePicker>
   const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
 
   let relevantChoices = []
-  if (macroType=='Records'){relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNum]}
-  else if(macroType=='Summary'){relevantChoices=[pickMacro,pickSumYear]}
-  else if(macroType=='Yearly Awards'){relevantChoices=[pickMacro,pickYear]}
-  else if (macroType=='Matchups'){relevantChoices=[pickMacro,pickName]}
-  else if (macroType=='Fantasy Teams'){relevantChoices=[pickMacro,pickName]}
+  if(records.nameAwards!=undefined){
+    if (macroType=='Records'){relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNum]}
+    else if(macroType=='Summary'){relevantChoices=[pickMacro,pickSumYear]}
+    else if(macroType=='Yearly Awards'){relevantChoices=[pickMacro,pickYear]}
+    else if (macroType=='Matchups'){relevantChoices=[pickMacro,pickName]}
+    else if (macroType=='Fantasy Teams'){relevantChoices=[pickMacro,pickName]}
+  }
 
 
   const vars = {'currentYear':currentYear,
@@ -98,6 +100,9 @@ function App() {
 
   let output = []
   let shownRecords = []
+  let allAwards = []
+  if(records.nameAwards!=undefined){records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
+    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards)}
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){
       if(awardType=='Name'){shownRecords = records.nameAwards }
@@ -107,8 +112,10 @@ function App() {
       if(awardType=='Proj'){shownRecords = records.projAwards }
       if(awardType=='Player'){shownRecords = records.playerStats }
       if(awardType=='NY'){shownRecords = records.nyAwards }
+      if(awardType=='All'){shownRecords = allAwards }
       outTest = recordTable(shownRecords,allFocus,numToShow)
-      output =<div className='tableContainer'>{outTest}</div>
+      output =<div className='tableContainer'>
+        {outTest}</div>
     }
     else if (macroType=='Summary'){
       let type
@@ -177,21 +184,23 @@ function App() {
     GetRecords(vars,records,setRecords,raw,proj,fa)
   }               
   // console.log(fa)  
-  const a = {} 
-  const b = {} 
+  // const a = '12'
+  // console.log(parseFloat(a)) 
+  // const b = {}   
   // console.log('asdf'.includes('a'))                      
-  console.log(records)          
+  console.log(records)   
+  // console.log(proj)        
                                                               
   return (                          
     <div className="App">         
       <header className="App-header"> 
         {/* <div>{loading['raw']}</div> */}
         <div className='appContainer'>
-          <div className='buttonContainer'>
+          <div className='topContainer'>
             <img src={trophy} className='logo' alt="logo" />
 
-            <button onClick={()=>Test4()}>testrecords</button>
-            <div className='buttons'>
+            {/* <button onClick={()=>Test4()}>testrecords</button> */}
+            <div className='buttonsContainer'>
             {relevantChoices}
 
             </div>

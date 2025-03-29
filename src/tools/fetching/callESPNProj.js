@@ -1,13 +1,25 @@
-
+import { missingData } from "./missing2023w1";
 
 export function CallESPNProj(vars,setProj,loading,setLoading){
     let out = {}
+    for(let year=2018;year<=vars.currentYear;year++){
+        out[year] = []
+    }
+    let dataCopy = [...missingData]
+    for(const line of dataCopy){
+        line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
+        line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
+        out[2023].push(line)
+    }
+
+    // console.log({1:'here',2:dataCopy})
     // const year = 2024
     // const week = 1
     let promises = []
     for(let year=2018;year<=vars.currentYear;year++){
-        out[year] = []
+        // out[year] = []
         for(let week=1;week<=vars.weekMax;week++){
+         if(year==2023&&week==1){continue}
     const url = 'https://mocktion-site.vercel.app/callProj/'+year.toString()+'/'+week.toString()
     // const url = 'http://localhost:5432/callProj/'+year.toString()+'/'+week.toString()
     // console.log(url)

@@ -14,7 +14,7 @@ export function recordTable(awards,focus,showTop){
         // const count = list.length
         let out = []
         let outLine = []
-        function GeTMetaExtras(metaType){
+        function GeTMetaExtras(metaType,type){
             let starter, ender
              starter = ''
              ender = ''
@@ -27,28 +27,31 @@ export function recordTable(awards,focus,showTop){
                 starter = '\n'
             }
             else if(metaType=='s2'){
-                ender = '\n'
+                // ender = '\n'
             }
-
-            
+            else if(metaType=='name'){ender=' '}
+            else if(metaType=='record'||metaType=='recordStarting'){starter='\n'}
             else{
                 ender = ' '
             }
+            // if(metaType=='t1')(console.log({1:starter,2:ender}))
             return {'starter':starter,'ender':ender}
         }
         for(const line of list){
-            outLine.push('')
             const val = Math.round(100*line['value'])/100
             let extra =''
-            if(type=='selected'){extra = '\n'+val+' ('+line.rank+' of '+count+')'}
+            if(type=='selected'){
+                extra = '\n'+' ('+line.rank+' of '+count+')'
+                outLine.push(val+'\n')
+            }
+                else{outLine.push('')}
             for(const metaType of metas){
                 if(metaType=='meta'){
                     for(const metaSubType in line.meta){
                         let message = line[metaType][metaSubType]
                         if(metaSubType=='teams'){message = message.join(", ")}
                         else if(metaSubType=='record'||metaSubType=='recordStarting'){message = line[metaSubType][0]+'-'+line[metaSubType][1]+'-'+line[metaSubType][2]}
-                    
-                        let {starter,ender} = GeTMetaExtras(metaSubType)
+                        let {starter,ender} = GeTMetaExtras(metaSubType,type)
                         message = starter + message + ender 
                         if(message==undefined){console.log({1:line})}
                     // if(d=='The highest total score in a game'){console.log({1:outLine,2:message})}
@@ -59,7 +62,7 @@ export function recordTable(awards,focus,showTop){
                     let message = line[metaType]
                     if(metaType=='teams'){message = message.join(", ")}
                     else if(metaType=='record'||metaType=='recordStarting'){message = line[metaType][0]+'-'+line[metaType][1]+'-'+line[metaType][2]}
-                    let {starter,ender} = GeTMetaExtras(metaType)
+                    let {starter,ender} = GeTMetaExtras(metaType,type)
                     message = starter + message + ender 
                     // if(d=='The highest total score in a game'){console.log({1:outLine,2:message})}
                     outLine[outLine.length-1] +=message
@@ -70,7 +73,9 @@ export function recordTable(awards,focus,showTop){
             outLine[outLine.length-1] +=extra
             // outLine.at(-1).join('+ ')
         }
-        out.push(outLine.join('\n'))
+        if(type=='w'){out.push(outLine.join(''))}else{
+            out.push(outLine.join('\n-------\n'))
+        }
         return out
     }
 
@@ -79,14 +84,9 @@ export function recordTable(awards,focus,showTop){
         const count = award.values.length
         const vals = []
         let winners = []
-
-        // for(const line in award.values){
-        //     vals.push({'name':name,'value':Math.round(100*award.values[name])/100,'rank':award.ranks[name]})
-        // }
         const sorted = award.values.sort((a,b)=>a.rank-b.rank)
         const winFilter = sorted.filter(x=>x.rank==1)
         winners = GenerateOutputList(winFilter,'w',award.meta,count,award.desc)
-        // console.log({1:award.values,2:sorted,3:winFilter,4:sorted[0],5:award})
         const r1 = Math.round(100*sorted[0].value)/100
         let myRank = []
         let filtered = sorted
@@ -112,9 +112,9 @@ export function recordTable(awards,focus,showTop){
             <div key={award.title} className="tableRow">
                 <div className="tableCell"><p className="txt">{award.title}</p></div>
                 <div className="tableCell"><p className="txt">{r1}</p></div>
-                <div className="tableCell"><p className="txt">{winners}</p></div>
-                <div className="tableCell otherScores"><p className="txt">{myRank}</p></div>
-                <div className="tableCell"><p className="txt">{award.desc}</p></div>
+                <div className="tableCell otherScores"><p className="txt">{winners}</p></div>
+                <div className="tableCell myScores"><p className="txt">{myRank}</p></div>
+                <div className="tableCell description"><p className="txt">{award.desc}</p></div>
             </div>
         ) 
     }

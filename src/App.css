@@ -51,7 +51,7 @@
   width: auto;
 }
 .tableContainer{
-  background-color: red;
+  background-color: #282c34;
   display: table;
   /* position: relative; */
   /* left:10px; */
@@ -63,15 +63,20 @@
 
   /* padding-left: 20px; */
 }
-.buttonContainer{
-  background-color: darkolivegreen;
+.topContainer{
+  background-color: #282c34;
   align-items: flex-start;
   flex-direction: column;
   min-width: 100%;
   width: auto;
+  justify-content: flex-start;
 }
 .buttons{
-  align-items: center;
+  align-self: left;
+  width: fit-content;
+  padding-left: 10%;
+  padding-bottom: 10px;
+  /* background-color: red; */
 }
 .container2{
   background-color: bisque;
@@ -98,11 +103,20 @@
   padding: 2px;
   align-content: center;
   white-space: pre;
-  max-width: 300px;
-  text-wrap: wrap;
+  /* max-width: 300px; */
+  text-wrap: pre;
+  font-size: 16px;
 }
 .otherScores{
-  min-width: 300px;
+  max-width: 500px;
+  text-wrap: unset;
+}
+.myScores{
+  max-width: 300px;
+  text-wrap: unset;
+}
+.description{
+  white-space:wrap;
 }
 .recordCell{
   white-space: pre;
@@ -114,14 +128,29 @@
   font-weight: bold;
   text-align: center;
   align-content: center;
-  font-size: 30px;
+  font-size: 24px;
+  text-wrap: unset;
   
 }
 .txt{
-  padding: 5px;
+  padding: 2px;
 }
-
-
+.titleTxt{
+  color: white;
+  text-align: left;
+  padding-left: 25px;
+}
+.numberPicker{
+  padding-left: 2px;
+  padding-right: 0px;
+  font-size: 20px;
+  max-width: 40px;
+  width: auto;
+}
+.wordPicker{
+  font-size: 18px;
+  text-align: center;
+}
 .lds-spinner,
 .lds-spinner div,
 .lds-spinner div:after {

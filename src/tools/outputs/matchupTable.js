@@ -17,7 +17,9 @@ export function matchupTable(dict,focusName){
         if(focusName!='All'&&name1!=focusName){continue}
         for(const name2 in dict[name1]){
             if(name2=='t0'){continue}
-            const val = dict[name1][name2][0] +' - '+dict[name1][name2][1]+' - '+dict[name1][name2][2]
+            let val
+            if(name1==name2){val='x'}
+            else{val = dict[name1][name2][0] +' - '+dict[name1][name2][1]+' - '+dict[name1][name2][2]}
             colbody.push(<div className="tableCell recordCell"><p className="txt">{val}</p></div>)
         }
             cols.push(<div className="tableRow">
@@ -26,9 +28,12 @@ export function matchupTable(dict,focusName){
                     </div>)
 
     }
-const out = <div className="tableContainer">
-    {cols}
+const out = <div>
+        <p className="titleTxt">Row's record vs Column.  Consolation games are ignored.</p>
+    <div className="tableContainer">
+        {cols}
     {/* <p>helloworld</p> */}
+    </div>
 </div>
 // console.log(cols)
 // const out = <p>hello world</p>
