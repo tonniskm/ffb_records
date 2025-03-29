@@ -15,7 +15,7 @@ import { GetYearAwards } from "./year2sum/yearAwards"
 
 export default function GetRecords(vars,records,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
-'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{}
+'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{}
 }
  let tables = GetOtherTables(vars,raw)
  let oppos = tables.oppos  
@@ -32,10 +32,11 @@ export default function GetRecords(vars,records,setRecords,raw,proj,fa){
        out['yearProj'][year] = yearStatsProj
     }
     out['yearSum'][year] = GetYearAwards(vars,out['year'][year],yearStats['other']) 
- }            
+ }             
     
  const overall = getOverallStats(vars,out)   
- out['overall'] = overall  
+ out['overall'] = overall.overallStats
+ out['matchupTable'] = overall.matchupTable
  const overallProj = getOverallStatsProj(vars,out)
  out['overallProj'] = overallProj
  const nameAwards = getNameAwards(vars,out)
@@ -51,7 +52,8 @@ export default function GetRecords(vars,records,setRecords,raw,proj,fa){
  const projAwards = getAwardsProj(vars,out) 
  out['projAwards'] = projAwards
  const playerStats = getPlayerStats(vars,raw,proj,out,tables)
- out['playerStats'] = playerStats    
- console.log(out)      
- setRecords(out)    
-}                                                                   
+ out['playerStats'] = playerStats.awards
+ out['fantasyTeams'] = playerStats.fantasyTeams 
+ console.log(out)        
+ setRecords(out)        
+}                                                                            

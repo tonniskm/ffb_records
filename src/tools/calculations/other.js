@@ -97,9 +97,10 @@ export function StandardDeviation(arr) {
     return Math.sqrt(sum / (arr.length-1))
 }
 
-export function DictMax(dict){
+export function DictMax(dict,eligible=''){
     let maxValue = 0;
     for(const [key, value] of Object.entries(dict)) {
+        if(eligible!=''&&!eligible.includes(key)){continue}
     if(value > maxValue&&value!='none'&&value!=undefined&&value!='NA') {
         maxValue = value;
     }
@@ -114,9 +115,10 @@ export function DictKeysWithValue(dict,value){
     return out
 }
 
-export function DictMin(dict){
+export function DictMin(dict,eligible=''){
     let minValue;
     for(const [key, value] of Object.entries(dict)) {
+        if(eligible!=''&&!eligible.includes(key)){continue}
     if((value < minValue||minValue==undefined)&&value!='none'&&value!=undefined&&value!='NA') {
         minValue = value;
     }

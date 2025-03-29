@@ -8,8 +8,8 @@ export function CallESPNProj(vars,setProj,loading,setLoading){
     for(let year=2018;year<=vars.currentYear;year++){
         out[year] = []
         for(let week=1;week<=vars.weekMax;week++){
-    // const url = 'https://mocktion-site.vercel.app/callProj/'+year.toString()+'/'+week.toString()
-    const url = 'http://localhost:5432/callProj/'+year.toString()+'/'+week.toString()
+    const url = 'https://mocktion-site.vercel.app/callProj/'+year.toString()+'/'+week.toString()
+    // const url = 'http://localhost:5432/callProj/'+year.toString()+'/'+week.toString()
     // console.log(url)
     const leagueSize = 12
     const playerSlots = {0: 'QB', 4: 'WR', 2: 'RB', 23: 'FLEX', 6: 'TE', 16: 'D/ST', 17: 'K', 20: 'Bench', 21: 'IR'}

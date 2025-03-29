@@ -14,6 +14,7 @@ export function GetYearAwards(vars,scores,otherVars){
     awards['champ'] = [0,'t0']
     awards['dewey does'] = [0,'t0']
     }
+    const eligible = vars.allNames.filter(x=>scores['games played'][x]>0)
     //[name,type,key(scores[key])]
     const minMaxAwards = [['high score','max','high'],['low score','min','low'],['low high','min','high'],
     ['high low','max','low'],['high scores','max','high scores'],['low scores','max','low scores'],
@@ -26,8 +27,8 @@ export function GetYearAwards(vars,scores,otherVars){
     for(let i=0;i<minMaxAwards.length;i++){
         let val
         // console.log({1:minMaxAwards[i],2:scores,3:scores[minMaxAwards[2]],4:minMaxAwards[2]})
-        if(minMaxAwards[i][1]=='min'){val=DictMin(scores[minMaxAwards[i][2]])}
-        else if(minMaxAwards[i][1]=='max'){val=DictMax(scores[minMaxAwards[i][2]])}
+        if(minMaxAwards[i][1]=='min'){val=DictMin(scores[minMaxAwards[i][2]],eligible)}
+        else if(minMaxAwards[i][1]=='max'){val=DictMax(scores[minMaxAwards[i][2]],eligible)}
         else{console.log('error!!!!!!!!!! in year awards minmax')} 
         awards[minMaxAwards[i][0]] = [val,KeysWithValue(val,scores[minMaxAwards[i][2]])]
     } 

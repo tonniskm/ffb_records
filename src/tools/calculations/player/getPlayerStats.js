@@ -651,6 +651,6 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
         awards.push({'title':item[0],'desc':item[1],'values':SortNRank(onlyVals,vals,item[4]),'meta':meta})
     }
     
-console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
-return awards  
+// console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
+return {'awards':awards,'fantasyTeams':fantasyTeams}  
 }

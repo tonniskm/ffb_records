@@ -40,7 +40,7 @@ export function recordTable(awards,focus,showTop){
             outLine.push('')
             const val = Math.round(100*line['value'])/100
             let extra =''
-            if(type=='selected'){extra = ' '+val+' ('+line.rank+' of '+count+')'}
+            if(type=='selected'){extra = '\n'+val+' ('+line.rank+' of '+count+')'}
             for(const metaType of metas){
                 if(metaType=='meta'){
                     for(const metaSubType in line.meta){

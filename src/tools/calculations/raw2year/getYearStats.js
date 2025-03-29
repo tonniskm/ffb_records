@@ -9,7 +9,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     let highScores = []
     let lowScores = []
     //list of calculated values in this record type
-    const calculated = ['name','games played','reg total','reg STD','high scores','low scores','seed','last until','KO by',
+    const calculated = ['games played','reg total','reg games played','reg STD','high scores','low scores','seed','last until','KO by',
         'oppo reg total','W','L','T','pct','high','oppo high','low','oppo low',
         'biggest W','biggest L','closest W','closest L','low W','high L','oppo high L','oppo low W','close W','close L',
         'L over 100','W under 80','ind records','Beat Low Score','Lost to High Score','Record vs Mid',
@@ -27,6 +27,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     for(let i=0;i<calculated.length;i++){
         scores[calculated[i]] = {}
         for(let n=0;n<names.length;n++){
+            if(calculated[i]=='Record vs Mid'){continue}
             scores[calculated[i]][names[n]] = 0
         }
     }
@@ -108,6 +109,8 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                 scores['reg total'][t2] += score2
                 scores['oppo reg total'][t1] += score2
                 scores['oppo reg total'][t2] += score1
+                scores['reg games played'][t1] += 1
+                scores['reg games played'][t2] += 1
                 regPoints.push(score1)
                 regPoints.push(score2)
                 if(highScores.length>=week){
@@ -204,14 +207,15 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
 
     }// end for each line
     let rankList = {}
-    const rankKeys = ['Beat Low Score','Lost to High Score','Record vs Mid','Beat 2nd','Lost to 2nd Last']
+    const rankKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last']
     let activePlayers = {}
+    // scores['Record vs Mid'] = {}
+    for(const name of names){scores['Record vs Mid'][name] = [0,0,0]}
     for (let i=0;i<rankKeys.length;i++){
         scores[rankKeys[i]] = {}
-        scores['Record vs Mid'] = {}
         for (let n=0;n<names.length;n++){
             scores[rankKeys[i]][names[n]] = 0
-            scores['Record vs Mid'][names[n]] = [0,0,0]
+            // scores['Record vs Mid'][names[n]] = [0,0,0]
         }  
     }
     for(let i=0;i<Object.keys(weekScores).length;i++){
@@ -245,8 +249,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
             let highMidScore = [...weekScores[week]].sort((a, b) => a - b)[mid]
             let out = 'na'
             let name = names[n]
-            let test = {1:weekScores,2:week,3:year,4:r1,5:r2,6:active,7:rankList,8:sortedScores}
-            // if(year==2024){console.log(test)}
+            // console.log({1:scores,2:midScore})
             if (r2 == active - 1 && r1 == active){scores['Beat 2nd'][name] += 1}
             if (r2 == 2 && r1 == 1){scores['Lost to 2nd Last'][name] += 1}
             if (r2 == active && r1 < active){scores['Lost to High Score'][name] += 1}
@@ -300,7 +303,9 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
         let team = names[n]
         scores['reg pt diff'][team] = scores['reg total'][team] - scores['oppo reg total'][team]
         if (scores['seed'][team] != 'none'){
-            if (scores['seed'][team] > 6){scores['last until'][team] = 'P0'}
+            if (scores['seed'][team] > 6){scores['last until'][team] = 'P0'
+                scores['KO by'][team] = 'Failure'
+            }
         }
     }
 // console.log(year)

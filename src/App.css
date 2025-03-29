@@ -1,10 +1,18 @@
 .App {
   text-align: center;
+  float: left;
+  min-height: 100%;
+  height: auto;
+  min-width: 100%;
+  width: auto;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+.logo{
+  height:200px
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -22,26 +30,66 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  min-height: 100%;
+  height: auto;
+  min-width: 100%;
+  width: auto;
 }
 
 .App-link {
   color: #61dafb;
 }
+.appContainer{
+  position: relative;
+  background-color: #282c34;
+  top:0px;
+  left:0px;
+  min-width: 100%;
+  min-height: 100%;
+  display: inline;
+  height: auto;
+  width: auto;
+}
 .tableContainer{
+  background-color: red;
+  display: table;
+  /* position: relative; */
+  /* left:10px; */
+
+  /* position: absolute; */
+  /* min-width: none; */
+  width: auto;
+
+
+  /* padding-left: 20px; */
+}
+.buttonContainer{
+  background-color: darkolivegreen;
+  align-items: flex-start;
+  flex-direction: column;
+  min-width: 100%;
+  width: auto;
+}
+.buttons{
+  align-items: center;
+}
+.container2{
   background-color: bisque;
   display: table;
-  position: relative;
-  left:0px;
-  top:100px;
-  overflow-x: scroll;
-  float: right;
-  /* padding-left: 20px; */
+  /* position: absolute; */
+  align-items: center;
+  width: auto;
+  /* left:10px; */
 }
 .tableRow{
   display: table-row;
-  background-color: #fff;
+  background-color: #282c34;
   /* position: absolute; */
   /* transform: translateX(-50%); */
+}
+.tableColumn{
+  display: table-column;
+  background-color: #282c34;
 }
 .tableCell{
   display: table-cell;
@@ -56,6 +104,9 @@
 .otherScores{
   min-width: 300px;
 }
+.recordCell{
+  white-space: pre;
+}
 .headerCell{
   display:table-cell;
   background-color: #282c34;
@@ -69,6 +120,93 @@
 .txt{
   padding: 5px;
 }
+
+
+.lds-spinner,
+.lds-spinner div,
+.lds-spinner div:after {
+  box-sizing: border-box;
+}
+.lds-spinner {
+  color: currentColor;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3.2px;
+  left: 36.8px;
+  width: 6.4px;
+  height: 17.6px;
+  border-radius: 20%;
+  background: currentColor;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
 
 @keyframes App-logo-spin {
   from {

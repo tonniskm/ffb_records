@@ -7,8 +7,8 @@ export function getOverallStats(vars,input){
     const stats = input['year']
     let overallAwards = []
     let overallStats = {}
-    const statKeys = ['Years Played','Playoffs','Semifinals','Finals','Championships','Dewey Does','Byes',
-        'Reg Season Pts','Reg Season Pts/Gm','Reg Season Pts Allowed','Reg Season Pts Allowed/Gm',
+    const statKeys = ['Years Played','games played','Playoffs','Semifinals','Finals','Championships','Dewey Does','Byes',
+        'Reg Season Pts','Reg Season GP','Reg Season Pts/Gm','Reg Season Pts Allowed','Reg Season Pts Allowed/Gm',
         'High Score','Low Score','W','L','T','pct','Close W','Close L','L Over 100','W Under 80',
         'Low W','High L','Lowest Lost To',
         'Highest Win Against',
@@ -17,7 +17,7 @@ export function getOverallStats(vars,input){
         'Best Record Awards','Worst Record Awards',
         'Biggest W','Biggest L','pts STD','Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last',
         'Record vs Mid','Pct vs Mid']
-    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last']
+    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','games played']
     const setHigh = ['Low Score','Low W','Lowest Lost To']
     // initialize
     for(const key of statKeys){
@@ -74,6 +74,8 @@ export function getOverallStats(vars,input){
             overallStats['High Score'][ind] = Math.max(high,overallStats['High Score'][ind])
             overallStats['Low Score'][ind] = Math.min(low, overallStats['Low Score'][ind])
             overallStats['Years Played'][ind] += 1
+            overallStats['Reg Season GP'][ind] += stats[year]['reg games played'][ind]
+            // console.log({1:overallStats,2:stats[year]})
             for(const item of ['W','L','T']){overallStats[item][ind] += stats[year][item][ind]}
             overallStats['pct'][ind] = (overallStats['W'][ind]+overallStats['T'][ind]/2)
                         /Math.max((overallStats['W'][ind]+overallStats['T'][ind]+overallStats['L'][ind]),1)
@@ -86,7 +88,7 @@ export function getOverallStats(vars,input){
             overallStats['Low W'][ind] = Math.min(lowW,overallStats['Low W'][ind])
             overallStats['High L'][ind] = Math.max(highL,overallStats['High L'][ind])
             overallStats['Lowest Lost To'][ind] = Math.min(OlowW,overallStats['Lowest Lost To'][ind])
-            overallStats['Highest Win Against'] = Math.max(OhighL,overallStats['Highest Win Against'][ind])
+            overallStats['Highest Win Against'][ind] = Math.max(OhighL,overallStats['Highest Win Against'][ind])
             overallStats['L Over 100'][ind] += stats[year]['L over 100'][ind]
             overallStats['W Under 80'][ind] += stats[year]['W under 80'][ind]
             for (const key of additiveKeys){overallStats[key][ind] += stats[year][key][ind]}
@@ -129,7 +131,27 @@ export function getOverallStats(vars,input){
         else{overallStats['pts STD'][ind] = 0}
     }
     //matchup table
+    let matchupTable = {}
+    for(const name of vars.allNames){
+        matchupTable[name] = {}
+        for(const name2 of vars.allNames){
+            matchupTable[name][name2] = [0,0,0]
+        }
+    }
+    for(const year in stats){
+        for(const name1 in stats[year]['ind records']){
+            for(const name2 in stats[year]['ind records'][name1]){
+                for(let i=0;i<3;i++){
+                    matchupTable[name1][name2][i] += stats[year]['ind records'][name1][name2][i]
+                }
+            }
+        }
+    }
+                    
+
     //skipped because I think it is just an output, should be done in a different spot
+
+
     const misc = input['misc']
     let allPts = []
     for (const year in misc){
@@ -141,7 +163,7 @@ export function getOverallStats(vars,input){
     const ptMed = findMedian(allPts)
     overallStats['point stats'] = {'mean':ptMean,'median':ptMed,'stdev':ptSTD}
 
-    return overallStats
+    return {'overallStats':overallStats,'matchupTable':matchupTable}
 
 
 }
