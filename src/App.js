@@ -1,7 +1,7 @@
-import logo from './logo.svg';
+
 import trophy from './tools/assets/trophy.png'
 import './App.css';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { CallESPNRaw } from './tools/fetching/callESPNRaw';
 import { CallESPNProj } from './tools/fetching/callESPNProj';
 import CallESPNFa from './tools/fetching/callESPNFa';
@@ -12,9 +12,10 @@ import { recordTable } from './tools/outputs/recordTable';
 import { summaryTable } from './tools/outputs/summaryTable';
 import { yearlyAwardTable } from './tools/outputs/yearlyAwardTable';
 import { matchupTable } from './tools/outputs/matchupTable';
-import e from 'cors';
 import { fantasyTeams } from './tools/outputs/fantasyTeams';
 import { loadingScreen } from './tools/outputs/loadingScreen';
+import { CompareRecords } from './tools/calculations/compareRecords';
+import { recentUpdates } from './tools/outputs/recentUpdates';
 // import { styleSheet } from './tools/styles/styles';  
 
 function App() {
@@ -22,22 +23,25 @@ function App() {
   const [proj,setProj] = useState([{'Week':'init'}])
   const [fa,setFa] = useState([{'Week':'init'}])
   const [records,setRecords] = useState({})
+  const [oldRecords,setOldRecords] = useState({})
+  const [weekOldRecords,setWeekOldRecords] = useState({})
 
   const [macroType,setMacroType] = useState('Records')
-  const [awardType,setAwardType] = useState('Name')
+  const [awardType,setAwardType] = useState('All')
   const [selectedYear,setSelectedYear] = useState(2024)
+  const [weekYear,setWeekYear] = useState('Week')
   
   const [focusName,setFocusName] = useState('All')
   const [focusWeek,setFocusWeek] = useState('All')
   const [summaryYear,setSummaryYear] = useState('All')
-  const [numToShow,setNumToShow] = useState(3)
+  const [numToShow,setNumToShow] = useState(3) 
 
   const [loading,setLoading] = useState({'raw':false,'proj':false,'fa':true})
-  const [didMount,setDidMount] = useState(false)
-
-  const yearMin = 2012 
+  const [didMount,setDidMount] = useState(false) 
+  
+  const yearMin = 2012    
   const currentYear = new Date().getFullYear() -1;
-  const weekMax =18
+  const weekMax =18 
   const names2012 = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Kevin', 'Eric',
     'Nick', 'Jake Knapke', 'Brenna', 'Uncle Steve', 'Regan Crone', 'RJ', 'Claire', 'Lance', 'Adam', 'Nate']
   const names = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Uncle Steve', 'Eric',
@@ -57,16 +61,20 @@ function App() {
     activeYears.push(i)
     summaryYears.push(i)
   }
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams']
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Recent Updates']
  
   const awardTypes = ['Name','Game','Week','Year','Proj','Player','NY']
+  let nameSelectMessage
+  if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
+  else{nameSelectMessage='Filter by Name: '}
   
   const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} options={macroTypes} key={'m'}></NamePicker>
   const pickSumYear = <NamePicker title={'Year: '} selecting={setSummaryYear} options={summaryYears} key={'st'}></NamePicker>
   const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} options={awardTypes} key={'a'}></NamePicker>
-  const pickName = <NamePicker title={'Filter Selected Score Column: '} showAll={true} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
+  const pickName = <NamePicker title={nameSelectMessage} showAll={true} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
   const pickWeek = <NamePicker title={'Week: '} showAll={true} selecting={setFocusWeek} options={activeWeeks} key={'week'}></NamePicker>
   const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} options={activeYears} key={'yearp'}></NamePicker>
+  const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} options={['Week','Year']} key={'wy'}></NamePicker>
   const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
 
   let relevantChoices = []
@@ -76,6 +84,7 @@ function App() {
     else if(macroType=='Yearly Awards'){relevantChoices=[pickMacro,pickYear]}
     else if (macroType=='Matchups'){relevantChoices=[pickMacro,pickName]}
     else if (macroType=='Fantasy Teams'){relevantChoices=[pickMacro,pickName]}
+    else if (macroType=='Recent Updates'){relevantChoices=[pickMacro,pickWY]}
   }
 
 
@@ -96,13 +105,15 @@ function App() {
     'year':summaryYear 
   }
   let outTest = []
-
-
+  
+  
   let output = []
   let shownRecords = []
   let allAwards = []
-  if(records.nameAwards!=undefined){records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
+  if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
     .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards)}
+
+    
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){
       if(awardType=='Name'){shownRecords = records.nameAwards }
@@ -143,6 +154,20 @@ function App() {
     else if(macroType=='Fantasy Teams'){
       output = fantasyTeams(records.fantasyTeams,focusName)
     }
+    else if(macroType=='Recent Updates'){
+      // GetRecords(vars,currentYear,setRecords,raw,proj,fa)
+      let list
+      if(weekYear=='Year'){
+        list = CompareRecords(records,oldRecords)
+      }else{
+        list = CompareRecords(records,weekOldRecords)
+      }
+      try{
+        output = recentUpdates(list)
+
+      }catch(err){console.log(err)}
+      
+    }
   }  //end if undefined
   else{output=loadingScreen()}
  
@@ -163,35 +188,53 @@ function App() {
         if(raw[currentYear].length > 2 && proj[currentYear].length > 2){
           // console.log('doingit')
           setDidMount(true)
-          GetRecords(vars,records,setRecords,raw,proj,fa)
+          GetRecords(vars,currentYear,setRecords,raw,proj,fa)
+          // GetRecords(vars,currentYear-1,setOldR        GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
+          let truncRaw = {...raw}
+          let truncProj = {...proj}
+          const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
+          truncRaw[currentYear] = truncRaw[currentYear].filter(x=>x.Week!=lastWeek)
+          truncProj[currentYear] = truncProj[currentYear].filter(x=>x.Week<lastWeek)
+          // console.log({truncRaw,truncProj})
+          // truncRaw.append(0)
+          GetRecords(vars,currentYear,setWeekOldRecords,truncRaw,truncProj,fa)
         }
       }else{
         // console.log('cll') 
         // CallESPNProj(vars,setProj,loading,setLoading)  
     } 
   },[raw,proj])
-
-  function Test(){
-    CallESPNRaw(vars,setRaw)
-  }  
-  function Test2(){  
-    CallESPNProj(vars,setProj)   
-  } 
-  function Test3(){  
-    CallESPNFa(vars,setFa) 
-  }  
-  function Test4(){  
-    GetRecords(vars,records,setRecords,raw,proj,fa)
-  }               
+ 
+           
   // console.log(fa)  
   // const a = '12'
   // console.log(parseFloat(a)) 
   // const b = {}   
   // console.log('asdf'.includes('a'))                      
-  console.log(records)   
-  // console.log(proj)        
-                                                              
-  return (                          
+  // console.log({1:records,2:oldRecords})   
+  // if(records.nameAwards!=undefined){
+  //   try{
+  //     CompareRecords(records,oldRecords)
+  //   }catch(err){console.log(err)}
+  // }  
+  // console.log(raw)
+  // console.log(numToShow) 
+  // console.log(proj)    
+  // console.log(['a'].includes('a'))       
+  function Test4(){
+    GetRecords(vars,currentYear,setRecords,raw,proj,fa)
+    GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
+    let truncRaw = {...raw}
+    let truncProj = {...proj}
+    const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
+    truncRaw[currentYear] = truncRaw[currentYear].filter(x=>x.Week!=lastWeek)
+    truncProj[currentYear] = truncProj[currentYear].filter(x=>x.Week<lastWeek)
+    // console.log({truncRaw,truncProj})
+    // truncRaw.append(0)
+    GetRecords(vars,currentYear,setWeekOldRecords,truncRaw,truncProj,fa)
+  }                               
+            
+  return (                               
     <div className="App">         
       <header className="App-header"> 
         {/* <div>{loading['raw']}</div> */}
@@ -203,7 +246,7 @@ function App() {
             <div className='buttonsContainer'>
             {relevantChoices}
 
-            </div>
+            </div> 
 
           </div>
           {output}
@@ -214,4 +257,4 @@ function App() {
 }   
  
 export default App;
-               
+                     

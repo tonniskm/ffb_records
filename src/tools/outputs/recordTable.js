@@ -1,14 +1,13 @@
-import { DictKeysWithValue } from "../calculations/other"
-// import { styleSheet } from "../styles/styles"
+
 
 
 export function recordTable(awards,focus,showTop){
     let out = [<div className="tableRow">
                 <div className="headerCell"><p className="txt">Record</p></div>
+                <div className="headerCell"><p className="txt">Description</p></div>
                 <div className="headerCell"><p className="txt">1st Place</p></div>
                 <div className="headerCell"><p className="txt">Holder</p></div>
-                <div className="headerCell"><p className="txt">Selected Score</p></div>
-                <div className="headerCell"><p className="txt">Description</p></div>
+                <div className="headerCell"><p className="txt">Selected Comparison</p></div>
     </div>]
     function GenerateOutputList(list,type,metas,count,d){
         // const count = list.length
@@ -73,7 +72,7 @@ export function recordTable(awards,focus,showTop){
             outLine[outLine.length-1] +=extra
             // outLine.at(-1).join('+ ')
         }
-        if(type=='w'){out.push(outLine.join(''))}else{
+        if(type=='w'){out.push(outLine.join('\n'))}else{
             out.push(outLine.join('\n-------\n'))
         }
         return out
@@ -94,7 +93,7 @@ export function recordTable(awards,focus,showTop){
         if(award.meta.includes('week')){filtered = filtered.filter((x)=>x.week==focus['week']||focus['week']=='All')}
         if(award.meta.includes('year')){filtered = filtered.filter((x)=>x.year==focus['year']||focus['year']=='All')}
 
-        filtered = filtered.slice(0,showTop)
+        filtered = filtered.slice(0,Math.max(1,showTop))
         myRank = GenerateOutputList(filtered,'selected',award.meta,count,'hi')
 
         // if(award.desc == 'The Most Rings'){console.log({1:focus})}
@@ -110,11 +109,11 @@ export function recordTable(awards,focus,showTop){
         // }
         out.push(
             <div key={award.title} className="tableRow">
-                <div className="tableCell"><p className="txt">{award.title}</p></div>
+                <div className="tableCell recordTitle"><p className="txt">{award.title}</p></div>
+                <div className="tableCell description"><p className="txt">{award.desc}</p></div>
                 <div className="tableCell"><p className="txt">{r1}</p></div>
                 <div className="tableCell otherScores"><p className="txt">{winners}</p></div>
                 <div className="tableCell myScores"><p className="txt">{myRank}</p></div>
-                <div className="tableCell description"><p className="txt">{award.desc}</p></div>
             </div>
         ) 
     }

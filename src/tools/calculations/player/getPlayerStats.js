@@ -1,7 +1,7 @@
 import { ChooseNames, DictKeysWithValue, DictMax, DictMin, SortNRank, UnpackProjLine } from "../other"
 
 
-export function getPlayerStats(vars,raw,projIn,input,tables){
+export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     const replacement = {'QB':15,'RB':5,'WR':5,'TE':4,'D/ST':7,'K':7}
     const rawProjIn = projIn
     const names = vars.allNames
@@ -24,6 +24,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
     for(const name of names){teamTracker[name] = []}
     
     for(const year in rawProjIn){
+        if(year>yearMax){continue}
         const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])
         const types = tables.types[year]
         const outcomes = tables.outcomes[year]
@@ -511,6 +512,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
     let flexRecords = {'RB':[0,0,0],'WR':[0,0,0],'TE':[0,0,0]}
 
     for (const year in rawProjIn){
+        if(year>yearMax){continue}
         const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])
         const types = tables.types[year]
         const outcomes = tables.outcomes[year]
@@ -563,6 +565,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables){
         ownedInYears[name] = {'owned':{},'started':{}}
     }
     for(const year in rawProjIn){
+        if(year>yearMax){continue}
         let alreadyCounted = {}
         let alreadyCountedStart = {}
         const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])

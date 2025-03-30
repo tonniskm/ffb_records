@@ -22,12 +22,12 @@ return(<div className="buttons">
 export const NumberPicker = (props)=>{
     function handleChange(x){
         if(!isNaN(x.target.value)){
-            props.selecting(Math.max(1,Math.round(x.target.value)))
+            props.selecting(Math.max(0,Math.round(x.target.value)))
         }
     }
 let out = <div className="buttons">
 <label htmlFor="quantity">Number of Selected Scores to Show: </label>
-<input type="number" id="quantity" name="quantity" min="1" max="5000" onChange={(x)=>handleChange(x)} value={props.curval}
+<input type="number" id="quantity" name="quantity" min="0" max="5000" onChange={(x)=>handleChange(x)} value={props.curval}
  className="numberPicker"></input>
 </div>
     return out

@@ -27,6 +27,7 @@ for(const pos in dict['Kevin']){
     }
 let finalRowBody = []
 for(const name in dict){
+    if(focusName!='All'&&focusName!=name){continue}
     finalRowBody.push(<div className="tableCell recordCell"><p className="txt">{Math.round(100*dict[name]['Total'])/100}</p></div>)
 }
  rows.push(<div className="tableRow">

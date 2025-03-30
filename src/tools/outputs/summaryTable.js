@@ -1,6 +1,3 @@
-import { DictKeysWithValue } from "../calculations/other"
-// import { styleSheet } from "../styles/styles"
-
 
 export function summaryTable(dict){
     let out = []
