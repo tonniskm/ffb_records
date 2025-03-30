@@ -13,7 +13,7 @@ function handleChange(x){
 }
 return(<div className="buttons">
     <label >{props.title}</label>
-    <select onChange={(x)=>handleChange(x)} className="wordPicker">
+    <select onChange={(x)=>handleChange(x)} className="wordPicker" value={props.curval}>
             {options}
     </select>
 </div>)
@@ -26,7 +26,7 @@ export const NumberPicker = (props)=>{
         }
     }
 let out = <div className="buttons">
-<label htmlFor="quantity">Number of Selected Scores to Show: </label>
+<label htmlFor="quantity">Number of Comparison Scores to Show: </label>
 <input type="number" id="quantity" name="quantity" min="0" max="5000" onChange={(x)=>handleChange(x)} value={props.curval}
  className="numberPicker"></input>
 </div>

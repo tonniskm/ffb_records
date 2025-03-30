@@ -2,12 +2,12 @@
 
 
 export function recordTable(awards,focus,showTop){
-    let out = [<div className="tableRow">
-                <div className="headerCell"><p className="txt">Record</p></div>
-                <div className="headerCell"><p className="txt">Description</p></div>
-                <div className="headerCell"><p className="txt">1st Place</p></div>
-                <div className="headerCell"><p className="txt">Holder</p></div>
-                <div className="headerCell"><p className="txt">Selected Comparison</p></div>
+    let out = [<div className="tableRow" key={'trh'}>
+                <div className="headerCell" key={'rrh'}><p className="txt">Record</p></div>
+                <div className="headerCell" key={'drh'}><p className="txt">Description</p></div>
+                <div className="headerCell" key={'wrh'}><p className="txt">1st Place</p></div>
+                <div className="headerCell" key={'wnrh'}><p className="txt">Holder</p></div>
+                <div className="headerCell" key={'crh'}><p className="txt">Selected Comparison</p></div>
     </div>]
     function GenerateOutputList(list,type,metas,count,d){
         // const count = list.length
@@ -40,7 +40,7 @@ export function recordTable(awards,focus,showTop){
             const val = Math.round(100*line['value'])/100
             let extra =''
             if(type=='selected'){
-                extra = '\n'+' ('+line.rank+' of '+count+')'
+                extra = '\n ('+line.rank+' of '+count+')'
                 outLine.push(val+'\n')
             }
                 else{outLine.push('')}
@@ -81,7 +81,7 @@ export function recordTable(awards,focus,showTop){
     for(const award of awards){
         if(award.title=='Flex comparison'){continue}
         const count = award.values.length
-        const vals = []
+        // const vals = []
         let winners = []
         const sorted = award.values.sort((a,b)=>a.rank-b.rank)
         const winFilter = sorted.filter(x=>x.rank==1)
@@ -92,7 +92,7 @@ export function recordTable(awards,focus,showTop){
         if(award.meta.includes('name')||award.meta.includes('t1')||award.meta.includes('t2')){filtered = filtered.filter((x)=>[x.t1,x.t2,x.name].includes(focus['name'])||focus['name']=='All')}
         if(award.meta.includes('week')){filtered = filtered.filter((x)=>x.week==focus['week']||focus['week']=='All')}
         if(award.meta.includes('year')){filtered = filtered.filter((x)=>x.year==focus['year']||focus['year']=='All')}
-
+        filtered = filtered.filter(x=>x.rank!=1)
         filtered = filtered.slice(0,Math.max(1,showTop))
         myRank = GenerateOutputList(filtered,'selected',award.meta,count,'hi')
 
@@ -109,11 +109,11 @@ export function recordTable(awards,focus,showTop){
         // }
         out.push(
             <div key={award.title} className="tableRow">
-                <div className="tableCell recordTitle"><p className="txt">{award.title}</p></div>
-                <div className="tableCell description"><p className="txt">{award.desc}</p></div>
-                <div className="tableCell"><p className="txt">{r1}</p></div>
-                <div className="tableCell otherScores"><p className="txt">{winners}</p></div>
-                <div className="tableCell myScores"><p className="txt">{myRank}</p></div>
+                <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
+                <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
+                <div className="tableCell" key={award.title+'wv'}><p className="txt">{r1}</p></div>
+                <div className="tableCell otherScores" key={award.title+'w'}><p className="txt">{winners}</p></div>
+                <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
             </div>
         ) 
     }

@@ -9,7 +9,7 @@ export function callProj(vars,setProj){
         for(let week=1;week<=18;week++){
             if(year==2023&&week==1){continue}
             // const url = 'http://localhost:5432/projrajan/'+year.toString()+'/'+week.toString()
-            const url = 'https://mocktion-site.vercel.app/projrajan/'+yearMax.toString()+'/'+week.toString()
+            const url = 'https://mocktion-site.vercel.app/projrajan/'+year.toString()+'/'+week.toString()
             
         promises.push(fetch(url).then(res=>res.json()).then(json=>{
             for(const line of json){

@@ -16,14 +16,35 @@ if (count==0){return<p>no recent updates</p>}
 if(!lists.records.length==0){
     out.push(head1)
     for(const item of lists.records){
+        let newWin = item.now.winnerValue[0]
+        let newLose = item.now.loserValue
+        let newLoseLine = []
+        let prevVal
+        for(let i=0;i<item.now.loser.length;i++){
+            const name = item.now.loser[i]
+            let val = newLose[i]
+            if(!item.now.winner.includes(name)){
+                if(!isNaN(val)){val=Math.round(100*val)/100}
+                let valOut
+                if(val==prevVal){valOut=''}else{valOut=val.toString()+'\n'}
+                newLoseLine.push(valOut+name)
+                prevVal=val
+            }
+        }
+        let oldWin = item.was.winnerValue[0]
+        let oldLose = item.was.loserValue[0]
+        if(!isNaN(newWin)){newWin=Math.round(100*newWin)/100}else{newWin='N/A'}
+        if(!isNaN(newLose)){newLose=Math.round(100*newLose)/100}else{newLose='N/A'}
+        if(!isNaN(oldWin)){oldWin=Math.round(100*oldWin)/100}else{oldWin='N/A'}
+        if(!isNaN(oldLose)){oldLose=Math.round(100*oldLose)/100}else{oldLose='N/A'}
         
         const row = <div className="tableRow">
             <div className="headerCell"><p className="txt">{item.title}</p></div>
             <div className="tableCell description"><p className="txt">{item.desc}</p></div>
-            <div className="tableCell"><p className="txt">{Math.round(100*item.now.winnerValue[0])/100+'\n'+item.now.winner.join('\n')}</p></div>
-            <div className="tableCell"><p className="txt">{Math.round(100*item.now.loserValue[0])/100+'\n'+item.now.loser.join('\n')}</p></div>
-            <div className="tableCell"><p className="txt">{Math.round(100*item.was.winnerValue[0])/100+'\n'+item.was.winner.join('\n')}</p></div>
-            <div className="tableCell"><p className="txt">{Math.round(100*item.was.loserValue[0])/100+'\n'+item.was.loser.join('\n')}</p></div>
+            <div className="tableCell"><p className="txt">{newWin+'\n'+item.now.winner.join('\n')}</p></div>
+            <div className="tableCell"><p className="txt">{newLoseLine.join('\n')}</p></div>
+            <div className="tableCell"><p className="txt">{oldWin+'\n'+item.was.winner.join('\n')}</p></div>
+            <div className="tableCell"><p className="txt">{oldLose+'\n'+item.was.loser.join('\n')}</p></div>
         </div>
         out.push(row)
     }
@@ -35,7 +56,7 @@ if(lists.overall.length+lists.fantasy.length!=0){
     overall.push(
         <div className="tableRow">
             <div className="headerCell"><p className="txt">Name</p></div>
-            <div className="headerCell description"><p className="txt">Person Record</p></div>
+            <div className="headerCell description"><p className="txt">Record ID</p></div>
             <div className="headerCell"><p className="txt">New PB</p></div>
             <div className="headerCell"><p className="txt">Old PB</p></div>
         </div>

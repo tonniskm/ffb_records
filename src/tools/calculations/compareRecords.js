@@ -12,8 +12,7 @@ export function CompareRecords(records,oldRecords){
         function YearOnly(x){return x.year}
         function NameYear(x){return x.name+' '+x.year}
         function NWY(x){return x.name+' Week '+x.week+' '+x.year}
-        function NMN(x){return x.name+', '+x.meta.name}
-
+        function NMN(x){return x.name+', '+x.meta.team}
         function ID(x,type){
             if(type=='name'){return NameOnly(x)}
             if(type=='wy'){return WeekYear(x)}
@@ -22,19 +21,38 @@ export function CompareRecords(records,oldRecords){
             if(type=='nwy'){return NWY(x)}
             if(type=='nmn'){return NMN(x)}
         }
+        const bestPBAwards = ['Poor Outlook','Never a Bad Week','Life is Easy','Uphill Both Ways','Always Cocky','Uphill Battle',
+            'Thinking Positive','Glass Half Empty','I Shall Overcome!','Defeatist',"Gotta Catch 'Em All!",'Tinkerer',
+            "What's a Drop/Add?",'Never Tinkerer','Diversity Today','A Stable Life',"Who's On My Team Again?",'Same Old Same Old',
+            'Never Injured','Streamer',"I Haven't Learned to do Drop/Adds",'Frantic Tinkerer'
+]
         const winnerLines = award['values'].filter(x=>x.rank==1)
         const oldWinnerLines = oldAward['values'].filter(x=>x.rank==1)
         const winners = winnerLines.map(x=>ID(x,type))
         const oldWinners = oldWinnerLines.map(x=>ID(x,type))
         const oldWinnerValues = oldWinnerLines.map(x=>x['value'])
         const newWinnerValues = winnerLines.map(x=>x['value'])
-        const newLoserValues = oldWinners.map(x=>award['values'].filter(y=>ID(y,type)==x)[0]['value'])
-        let oldLoserValues
-        if(['wy','nwy','year','ny'].includes(type)){
-            oldLoserValues = 'NA'
-        }else{
-            oldLoserValues = winners.map(x=>oldAward['values'].filter(y=>ID(y,type)==x)[0]['value'])
-        }
+        let newLoserValues
+        try{
+            if(bestPBAwards.includes(award.title)){
+                newLoserValues = oldWinnerLines.map(x=>x.name).map(x=>award['values'].filter(y=>y.name==x)[0]['value'])
+            }else{
+                newLoserValues = oldWinners.map(x=>award['values'].filter(y=>ID(y,type)==x)[0]['value'])
+            }
+        }catch(e){newLoserValues='NA'}
+        let oldLoserValues 
+        try{
+            if(bestPBAwards.includes(award.title)){
+                oldLoserValues = winnerLines.map(x=>x.name).map(x=>oldAward['values'].filter(y=>y.name==x)[0]['value'])
+            }
+            else{
+                if(['wy','nwy','year','ny'].includes(type)){
+                    oldLoserValues = 'NA'
+                }else{
+                    oldLoserValues = winners.map(x=>oldAward['values'].filter(y=>ID(y,type)==x)[0]['value'])
+                }
+            }
+        }catch(e){oldLoserValues = 'NA'}
         let areEqual = true
         for(const winner of winners){
             if(!oldWinners.includes(winner)){areEqual=false}
@@ -50,12 +68,11 @@ export function CompareRecords(records,oldRecords){
 
     
     }
-    const list = [['nameAwards','name'],['gameAwards','wy'],['weekAwards','wy'],['yearAwards','year'],['nyAwards','ny']]
-    
-    // ['projAwards','nwy'],['playerStats','name']]
+    const list = [['nameAwards','name'],['gameAwards','wy'],['weekAwards','wy'],['yearAwards','year'],['nyAwards','ny'],['projAwards','nwy'],['playerStats','name']]
     for(const item of list){ // records
         for(let i=0;i<records[item[0]].length;i++){
             const award = records[item[0]][i]
+            if(award.title=='Flex comparison'){continue}
             const oldAward = oldRecords[item[0]][i]
             let idType = item[1]
             if(['King of the Rock','Noodle Armed'].includes(award.title)){idType='nwy'}
@@ -89,8 +106,8 @@ export function CompareRecords(records,oldRecords){
             }
         }
     }
-console.log(out)
-console.log(overallOut)
-console.log(fantasyOut)
+// console.log(out)
+// console.log(overallOut)
+// console.log(fantasyOut)
 return{'records':out,'overall':overallOut,'fantasy':fantasyOut}
 }

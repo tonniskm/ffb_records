@@ -18,6 +18,7 @@ import { callProj } from './tools/fetching/callProj2';
 import { callRaw } from './tools/fetching/callRaw2';
 import {CallESPNRaw} from './tools/fetching/callESPNRaw'
 import {CallESPNProj} from './tools/fetching/callESPNProj'
+import { awardLists } from './tools/constants/constants';
 // import { styleSheet } from './tools/styles/styles';   
 
 function App() {
@@ -62,23 +63,24 @@ function App() {
   for(let i=yearMin;i<=currentYear;i++){
     activeYears.push(i)
     summaryYears.push(i)
-  }
+  }  
   const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Recent Updates']
  
-  const awardTypes = ['Name','Game','Week','Year','Proj','Player','NY']
+  // const awardTypes = ['Name','Game','Week','Year','Proj','Player','NY']
+  const awardTypes = ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players']
   let nameSelectMessage
   if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
   else{nameSelectMessage='Filter by Name: '}
-  
-  const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} options={macroTypes} key={'m'}></NamePicker>
-  const pickSumYear = <NamePicker title={'Year: '} selecting={setSummaryYear} options={summaryYears} key={'st'}></NamePicker>
-  const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} options={awardTypes} key={'a'}></NamePicker>
-  const pickName = <NamePicker title={nameSelectMessage} showAll={true} selecting={setFocusName} options={activeNames} key={'name'}></NamePicker>
-  const pickWeek = <NamePicker title={'Week: '} showAll={true} selecting={setFocusWeek} options={activeWeeks} key={'week'}></NamePicker>
-  const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} options={activeYears} key={'yearp'}></NamePicker>
-  const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} options={['Week','Year']} key={'wy'}></NamePicker>
+   
+  const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
+  const pickSumYear = <NamePicker title={'Year: '} selecting={setSummaryYear} curval={summaryYear} options={summaryYears} key={'st'}></NamePicker>
+  const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} curval={awardType} options={awardTypes} key={'a'}></NamePicker>
+  const pickName = <NamePicker title={nameSelectMessage} showAll={true} selecting={setFocusName} curval={focusName} options={activeNames} key={'name'}></NamePicker>
+  const pickWeek = <NamePicker title={'Week: '} showAll={true} selecting={setFocusWeek} curval={focusWeek} options={activeWeeks} key={'week'}></NamePicker>
+  const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={activeYears} key={'yearp'}></NamePicker>
+  const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} curval={weekYear} options={['Week','Year']} key={'wy'}></NamePicker>
   const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
-
+    
   let relevantChoices = []
   if(records.nameAwards!=undefined){
     if (macroType=='Records'){relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNum]}
@@ -114,19 +116,27 @@ function App() {
   let allAwards = []
   if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
     .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards)}
-
-    
+  
+        
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){
-      if(awardType=='Name'){shownRecords = records.nameAwards }
-      if(awardType=='Game'){shownRecords = records.gameAwards }
-      if(awardType=='Week'){shownRecords = records.weekAwards }
-      if(awardType=='Year'){shownRecords = records.yearAwards }
-      if(awardType=='Proj'){shownRecords = records.projAwards }
-      if(awardType=='Player'){shownRecords = records.playerStats }
-      if(awardType=='NY'){shownRecords = records.nyAwards }
+      // if(awardType=='Name'){shownRecords = records.nameAwards }
+      // if(awardType=='Game'){shownRecords = records.gameAwards }
+      // if(awardType=='Week'){shownRecords = records.weekAwards }
+      // if(awardType=='Year'){shownRecords = records.yearAwards }
+      // if(awardType=='Proj'){shownRecords = records.projAwards }
+      // if(awardType=='Player'){shownRecords = records.playerStats }
+      // if(awardType=='NY'){shownRecords = records.nyAwards }
+      // ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players']
+      // {important,groupEffort,daRelated,projRelated,playerRelated}
       if(awardType=='All'){shownRecords = allAwards }
-      outTest = recordTable(shownRecords,allFocus,numToShow)
+      const awardList = awardLists
+      if(awardType=='Most Important'){shownRecords = allAwards.filter(x=>awardList.important.includes(x.title)) }
+      if(awardType=='Group Effort'){shownRecords =allAwards.filter(x=>awardList.groupEffort.includes(x.title)) }
+      if(awardType=='Drop/All Related'){shownRecords = allAwards.filter(x=>awardList.daRelated.includes(x.title)) }
+      if(awardType=='Projection Related'){shownRecords = allAwards.filter(x=>awardList.projRelated.includes(x.title)) }
+      if(awardType=='Best/Worst Players'){shownRecords = allAwards.filter(x=>awardList.playerRelated.includes(x.title)) }
+        outTest = recordTable(shownRecords,allFocus,numToShow)
       output =<div className='tableContainer' key={'tbc'}>
         {outTest}</div>
     }
@@ -158,12 +168,15 @@ function App() {
     }
     else if(macroType=='Recent Updates'){
       // GetRecords(vars,currentYear,setRecords,raw,proj,fa)
-      let list
-      if(weekYear=='Year'){
-        list = CompareRecords(records,oldRecords)
-      }else{
-        list = CompareRecords(records,weekOldRecords)
-      }
+      let list = []
+      try{
+          if(weekYear=='Year'){
+            list = CompareRecords(records,oldRecords)
+          }else{
+            list = CompareRecords(records,weekOldRecords)
+ 
+        }
+      }catch(err){console.log(err)}
       try{
         output = recentUpdates(list)
 
@@ -185,14 +198,11 @@ function App() {
   },[]) 
 
   useEffect(()=>{ 
-    // console.log({1:didMount,2:raw,3:proj,4:!didMount,5:Object.keys(raw).includes(currentYear.toString()),6:Object.keys(proj).includes(currentYear)})
       if(Object.keys(raw).includes(currentYear.toString())&&Object.keys(proj).includes(currentYear.toString())&&!didMount){
         if(raw[currentYear].length > 2 && proj[currentYear].length > 2){
-          // console.log('doingit')
           setDidMount(true)
           GetRecords(vars,currentYear,setRecords,raw,proj,fa)
           GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
-          // GetRecords(vars,currentYear-1,setOldR        GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
           let truncRaw = {...raw}
           let truncProj = {...proj}
           const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
@@ -209,7 +219,10 @@ function App() {
   },[raw,proj])
  
            
-       
+  // console.log({records,oldRecords,weekOldRecords})
+  // console.log(proj)
+  
+ 
   function Test1(){
     // CallESPNFa(vars,setRaw)  
     // CallESPNRaw(vars,setRaw,loading,setLoading)
@@ -218,7 +231,7 @@ function App() {
     // callProj(vars,setProj)
   }  
   
-  console.log(raw)
+ 
   function Test4(){
     GetRecords(vars,currentYear,setRecords,raw,proj,fa)
     GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
@@ -233,15 +246,15 @@ function App() {
   }                                 
   // console.log(proj)   
   return (                               
-    <div className="App">         
-      <header className="App-header"> 
+    <div className="App" key={'app'}>         
+      <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
-        <div className='appContainer'>
-          <div className='topContainer'>
-            <img src={trophy} className='logo' alt="logo" />
-<button onClick={()=>Test1()}>testr123 </button>
+        <div className='appContainer' key={'appcont'}>
+          <div className='topContainer' key={'topcont'}>
+            <img key={'trophy'} src={trophy} className='logo' alt="logo" />
+{/* <button onClick={()=>Test1()}>testr123 </button> */}
             {/* <button onClick={()=>Test4()}>testrecords</button> */}
-            <div className='buttonsContainer'>
+            <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
 
             </div> 
