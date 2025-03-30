@@ -125,7 +125,7 @@ function App() {
       if(awardType=='NY'){shownRecords = records.nyAwards }
       if(awardType=='All'){shownRecords = allAwards }
       outTest = recordTable(shownRecords,allFocus,numToShow)
-      output =<div className='tableContainer'>
+      output =<div className='tableContainer' key={'tbc'}>
         {outTest}</div>
     }
     else if (macroType=='Summary'){
@@ -189,6 +189,7 @@ function App() {
           // console.log('doingit')
           setDidMount(true)
           GetRecords(vars,currentYear,setRecords,raw,proj,fa)
+          GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
           // GetRecords(vars,currentYear-1,setOldR        GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
           let truncRaw = {...raw}
           let truncProj = {...proj}
