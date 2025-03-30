@@ -13,7 +13,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
         'oppo reg total','W','L','T','pct','high','oppo high','low','oppo low',
         'biggest W','biggest L','closest W','closest L','low W','high L','oppo high L','oppo low W','close W','close L',
         'L over 100','W under 80','ind records','Beat Low Score','Lost to High Score','Record vs Mid',
-        'Beat 2nd','Lost to 2nd Last','reg pt diff']
+        'Beat 2nd','Lost to 2nd Last','reg pt diff','Lost as 2nd','Won as 2nd Last']
     //define record types
     const set0 = ['high','oppo high','biggest W','biggest L','high L','oppo high L']
     const sethigh = ['low','oppo low','low W','oppo low W','closest W','closest L']
@@ -207,7 +207,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
 
     }// end for each line
     let rankList = {}
-    const rankKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last']
+    const rankKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','Lost as 2nd','Won as 2nd Last']
     let activePlayers = {}
     // scores['Record vs Mid'] = {}
     for(const name of names){scores['Record vs Mid'][name] = [0,0,0]}
@@ -254,6 +254,8 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
             if (r2 == 2 && r1 == 1){scores['Lost to 2nd Last'][name] += 1}
             if (r2 == active && r1 < active){scores['Lost to High Score'][name] += 1}
             if (r2 == 1 && r1 > 1){scores['Beat Low Score'][name] += 1}
+            if (r1 == 2 && r2 == 1){scores['Won as 2nd Last'][name] += 1}
+            if (r1 == active -1 && r2 == active){scores['Lost as 2nd'][name]+=1}
             if (s1 > midScore){scores['Record vs Mid'][name][0] += 1
                 out = 'W'}
             else if (s1 == highMidScore){scores['Record vs Mid'][name][2] += 1

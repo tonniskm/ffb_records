@@ -16,8 +16,8 @@ export function getOverallStats(vars,input){
         'Most Pts Awards','Fewest Pts Awards','Most Pts Allowed Awards','Fewest Pts Allowed Awards',
         'Best Record Awards','Worst Record Awards',
         'Biggest W','Biggest L','pts STD','Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last',
-        'Record vs Mid','Pct vs Mid']
-    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','games played']
+        'Record vs Mid','Pct vs Mid','Lost as 2nd','Won as 2nd Last']
+    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','games played','Lost as 2nd','Won as 2nd Last']
     const setHigh = ['Low Score','Low W','Lowest Lost To']
     // initialize
     for(const key of statKeys){

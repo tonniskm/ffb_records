@@ -44,10 +44,12 @@ export function getNameAwards(vars,input){
         ['They Never Make it Easy','The player who has played vs low score for the week the least','Beat Low Score','min'],
         ['Gate Keeping','The player who has beaten the 2nd highest score the most','Beat 2nd'],
         ["Anyone Can Win",'The player who has lost to the 2nd worst score the most','Lost to 2nd Last'],
-        ["If You're Not First You're Last",'The Player who has played vs the high score the most','Lost to High Score'],
+        ['Life is Unfair','The Player who has played vs the high score the most','Lost to High Score'],
         ['Life is Fair','The player who has played vs the high score the least','Lost to High Score','min'],
         ['Matchup Proof','The best record vs the median score','Pct vs Mid'],
-        ['Needs a Good Matchup','The worst record vs the median score','Pct vs Mid','min']
+        ['Needs a Good Matchup','The worst record vs the median score','Pct vs Mid','min'],
+        ["If You're Not First You're Last",'The player who has had the 2nd highest score and lost the most','Lost as 2nd'],
+        ["If You're Not Last You're First",'The player who has had the 2nd lowest score and won the most','Won as 2nd Last']
     ]
     for(const item of list){
         let vals = []

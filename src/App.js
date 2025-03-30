@@ -219,7 +219,7 @@ function App() {
   },[raw,proj])
  
            
-  // console.log({records,oldRecords,weekOldRecords})
+  console.log({records,oldRecords,weekOldRecords})
   // console.log(proj)
   
  
@@ -253,7 +253,7 @@ function App() {
           <div className='topContainer' key={'topcont'}>
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
 {/* <button onClick={()=>Test1()}>testr123 </button> */}
-            {/* <button onClick={()=>Test4()}>testrecords</button> */}
+            <button onClick={()=>Test4()}>testrecords</button>
             <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
 
