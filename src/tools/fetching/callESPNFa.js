@@ -1,6 +1,7 @@
 
 
 export default function CallESPNFa(vars,setFa){
+    console.log('here')
     const defaultPosID = {1: 'QB', 3: 'WR', 2: 'RB', 4: 'TE', 16: 'D/ST', 5: 'K'}
     // console.log('here')
     // const year = 2024

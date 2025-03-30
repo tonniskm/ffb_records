@@ -16,7 +16,9 @@ import { CompareRecords } from './tools/calculations/compareRecords';
 import { recentUpdates } from './tools/outputs/recentUpdates';
 import { callProj } from './tools/fetching/callProj2';
 import { callRaw } from './tools/fetching/callRaw2';
-// import { styleSheet } from './tools/styles/styles';  
+import {CallESPNRaw} from './tools/fetching/callESPNRaw'
+import {CallESPNProj} from './tools/fetching/callESPNProj'
+// import { styleSheet } from './tools/styles/styles';   
 
 function App() {
   const [raw,setRaw] = useState([{'Week':'init'}])
@@ -86,8 +88,8 @@ function App() {
     else if (macroType=='Fantasy Teams'){relevantChoices=[pickMacro,pickName]}
     else if (macroType=='Recent Updates'){relevantChoices=[pickMacro,pickWY]}
   }
-
-
+//  console.log(raw)
+ 
   const vars = {'currentYear':currentYear,
     'names':names, 
     'names2012':names2012,
@@ -170,9 +172,9 @@ function App() {
     }
   }  //end if undefined
   else{output=loadingScreen()}
- 
- 
   
+     
+   
   useEffect(()=>{ 
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
@@ -209,8 +211,14 @@ function App() {
            
        
   function Test1(){
-    callRaw(vars,setRaw) 
-  } 
+    // CallESPNFa(vars,setRaw)  
+    // CallESPNRaw(vars,setRaw,loading,setLoading)
+    // callRaw(vars,setRaw)
+    callRaw(vars,setRaw)
+    // callProj(vars,setProj)
+  }  
+  
+  console.log(raw)
   function Test4(){
     GetRecords(vars,currentYear,setRecords,raw,proj,fa)
     GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
@@ -231,7 +239,7 @@ function App() {
         <div className='appContainer'>
           <div className='topContainer'>
             <img src={trophy} className='logo' alt="logo" />
-{/* <button onClick={()=>Test1()}>testr123 </button> */}
+<button onClick={()=>Test1()}>testr123 </button>
             {/* <button onClick={()=>Test4()}>testrecords</button> */}
             <div className='buttonsContainer'>
             {relevantChoices}
