@@ -44,7 +44,7 @@ export function getNameAwards(vars,input){
         ['They Never Make it Easy','The player who has played vs low score for the week the least','Beat Low Score','min'],
         ['Gate Keeping','The player who has beaten the 2nd highest score the most','Beat 2nd'],
         ["Anyone Can Win",'The player who has lost to the 2nd worst score the most','Lost to 2nd Last'],
-        ['Life is Unfair','The Player who has played vs the high score the most','Lost to High Score'],
+        ["If You're Not First You're Last",'The Player who has played vs the high score the most','Lost to High Score'],
         ['Life is Fair','The player who has played vs the high score the least','Lost to High Score','min'],
         ['Matchup Proof','The best record vs the median score','Pct vs Mid'],
         ['Needs a Good Matchup','The worst record vs the median score','Pct vs Mid','min']
