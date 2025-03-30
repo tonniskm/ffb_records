@@ -2,8 +2,6 @@
 import trophy from './tools/assets/trophy.png'
 import './App.css';
 import { createRef, useEffect, useState } from 'react';
-import { CallESPNRaw } from './tools/fetching/callESPNRaw';
-import { CallESPNProj } from './tools/fetching/callESPNProj';
 import CallESPNFa from './tools/fetching/callESPNFa';
 import GetRecords from './tools/calculations/getRecords';
 import { NamePicker, NumberPicker } from './tools/outputs/misc';
@@ -16,6 +14,8 @@ import { fantasyTeams } from './tools/outputs/fantasyTeams';
 import { loadingScreen } from './tools/outputs/loadingScreen';
 import { CompareRecords } from './tools/calculations/compareRecords';
 import { recentUpdates } from './tools/outputs/recentUpdates';
+import { callProj } from './tools/fetching/callProj2';
+import { callRaw } from './tools/fetching/callRaw2';
 // import { styleSheet } from './tools/styles/styles';  
 
 function App() {
@@ -172,14 +172,14 @@ function App() {
   else{output=loadingScreen()}
  
  
-
+  
   useEffect(()=>{ 
-    if(raw['Week']!='init'){CallESPNRaw(vars,setRaw,loading,setLoading)}
+    if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
   },[]) 
   useEffect(()=>{ 
     // CallESPNRaw(vars,setRaw,loading,setLoading)
-    if(proj['Week']!='init'){CallESPNProj(vars,setProj,loading,setLoading)}
+    if(proj['Week']!='init'){callProj(vars,setProj)}
   },[]) 
 
   useEffect(()=>{ 
@@ -207,21 +207,10 @@ function App() {
   },[raw,proj])
  
            
-  // console.log(fa)  
-  // const a = '12'
-  // console.log(parseFloat(a)) 
-  // const b = {}   
-  // console.log('asdf'.includes('a'))                      
-  // console.log({1:records,2:oldRecords})   
-  // if(records.nameAwards!=undefined){
-  //   try{
-  //     CompareRecords(records,oldRecords)
-  //   }catch(err){console.log(err)}
-  // }  
-  // console.log(raw)
-  // console.log(numToShow) 
-  // console.log(proj)    
-  // console.log(['a'].includes('a'))       
+       
+  function Test1(){
+    callRaw(vars,setRaw) 
+  } 
   function Test4(){
     GetRecords(vars,currentYear,setRecords,raw,proj,fa)
     GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
@@ -233,8 +222,8 @@ function App() {
     // console.log({truncRaw,truncProj})
     // truncRaw.append(0)
     GetRecords(vars,currentYear,setWeekOldRecords,truncRaw,truncProj,fa)
-  }                               
-            
+  }                                 
+  // console.log(proj)   
   return (                               
     <div className="App">         
       <header className="App-header"> 
@@ -242,13 +231,13 @@ function App() {
         <div className='appContainer'>
           <div className='topContainer'>
             <img src={trophy} className='logo' alt="logo" />
-
+{/* <button onClick={()=>Test1()}>testr123 </button> */}
             {/* <button onClick={()=>Test4()}>testrecords</button> */}
             <div className='buttonsContainer'>
             {relevantChoices}
 
             </div> 
-
+ 
           </div>
           {output}
         </div>
