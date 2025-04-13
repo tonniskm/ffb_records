@@ -3,7 +3,11 @@
 export function getWeekAwards(vars,input){
     const misc = input['misc']
     let weekAwards = []
-    const list = [['Best Week','The highest scoring week ever'],['Worst Week','The lowest scoring week ever','min']]
+    const list = [
+        {'id': 'wa1', 'title': 'Best Week', 'description': 'The highest scoring week ever', 'MinMax': null, 'keyID': null},
+        {'id': 'wa2', 'title': 'Worst Week', 'description': 'The lowest scoring week ever', 'MinMax': 'min', 'keyID': null},
+    ]
+    
 
     for(const item of list){
         let vals = []
@@ -18,11 +22,11 @@ export function getWeekAwards(vars,input){
             }
         }
         let sorted = [...onlyVals].sort((a,b)=>a-b)
-        if(item[2]!='min'){sorted = sorted.reverse()}
+        if(item.MinMax!='min'){sorted = sorted.reverse()}
         for(const line of vals){
             line['rank'] = sorted.indexOf(line.value) + 1
         }
-        weekAwards.push({'title':item[0],'desc':item[1],'values':vals,'meta':['year','week']})
+        weekAwards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['year','week']})
     }
     return weekAwards
 

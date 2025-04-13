@@ -73,8 +73,8 @@ export function getOverallStats(vars,input){
             }else{continue}
             overallStats['High Score'][ind] = Math.max(high,overallStats['High Score'][ind])
             overallStats['Low Score'][ind] = Math.min(low, overallStats['Low Score'][ind])
-            overallStats['Years Played'][ind] += 1
             overallStats['Reg Season GP'][ind] += stats[year]['reg games played'][ind]
+            if(stats[year]['reg games played'][ind]>0){overallStats['Years Played'][ind] += 1}
             // console.log({1:overallStats,2:stats[year]})
             for(const item of ['W','L','T']){overallStats[item][ind] += stats[year][item][ind]}
             overallStats['pct'][ind] = (overallStats['W'][ind]+overallStats['T'][ind]/2)

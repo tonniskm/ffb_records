@@ -6,18 +6,16 @@ export function getGameAwards(vars,raw){
     
 
     const list = [
-        ['Shootout','The highest total score in a game','total'],
-        ['Defensive Struggle','The lowest total score in a game','total','min'],
-        ['Beatdown','The biggest score difference','dif'],
-        ['Big Game Hunter','The highest score ever defeated','sLose'],
-        ["A Win's A Win",'The lowest winning score','sWin','min'],
-        // ['King of the Rock','The highest score ever','smax'], 
-        // ['Noodle Armed','The lowest score ever','smin','min']
+        {'id': 'ga1', 'title': 'Shootout', 'description': 'The highest total score in a game', 'keyID': 'total', 'minMax': null, 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga2', 'title': 'Defensive Struggle', 'description': 'The lowest total score in a game', 'keyID': 'total', 'minMax': 'min', 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga3', 'title': 'Beatdown', 'description': 'The biggest score difference', 'keyID': 'dif', 'minMax': null, 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga4', 'title': 'Big Game Hunter', 'description': 'The highest score ever defeated', 'keyID': 'sLose', 'minMax': null, 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga5', 'title': "A Win's A Win", 'description': 'The lowest winning score', 'keyID': 'sWin', 'minMax': 'min', 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
     ]
         //individual game awards
     const list2 = [
-        ['King of the Rock','The highest score ever','smax'], 
-        ['Noodle Armed','The lowest score ever','smin','min']
+        {'id': 'ga6', 'title': 'King of the Rock', 'description': 'The highest score ever', 'keyID': 'smax', 'minMax': null, 'meta': ['name','year','week']},
+        {'id': 'ga7', 'title': 'Noodle Armed', 'description': 'The lowest score ever', 'keyID': 'smin', 'minMax': 'min', 'meta': ['name','year','week']},
     ]
     let vals = {}
     let onlyVals = {}
@@ -49,47 +47,47 @@ export function getGameAwards(vars,raw){
                 }
             }else{sWin = 999;sLose=0}
             for(const item of list){
-                if (vals[item[0]]==undefined){
-                    vals[item[0]] = []
-                    onlyVals[item[0]] = []
+                if (vals[item.id]==undefined){
+                    vals[item.id] = []
+                    onlyVals[item.id] = []
                 }
                 let value
-                if(item[2]=='total'){value=total}
-                if(item[2]=='dif'){value=dif}
-                if(item[2]=='sLose'){value=sLose}
-                if(item[2]=='sWin'){value=sWin}
+                if(item.keyID=='total'){value=total}
+                if(item.keyID=='dif'){value=dif}
+                if(item.keyID=='sLose'){value=sLose}
+                if(item.keyID=='sWin'){value=sWin}
                 // if(item[2]=='smax'){value=Math.max(score1,score2)}
                 // if(item[2]=='smin'){value=Math.min(score1,score2)}
                 // console.log({1:item,2:value,3:total,4:dif,5:sWin,6:sLose,7:score1,8:score2})
-                onlyVals[item[0]].push(value)
-                vals[item[0]].push({'week':week,'year':year,'t1':t1,'t2':t2,'s1':score1,'s2':score2,'value':value})
+                onlyVals[item.id].push(value)
+                vals[item.id].push({'week':week,'year':year,'t1':t1,'t2':t2,'s1':score1,'s2':score2,'value':value})
             }//for award
             for(const item of list2){
-                if (vals[item[0]]==undefined){
-                    vals[item[0]] = []
-                    onlyVals[item[0]] = []
+                if (vals[item.id]==undefined){
+                    vals[item.id] = []
+                    onlyVals[item.id] = []
                 }
                 let value
                 let owner
-                if(item[2]=='smax'){value=Math.max(score1,score2);owner=winner}
-                if(item[2]=='smin'){value=Math.min(score1,score2);if(t1==winner){owner=t2}else{owner=t1}}
-                onlyVals[item[0]].push(value)
-                vals[item[0]].push({'week':week,'year':year,'name':owner,'value':value})
+                if(item.keyID=='smax'){value=Math.max(score1,score2);owner=winner}
+                if(item.keyID=='smin'){value=Math.min(score1,score2);if(t1==winner){owner=t2}else{owner=t1}}
+                onlyVals[item.id].push(value)
+                vals[item.id].push({'week':week,'year':year,'name':owner,'value':value})
             }
         }//for game
     }//for year
     for(const item of list.concat(list2)){
-        let sorted = [...onlyVals[item[0]]].sort((a,b)=>a-b)
-        if(item[3]!='min'){sorted = sorted.reverse()}
-        for(const line of vals[item[0]]){
+        let sorted = [...onlyVals[item.id]].sort((a,b)=>a-b)
+        if(item.minMax!='min'){sorted = sorted.reverse()}
+        for(const line of vals[item.id]){
             line['rank'] = sorted.indexOf(line.value) + 1
 
     }
     let meta
-    const wrongMeta = ['King of the Rock','Noodle Armed']
-    if(wrongMeta.includes(item[0])){meta=['name','year','week']}
-    else{meta=['year','week','t1','t2','s1','s2']}
-    gameAwards.push({'title':item[0],'desc':item[1],'values':vals[item[0]],'meta':meta})
+    // const wrongMeta = ['King of the Rock','Noodle Armed']
+    // if(wrongMeta.includes(item[0])){meta=['name','year','week']}
+    // else{meta=['year','week','t1','t2','s1','s2']}
+    gameAwards.push({'title':item.title,'desc':item.description,'values':vals[item.id],'meta':item.meta})
     }//award
 
 

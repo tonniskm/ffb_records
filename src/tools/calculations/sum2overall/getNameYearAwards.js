@@ -6,18 +6,20 @@ export function getNameYearAwards(vars,input){
     const stats = input.year
     let awards = []
     const list2 = [
-        ['Peak Performer',"The best ever regular season record",'pct'],
-        ['Please Forget',"The worst ever regular season record",'pct','min'],
-        ['Season High',"The highest ever reg season point total",'reg total'],
-        ['Season Low',"The lowest ever reg season point total",'reg total','min'],
-        ['Season High Defense',"The highest ever reg season point total allowed",'oppo reg total'],
-        ['Season Low Defense',"The Lowest ever reg season point total allowed",'oppo reg total','min'],
-        ['True Season High',"The highest ever reg season points/game",'reg total'],
-        ['True Season Low',"The lowest ever reg season point/game",'reg total','min'],
-        ['True Season High Defense',"The highest ever reg season points allowed/game",'oppo reg total'],
-        ['True Season Low Defense',"The Lowest ever reg season points allowed/game",'oppo reg total','min']
+        {'id': 'nya1', 'title': 'Peak Performer', 'description': 'The best ever regular season record', 'keyID': 'pct', 'MinMax': null, 'agg': 'total'},
+        {'id': 'nya2', 'title': 'Please Forget', 'description': 'The worst ever regular season record', 'keyID': 'pct', 'MinMax': 'min', 'agg': 'total'},
+        {'id': 'nya3', 'title': 'Season High', 'description': 'The highest ever reg season point total', 'keyID': 'reg total', 'MinMax': null, 'agg': 'total'},
+        {'id': 'nya4', 'title': 'Season Low', 'description': 'The lowest ever reg season point total', 'keyID': 'reg total', 'MinMax': 'min', 'agg': 'total'},
+        {'id': 'nya5', 'title': 'Season High Defense', 'description': 'The highest ever reg season point total allowed', 'keyID': 'oppo reg total', 'MinMax': null, 'agg': 'total'},
+        {'id': 'nya6', 'title': 'Season Low Defense', 'description': 'The Lowest ever reg season point total allowed', 'keyID': 'oppo reg total', 'MinMax': 'min', 'agg': 'total'},
+        {'id': 'nya7', 'title': 'True Season High', 'description': 'The highest ever reg season points/game', 'keyID': 'reg total', 'MinMax': null, 'agg': 'game'},
+        {'id': 'nya8', 'title': 'True Season Low', 'description': 'The lowest ever reg season point/game', 'keyID': 'reg total', 'MinMax': 'min', 'agg': 'game'},
+        {'id': 'nya9', 'title': 'True Season High Defense', 'description': 'The highest ever reg season points allowed/game', 'keyID': 'oppo reg total', 'MinMax': null, 'agg': 'game'},
+        {'id': 'nya10', 'title': 'True Season Low Defense', 'description': 'The Lowest ever reg season points allowed/game', 'keyID': 'oppo reg total', 'MinMax': 'min', 'agg': 'game'},
     ]
-    const calcList = ['True Season High','True Season Low','True Season High Defense','True Season Low Defense']
+    
+    
+    // const calcList = ['True Season High','True Season Low','True Season High Defense','True Season Low Defense']
     for(const item of list2){
         let vals = []
         let onlyVals = []
@@ -27,20 +29,20 @@ export function getNameYearAwards(vars,input){
                 if(vars.lameDucks.includes(name)){continue}
                 if(stats[year]['reg games played'][name]<=0||stats[year]['reg games played'][name]==undefined){continue}
                 let value
-                if(calcList.includes(item[0])){//per game 
-                    value = stats[year][item[2]][name]/stats[year]['reg games played'][name]
-                }else{value = stats[year][item[2]][name]}
-                if(value=='none'||value=='NA'||value==undefined){continue}
+                if(item.agg=='game'){//per game 
+                    value = stats[year][item.keyID][name]/stats[year]['reg games played'][name]
+                }else{value = stats[year][item.keyID][name]}
+                if(value=='null'||value=='NA'||value==undefined){continue}
                 vals.push({'name':name,'year':year,'value':value})
                 onlyVals.push(value)
             }
         }
     let sorted = [...onlyVals].sort((a,b)=>a-b)
-    if(item[3]!='min'){sorted = sorted.reverse()}
+    if(item.MinMax!='min'){sorted = sorted.reverse()}
     for(const line of vals){
         line['rank'] = sorted.indexOf(line.value) + 1
     }
-    awards.push({'title':item[0],'desc':item[1],'values':vals,'meta':['name','year']})
+    awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['name','year']})
     }
     return awards
 }
