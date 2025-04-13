@@ -8,8 +8,8 @@ let head1 =
         <div className="headerCell description"><p className="txt">Description</p></div>
         <div className="headerCell"><p className="txt">New Record</p></div>
         <div className="headerCell"><p className="txt">Previous Holder</p></div>
-        <div className="headerCell"><p className="txt">Old Record</p></div>
-        <div className="headerCell"><p className="txt">New Challenger's Old Value</p></div>
+        {/* <div className="headerCell"><p className="txt">Old Record</p></div>
+        <div className="headerCell"><p className="txt">New Challenger's Old Value</p></div> */}
     </div>
 const count = lists.records.length+lists.overall.length+lists.fantasy.length
 if (count==0){return<p>no recent updates</p>}
@@ -23,6 +23,7 @@ if(!lists.records.length==0){
         for(let i=0;i<item.now.loser.length;i++){
             const name = item.now.loser[i]
             let val = newLose[i]
+            if(newLose=='NA'){val='NA'}
             if(!item.now.winner.includes(name)){
                 if(!isNaN(val)){val=Math.round(100*val)/100}
                 let valOut
@@ -31,20 +32,21 @@ if(!lists.records.length==0){
                 prevVal=val
             }
         }
-        let oldWin = item.was.winnerValue[0]
-        let oldLose = item.was.loserValue[0]
+        if(newLoseLine.length==0){newLoseLine=['Everyone Except:'].concat(item.now.winner.filter(x=>!item.now.loser.includes(x)))}
+        // let oldWin = item.was.winnerValue[0]
+        // let oldLose = item.was.loserValue[0]
         if(!isNaN(newWin)){newWin=Math.round(100*newWin)/100}else{newWin='N/A'}
         if(!isNaN(newLose)){newLose=Math.round(100*newLose)/100}else{newLose='N/A'}
-        if(!isNaN(oldWin)){oldWin=Math.round(100*oldWin)/100}else{oldWin='N/A'}
-        if(!isNaN(oldLose)){oldLose=Math.round(100*oldLose)/100}else{oldLose='N/A'}
+        // if(!isNaN(oldWin)){oldWin=Math.round(100*oldWin)/100}else{oldWin='N/A'}
+        // if(!isNaN(oldLose)){oldLose=Math.round(100*oldLose)/100}else{oldLose='N/A'}
         
         const row = <div className="tableRow">
             <div className="headerCell"><p className="txt">{item.title}</p></div>
             <div className="tableCell description"><p className="txt">{item.desc}</p></div>
             <div className="tableCell"><p className="txt">{newWin+'\n'+item.now.winner.join('\n')}</p></div>
             <div className="tableCell"><p className="txt">{newLoseLine.join('\n')}</p></div>
-            <div className="tableCell"><p className="txt">{oldWin+'\n'+item.was.winner.join('\n')}</p></div>
-            <div className="tableCell"><p className="txt">{oldLose+'\n'+item.was.loser.join('\n')}</p></div>
+            {/* <div className="tableCell"><p className="txt">{oldWin+'\n'+item.was.winner.join('\n')}</p></div>
+            <div className="tableCell"><p className="txt">{oldLose+'\n'+item.was.loser.join('\n')}</p></div> */}
         </div>
         out.push(row)
     }

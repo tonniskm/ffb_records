@@ -99,10 +99,16 @@ export function CompareRecords(records,oldRecords){
         const oldDict = oldRecords.fantasyTeams[name]
         const newDict = records.fantasyTeams[name]
         for(const pos of fantasyList){
-            if(oldDict[pos][0]!=newDict[pos][0]){
-                const oldVal = oldDict[pos][0]+', '+oldDict[pos][1].name+', '+oldDict[pos][1].meta[0]+', week '+oldDict[pos][1].meta[1]
-                const newVal = newDict[pos][0]+', '+newDict[pos][1].name+', '+newDict[pos][1].meta[0]+', week '+newDict[pos][1].meta[1]
-                fantasyOut.push({'name':name,'key':pos,'old':oldVal,'new':newVal})
+            let oldVal, newVal
+            if(pos in newDict && !(pos in oldDict)){
+                oldVal = 'NA'
+                newVal = newDict[pos][0]+', '+newDict[pos][1].name+', '+newDict[pos][1].meta[0]+', week '+newDict[pos][1].meta[1]
+            }else{
+                if(oldDict[pos][0]!=newDict[pos][0]){
+                    oldVal = oldDict[pos][0]+', '+oldDict[pos][1].name+', '+oldDict[pos][1].meta[0]+', week '+oldDict[pos][1].meta[1]
+                    newVal = newDict[pos][0]+', '+newDict[pos][1].name+', '+newDict[pos][1].meta[0]+', week '+newDict[pos][1].meta[1]
+                    fantasyOut.push({'name':name,'key':pos,'old':oldVal,'new':newVal})
+                }
             }
         }
     }

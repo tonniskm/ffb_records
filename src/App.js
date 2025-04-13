@@ -139,7 +139,7 @@ function App() {
         outTest = recordTable(shownRecords,allFocus,numToShow)
       output =<div className='tableContainer' key={'tbc'}>
         {outTest}</div>
-    }
+    } 
     else if (macroType=='Summary'){
       let type
       if(summaryYear=='All'){
@@ -230,11 +230,11 @@ function App() {
     callRaw(vars,setRaw)
     // callProj(vars,setProj)
   }  
-  
- 
+       
+    
   function Test4(){
     GetRecords(vars,currentYear,setRecords,raw,proj,fa)
-    GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
+    GetRecords(vars,currentYear-5,setOldRecords,raw,proj,fa)
     let truncRaw = {...raw}
     let truncProj = {...proj}
     const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
@@ -252,13 +252,13 @@ function App() {
         <div className='appContainer' key={'appcont'}>
           <div className='topContainer' key={'topcont'}>
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
-{/* <button onClick={()=>Test1()}>testr123 </button> */} 
+{/* <button onClick={()=>Test1()}>testr123 </button> */}  
             <button onClick={()=>Test4()}>testrecords</button>
             <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
-
-            </div> 
- 
+   
+            </div>  
+  
           </div>
           {output}
         </div>

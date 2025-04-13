@@ -295,10 +295,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         fantasyTeams[name] = {}
         let possibleFlexes = []
         for(const pos of poses){
-            let number1,number2,number3
+            // let number1,number2,number3
             const key = 'Best '+pos+' week'
             // console.log({1:bestPlayers,2:bestPlayers[team],3:bestPlayers[team][key],4:key})
             const sortedPlayers = bestPlayers[team][key]['values'].sort((a,b)=>a.rank-b.rank)
+            if(sortedPlayers.length==0){continue}
             fantasyTeams[team][pos +'1'] = [sortedPlayers[0].value,sortedPlayers[0]]
             if(['RB','WR'].includes(pos)){
                 fantasyTeams[team][pos+'2'] = [sortedPlayers[1].value,sortedPlayers[1]]
@@ -309,6 +310,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             }
         }
         const sortedFlex = possibleFlexes.sort((a,b)=>b[0]-a[0])
+        if(sortedFlex.length==0){continue}
         fantasyTeams[team]['Flex'] = sortedFlex[0]
         let total = 0
         for(const key in fantasyTeams[team]){
@@ -420,8 +422,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         {"id":"pa37","title":"Real Negative Nancy","description":"The non D/ST who has score negative the most","keyID":"timesNegative","pos":"noDST","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa38","title":"Top Dawg","description":"The highest score ever recorded","keyID":"highScore","pos":"all","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa39","title":"Bad Day","description":"The worst score ever recorded","keyID":"lowScore","pos":"all","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
-        {"id":"pa40","title":"Bad Day1","description":"The worst score ever recorded (no D/ST)","keyID":"lowScore","pos":"noDST","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]}
-        
+        {"id":"pa40","title":"Bad Day1","description":"The worst score ever recorded (no D/ST)","keyID":"lowScore","pos":"noDST","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
+        {'id':'pa41','title':'Top Scorer','description':"The player who has scored the most points",'keyID':'score','pos':'all','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
+        {'id':'pa41','title':'Real Top Scorer','description':"The player who has scored the most points while starting",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
+        {'id':'pa41','title':'Real Best Scorer','description':"The player who has scored the most points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
+        {'id':'pa41','title':'Real Worst Scorer','description':"The player who has scored the fewest points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'min','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
     ]
     const winRateList = ['Consistent Winner','Actual Consistent Winner','Consistent QB','Consistent RB','Consistent WR',
         'Consistent TE','Consistent D/ST','Consistent K','Toxic Player','Toxic Starter','Toxic QB','Toxic RB','Toxic WR',
@@ -433,6 +438,9 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     for(const item of list4){
         let vals = []
         let onlyVals = []
+        let valsEach = {}
+        let onlyValsEach = {}
+        for(const pos of poses){valsEach[pos]=[];onlyValsEach[pos]=[]}
         let meta = item.meta
         if(item.calcType=='special'){//'Took the Slow Train from Philly'
             for(const line of playerTracker){
@@ -495,14 +503,24 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         for(const metaType of meta){value[metaType]=line[metaType]}
                     }
                     if(isNaN(onlyValue)){console.log({1:value,2:line,3:item})}
+                    if(item.calcType=='perStart'){
+                        onlyValue=onlyValue/Math.max(1,line.starts)
+                        value.value = onlyValue
+                    }
                     vals.push(value)
                     onlyVals.push(onlyValue)
+                    valsEach[pos].push({...value})
+                    onlyValsEach[pos].push(onlyValue)
                 }
     
                 // console.log({1:meta,2:item})
             }
             awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':item.meta})
-
+            if(item.pos=='Each'){
+                for(const pos of poses){
+                    awards.push({'title':item.title+' ('+pos+')','desc':item.description+' ('+pos+')','values':SortNRank(onlyValsEach[pos],valsEach[pos],item.MinMax),'meta':item.meta})
+                }
+            }
 
     }//for list4
 
