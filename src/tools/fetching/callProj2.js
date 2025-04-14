@@ -8,6 +8,7 @@ export function callProj(vars,setProj){
         out[year] = []
         for(let week=1;week<=18;week++){
             if(year==2023&&week==1){continue}
+            // if(year==2024&&week>1){continue}
             // const url = 'http://localhost:5432/projrajan/'+year.toString()+'/'+week.toString()
             const url = 'https://mocktion-site.vercel.app/projrajan/'+year.toString()+'/'+week.toString()
             

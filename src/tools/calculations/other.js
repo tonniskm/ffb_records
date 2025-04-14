@@ -175,9 +175,9 @@ export function UnpackRawLine(line,names){
     const week = parseInt(line['Week'])
     const t1 = names[parseInt(line['Team1'])]
     const score1 = Math.round(parseFloat(line['Score1'])*100)/100
-    const t2 = line.Team2
+    let t2 = line.Team2
     const score2 = Math.round(parseFloat(line['Score2'])*100)/100
-    const winner = line.winner
+    let winner = line.winner
     const type = line.type
     if(t2!='BYE'){t2=names[parseInt(t2)]}
     if(winner!='BYE'&&winner!='TIE'){winner=names[parseInt(winner)]}
@@ -208,4 +208,8 @@ export function SortNRank(onlyVals,vals,type){
         line['rank'] = sorted.indexOf(line.value) + 1
     }
     return vals
+}
+
+export function Round(val,digs=2){
+    return Math.round(val*10**(digs))/(10**(digs))
 }

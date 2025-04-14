@@ -78,7 +78,7 @@ export function getAwardsProj(vars,input){
         }
         // let meta = ['name','year','week']
         // if(noMetaList.includes(item[0])){meta=['name']}
-        awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':item.meta})
+        awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':item.meta,'id':item.id})
     }//for item
     return awards
 }

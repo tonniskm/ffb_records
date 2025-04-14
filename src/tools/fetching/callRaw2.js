@@ -13,6 +13,7 @@ export function callRaw(vars,setRaw){
             json[year] = json[year].sort((a,b)=>a.Week-b.Week)
         }
         // console.log(json)
+        // json[2024] = json[2024].filter(x=>x.Week==1)
         setRaw(json) 
     })
 }

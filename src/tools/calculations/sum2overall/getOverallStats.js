@@ -12,7 +12,7 @@ export function getOverallStats(vars,input){
         'High Score','Low Score','W','L','T','pct','Close W','Close L','L Over 100','W Under 80',
         'Low W','High L','Lowest Lost To',
         'Highest Win Against',
-        'Weekly High Scores','Weekly Low Scores','Yearly High Scores','Yearly Low Scores',
+        'Weekly High Scores','Weekly Low Scores','Most Weekly High Scores','Most Weekly Low Scores','Yearly High Scores','Yearly Low Scores',
         'Most Pts Awards','Fewest Pts Awards','Most Pts Allowed Awards','Fewest Pts Allowed Awards',
         'Best Record Awards','Worst Record Awards',
         'Biggest W','Biggest L','pts STD','Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last',
@@ -110,12 +110,14 @@ export function getOverallStats(vars,input){
             if (stats[year]['seed'][ind] == 1 || stats[year]['seed'][ind] == 2){overallStats['Byes'][ind] += 1}
             
         }//for name
-        const tempList = [['high scores','Yearly High Scores'],['low scores','Yearly Low Scores'],['pts for','Most Pts Awards'],
+        const tempList = [['high scores','Most Weekly High Scores'],['low scores','Most Weekly Low Scores'],['pts for','Most Pts Awards'],
         ['low pts for','Fewest Pts Awards'],['pts against','Most Pts Allowed Awards'],['low pts against','Fewest Pts Allowed Awards'],
-        ['best record','Best Record Awards'],['worst record','Worst Record Awards']
+        ['best record','Best Record Awards'],['worst record','Worst Record Awards'],['high score','Yearly High Scores'],['low score','Yearly Low Scores']
         ]
         for(const item of tempList){
+            if(!input.isComplete.reg&&year==input.isComplete.lastYear){continue}
             for(const person of awards[year][item[0]][1]){
+                if(vars.lameDucks.includes(person)){continue}
                 overallStats[item[1]][person] += 1
             }
         }

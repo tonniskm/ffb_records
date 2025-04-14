@@ -13,6 +13,7 @@ export function getYearAwards(vars,input){
         let vals = []
         let onlyVals = []
         for(const year in misc){
+            // if(!input.isComplete.reg&&year==input.isComplete.lastYear){continue}
             const weekTots = misc[year]['weekTots']
             const leagueSize = misc[year]['leagueSize']
             const value = weekTots.reduce((a,b)=>a+b)/weekTots.length/leagueSize
@@ -24,7 +25,7 @@ export function getYearAwards(vars,input){
         for(const line of vals){
             line['rank'] = sorted.indexOf(line.value) + 1
         }
-        weekAwards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['year']})
+        weekAwards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['year'],'id':item.id})
     }
     return weekAwards
 

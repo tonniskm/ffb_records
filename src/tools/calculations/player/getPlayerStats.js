@@ -340,7 +340,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                 onlyVals.push(value)
         }
         }
-        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name']})
+        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name'],'id':item.id})
     }
     // const list2 = [
     //     {'id':'pa3','title':'Negative Nancy1','description':'The person who has gotten a negative score the most','keyID':'timesNegative','MinMax':'max','meta':['name']},
@@ -376,7 +376,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                 onlyVals.push(onlyValue)
             }
         }
-        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name','meta']})
+        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name','meta'],'id':item.id})
     }
 
     //player awards
@@ -515,10 +515,10 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     
                 // console.log({1:meta,2:item})
             }
-            awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':item.meta})
+            awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':item.meta,'id':item.id})
             if(item.pos=='Each'){
                 for(const pos of poses){
-                    awards.push({'title':item.title+' ('+pos+')','desc':item.description+' ('+pos+')','values':SortNRank(onlyValsEach[pos],valsEach[pos],item.MinMax),'meta':item.meta})
+                    awards.push({'title':item.title+' ('+pos+')','desc':item.description+' ('+pos+')','values':SortNRank(onlyValsEach[pos],valsEach[pos],item.MinMax),'meta':item.meta,'id':item.id+pos})
                 }
             }
 
@@ -556,7 +556,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             }
         } 
     }
-    awards.push({'title':'Flex comparison','counts':{'RB':flexCounts['RB'],'WR':flexCounts['WR'],'TE':flexCounts['TE']},
+    awards.push({'title':'Flex comparison','counts':{'RB':flexCounts['RB'],'WR':flexCounts['WR'],'TE':flexCounts['TE'],'id':'fc'},
     'rates':{'RB':(flexCounts['RB'][0]+flexCounts['RB'][2]/2)/Math.max(1,flexCounts['RB'][0]+flexCounts['RB'][1]+flexCounts['RB'][2]),
         'WR':(flexCounts['WR'][0]+flexCounts['WR'][2]/2)/Math.max(1,flexCounts['WR'][0]+flexCounts['WR'][1]+flexCounts['WR'][2]),
         'TE':(flexCounts['TE'][0]+flexCounts['TE'][2]/2)/Math.max(1,flexCounts['TE'][0]+flexCounts['TE'][1]+flexCounts['TE'][2]),
@@ -624,15 +624,16 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         {"id": "pa43", "title": "What's a Drop/Add?", "description": "The person who has owned the fewest unique players", "tableID": "ownedTable", "keyID": "owned", "MinMax": "min", "personFilter": null},
         {"id": "pa44", "title": "Never Tinkerer", "description": "The person who has started the fewest unique players", "tableID": "ownedTable", "keyID": "started", "MinMax": "min", "personFilter": null},
         {"id": "pa45", "title": "Diversity Today", "description": "The most players a person has owned in one year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "max", "personFilter": null},
-        {"id": "pa46", "title": "A Stable Life", "description": "The fewest players a person has owned in one year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "min", "personFilter": null},
+        {"id": "pa46", "title": "A Stable Life", "description": "The fewest players a person has owned in one year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "min", "personFilter": null,'requires':'season'},
         {"id": "pa47", "title": "Who's On My Team Again?", "description": "The most players a person has started in one year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "max", "personFilter": null},
-        {"id": "pa48", "title": "Same Old Same Old", "description": "The fewest players a person has started in one year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "min", "personFilter": null},
+        {"id": "pa48", "title": "Same Old Same Old", "description": "The fewest players a person has started in one year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "min", "personFilter": null,'requires':'season'},
         {"id": "pa49", "title": "Never Injured", "description": "The person with the lowest maximum unique people started in a year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "min", "personFilter": "maxOnly"},
-        {"id": "pa50", "title": "Streamer", "description": "The person who has the highest minimum unique people started in a year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "max", "personFilter": "minOnly"},
+        {"id": "pa50", "title": "Streamer", "description": "The person who has the highest minimum unique people started in a year", "tableID": "ownedInYears", "keyID": "started", "MinMax": "max", "personFilter": "minOnly",'requires':'season'},
         {"id": "pa51", "title": "I Haven't Learned to do Drop/Adds", "description": "The person who has the lowest maximum unique players owned in a year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "min", "personFilter": "maxOnly"},
-        {"id": "pa52", "title": "Frantic Tinkerer", "description": "The person who has the highest minimum unique players owned in a year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "max", "personFilter": "minOnly"}
+        {"id": "pa52", "title": "Frantic Tinkerer", "description": "The person who has the highest minimum unique players owned in a year", "tableID": "ownedInYears", "keyID": "owned", "MinMax": "max", "personFilter": "minOnly",'requires':'season'}
       ]
-      
+
+
     for(const item of ownedList){
         let vals = []
         let onlyVals = []
@@ -646,19 +647,36 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             if(item.personFilter=='maxOnly'||item.personFilter=='minOnly'){//only names?
                 let value
                 if(item.personFilter=='maxOnly'){
-                    const maxValue = DictMax(ownedInYears[name][item.keyID])
-                    const meta = DictKeysWithValue(ownedInYears[name][item.keyID],maxValue)
-                    onlyVals.push(maxValue)
-                    vals.push({'value':maxValue,'year':meta,'name':name})
+                    if(!input.isComplete.season&&item.requires=='season'){
+                        const filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
+                        const maxValue = DictMax(filtered)
+                        const meta = DictKeysWithValue(filtered,maxValue)
+                        onlyVals.push(maxValue)
+                        vals.push({'value':maxValue,'year':meta,'name':name})
+                    }else{
+                        const maxValue = DictMax(ownedInYears[name][item.keyID])
+                        const meta = DictKeysWithValue(ownedInYears[name][item.keyID],maxValue)
+                        onlyVals.push(maxValue)
+                        vals.push({'value':maxValue,'year':meta,'name':name})
+                    }
                 }else{//minOnly
+                    if(!input.isComplete.season&&item.requires=='season'){
+                    const filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
+                    const minValue = DictMin(filtered)
+                    const meta = DictKeysWithValue(filtered,minValue)
+                    onlyVals.push(minValue)
+                    vals.push({'value':minValue,'year':meta,'name':name})
+                    }else{
                     const minValue = DictMin(ownedInYears[name][item.keyID])
                     const meta = DictKeysWithValue(ownedInYears[name][item.keyID],minValue)
                     onlyVals.push(minValue)
                     vals.push({'value':minValue,'year':meta,'name':name})
+                    }
                 }
             }else{
                 for(const year in ownedInYears[name]['owned']){
                     if(ownedInYears[name]['owned'][year]<=0){continue}
+                    if(!input.isComplete.season&&item.requires=='season'&&year==input.isComplete.lastYear){continue}
                     let value
                     value=ownedInYears[name][item.keyID][year]
                     onlyVals.push(value)
@@ -669,7 +687,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         }
         let meta
         if(item.tableID=='ownedTable'){meta=['name']}else{meta=['name','year']}
-        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':meta})
+        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':meta,'id':item.id})
     }
     
 // console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
