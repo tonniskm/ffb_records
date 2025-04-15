@@ -16,7 +16,7 @@ import { GetYearAwards } from "./year2sum/yearAwards"
 export default function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
 'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{},
-'isComplete':{}
+'isComplete':{},'bestPlayers':{},'playerTracker':{}
 }
    let regComplete = false
    let yearComplete = false
@@ -61,6 +61,8 @@ export default function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       const playerStats = getPlayerStats(vars,raw,proj,out,tables,yearMax)
       out['playerStats'] = playerStats.awards
       out['fantasyTeams'] = playerStats.fantasyTeams 
+      out['bestPlayers'] = playerStats.bestPlayers
+      out['playerTracker'] = playerStats.playerTracker
      //  console.log(out)        
       setRecords(out)        
    }catch(e){console.log(e)}

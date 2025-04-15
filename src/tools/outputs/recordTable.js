@@ -1,7 +1,7 @@
 
 
 
-export function recordTable(awards,focus,showTop){
+export function recordTable(awards,focus,showTop,allNames,allNFLNames){
     let out = [<div className="tableRow" key={'trh'}>
                 <div className="headerCell" key={'rrh'}><p className="txt">Record</p></div>
                 <div className="headerCell" key={'drh'}><p className="txt">Description</p></div>
@@ -89,7 +89,9 @@ export function recordTable(awards,focus,showTop){
         const r1 = Math.round(100*sorted[0].value)/100
         let myRank = []
         let filtered = sorted
-        if(award.meta.includes('name')||award.meta.includes('t1')||award.meta.includes('t2')){filtered = filtered.filter((x)=>[x.t1,x.t2,x.name].includes(focus['name'])||focus['name']=='All')}
+        if(award.meta.includes('name')||award.meta.includes('t1')||award.meta.includes('t2')){
+            filtered = filtered.filter((x)=>![x.t1,x.t2,x.name].some(x=>allNames.includes(x))||[x.t1,x.t2,x.name].includes(focus['name'])||focus['name']=='All')}
+            filtered = filtered.filter(x=>!allNFLNames.includes(x.name)||x.name===focus.NFLName||focus.NFLName==='All')
         if(award.meta.includes('week')){filtered = filtered.filter((x)=>x.week==focus['week']||focus['week']=='All')}
         if(award.meta.includes('year')){filtered = filtered.filter((x)=>x.year==focus['year']||focus['year']=='All')}
         filtered = filtered.filter(x=>x.rank!=1)

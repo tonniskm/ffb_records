@@ -4,7 +4,7 @@ import './App.css';
 import { createRef, useEffect, useState } from 'react';
 import CallESPNFa from './tools/fetching/callESPNFa';
 import GetRecords from './tools/calculations/getRecords';
-import { NamePicker, NumberPicker } from './tools/outputs/misc';
+import { NamePicker, NumberPicker } from './tools/outputs/misc/misc';
 
 import { recordTable } from './tools/outputs/recordTable';
 import { summaryTable } from './tools/outputs/summaryTable';
@@ -16,10 +16,11 @@ import { CompareRecords } from './tools/calculations/compareRecords';
 import { recentUpdates } from './tools/outputs/recentUpdates';
 import { callProj } from './tools/fetching/callProj2';
 import { callRaw } from './tools/fetching/callRaw2';
-import {CallESPNRaw} from './tools/fetching/callESPNRaw'
-import {CallESPNProj} from './tools/fetching/callESPNProj'
 import { awardLists } from './tools/constants/constants';
 import { WeeklyReview } from './tools/outputs/weeklyReview';
+import { PlayerTable } from './tools/outputs/playerTable';
+import SuggestionInput from './tools/outputs/misc/suggestionPicker';
+import { DraftReview } from './tools/outputs/draftReview';
 // import { styleSheet } from './tools/styles/styles';   
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
   const [focusWeek,setFocusWeek] = useState('All')
   const [summaryYear,setSummaryYear] = useState('All')
   const [numToShow,setNumToShow] = useState(3) 
+  const [focusNFL,setFocusNFL] = useState('All')
 
   const [loading,setLoading] = useState({'raw':false,'proj':false,'fa':true})
   const [didMount,setDidMount] = useState(false) 
@@ -65,14 +67,16 @@ function App() {
     activeYears.push(i)
     summaryYears.push(i)
   }  
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Recent Updates','Weekly Review']
+  let allNFLNames = []
+  if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Draft']
  
   // const awardTypes = ['Name','Game','Week','Year','Proj','Player','NY']
   const awardTypes = ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players']
   let nameSelectMessage
   if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
   else{nameSelectMessage='Filter by Name: '}
-   
+    
   const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
   const pickSumYear = <NamePicker title={'Year: '} selecting={setSummaryYear} curval={summaryYear} options={summaryYears} key={'st'}></NamePicker>
   const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} curval={awardType} options={awardTypes} key={'a'}></NamePicker>
@@ -81,18 +85,21 @@ function App() {
   const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={activeYears} key={'yearp'}></NamePicker>
   const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} curval={weekYear} options={['Week','Year']} key={'wy'}></NamePicker>
   const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
-    
+  let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
+  if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Unfilter by NFL Name</button>)}
   let relevantChoices = [pickMacro]
   if(records.nameAwards!=undefined){
-    if (macroType=='Records'){relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNum]}
+    if (macroType=='Records'){relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum]}
     else if(macroType=='Summary'){relevantChoices=[pickMacro,pickSumYear]}
     else if(macroType=='Yearly Awards'){relevantChoices=[pickMacro,pickYear]}
     else if (macroType=='Matchups'){relevantChoices=[pickMacro,pickName]}
     else if (macroType=='Fantasy Teams'){relevantChoices=[pickMacro,pickName]}
     else if (macroType=='Recent Updates'){relevantChoices=[pickMacro,pickWY]}
-  }
-//  console.log(raw)
- 
+    else if (macroType==='Players by Team'){relevantChoices=[pickMacro,pickName,pickNFL,pickNum]}
+    else if (macroType==='Draft'){relevantChoices=[pickMacro,pickYear]}
+  }     
+//  console.log(raw) 
+    
   const vars = {'currentYear':currentYear,
     'names':names, 
     'names2012':names2012,
@@ -107,7 +114,8 @@ function App() {
   const allFocus = {
     'name':focusName,
     'week':focusWeek,
-    'year':summaryYear 
+    'year':summaryYear,
+    'NFLName':focusNFL
   }
   let outTest = []
   
@@ -121,15 +129,6 @@ function App() {
         
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){
-      // if(awardType=='Name'){shownRecords = records.nameAwards }
-      // if(awardType=='Game'){shownRecords = records.gameAwards }
-      // if(awardType=='Week'){shownRecords = records.weekAwards }
-      // if(awardType=='Year'){shownRecords = records.yearAwards }
-      // if(awardType=='Proj'){shownRecords = records.projAwards }
-      // if(awardType=='Player'){shownRecords = records.playerStats }
-      // if(awardType=='NY'){shownRecords = records.nyAwards }
-      // ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players']
-      // {important,groupEffort,daRelated,projRelated,playerRelated}
       if(awardType=='All'){shownRecords = allAwards }
       const awardList = awardLists
       if(awardType=='Most Important'){shownRecords = allAwards.filter(x=>awardList.important.includes(x.title)) }
@@ -137,16 +136,15 @@ function App() {
       if(awardType=='Drop/All Related'){shownRecords = allAwards.filter(x=>awardList.daRelated.includes(x.title)) }
       if(awardType=='Projection Related'){shownRecords = allAwards.filter(x=>awardList.projRelated.includes(x.title)) }
       if(awardType=='Best/Worst Players'){shownRecords = allAwards.filter(x=>awardList.playerRelated.includes(x.title)) }
-        outTest = recordTable(shownRecords,allFocus,numToShow)
+        outTest = recordTable(shownRecords,allFocus,numToShow,allNames,allNFLNames)
       output =<div className='tableContainer' key={'tbc'}>
         {outTest}</div>
-    } 
+    }  
     else if (macroType=='Summary'){
       let type
       if(summaryYear=='All'){
         type = 'overall'
         try{
-
           outTest=summaryTable(records[type])
         }catch(err){console.log(err)}
       }else{
@@ -175,7 +173,6 @@ function App() {
             list = CompareRecords(records,oldRecords)
           }else{
             list = CompareRecords(records,weekOldRecords)
-  
         }
       }catch(err){console.log(err)}
       try{
@@ -185,16 +182,18 @@ function App() {
       
     }
     else if(macroType=='Weekly Review'){
-      try{
         output = <WeeklyReview activeWeeks={activeWeeks} activeYears={activeYears} raw={raw} proj={proj} records={records} vars={vars} awards={allAwards}></WeeklyReview>
-      }catch(err){
-        console.log(err)
-        output=<p>error</p>}
+    } 
+    else if(macroType==='Players by Team'){
+      try{output=<PlayerTable records={records} vars={vars} focus={allFocus} showTop={numToShow} setShowTop={setNumToShow}></PlayerTable>}catch(err){console.log(err);output=<p>error</p>}
     }
+    else if (macroType==='Draft'){
+      output = <DraftReview year={selectedYear}></DraftReview>
+    } 
   }  //end if undefined
   else{output=loadingScreen()}
        
-        
+            
   useEffect(()=>{ 
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
@@ -238,7 +237,7 @@ function App() {
     callRaw(vars,setRaw)
     // callProj(vars,setProj)
   }    
-   
+  //  console.log(focusNFL)
   function Test4(){
     GetRecords(vars,currentYear,setRecords,raw,proj,fa)
     GetRecords(vars,currentYear-5,setOldRecords,raw,proj,fa)
@@ -258,20 +257,25 @@ function App() {
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         <div className='appContainer' key={'appcont'}>
-          <div className='topContainer' key={'topcont'}>
+          <div className='bannerContainer'>
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
+          </div>
+          <div className='topContainer' key={'topcont'}>
 {/* <button onClick={()=>Test1()}>testr123 </button> */}  
-            {/* <button onClick={()=>Test4()}>testrecords</button> */}
+            <button onClick={()=>Test4()}>testrecords</button> 
+            {/* {pickNFL} */}
             <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
    
             </div>  
-  
+     
           </div>
+          <div className='tableWrapper'>
           {output}
+          </div>
         </div>
       </header>
-    </div>
+    </div> 
   );
 }   
  

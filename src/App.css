@@ -1,12 +1,9 @@
 .App {
   text-align: center;
-  float: left;
-  min-height: 100%;
-  height: auto;
-  min-width: 100%;
-  width: auto;
+  min-height: 100vh;
   background-color: #282c34;
-  position: absolute;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -25,62 +22,64 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100%;
-  /* display: flex; */
+  display: flex;
+  flex: 1;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
-  min-height: 100%;
-  height: auto;
-  min-width: 100%;
-  width: auto;
+  width: 100%;
+
 }
 
 .App-link {
   color: #61dafb;
 }
-.appContainer{
-  position: relative;
-  background-color: blue;
-  top:0px;
-  left:0px;
-  min-width: 100%;
-  min-height: 100%;
-  display: inline;
-  height: auto;
-  width: auto;
-}
-.tableContainer{
-  background-color: #282c34;
+.appContainer {
   display: table;
-  /* position: relative; */
-  /* left:10px; */
-
-  /* min-width: none; */
-  width: auto;
-
-
-  /* padding-left: 20px; */
-}
-.topContainer{
-  background-color: #282c34;
-  align-items: flex-start;
   flex-direction: column;
-  min-width: 100%;
-  width: auto;
-  justify-content: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #282c34;
+  
+}
+.tableWrapper{
+    /* overflow-y: auto; */
+    flex-grow: 1;
+    height: 100%;
+}
+.tableContainer {
+  background-color: #282c34;
+  flex-grow: 1;
+  /* overflow-y: auto; */
+}
+.topContainer {
+  background-color: #282c34;
+  position:-webkit-sticky; 
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-width: 100vmax;
+  /* height: 50px; */
+}
+.bannerContainer {
+  height: 200px;
+  background-color: #282c34;
+  flex-shrink: 0;
+  width: 100vmax;
 }
 .buttonsContainer{
   align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-bottom: solid white;
 }
 .buttons{
-  align-self: right;
-  width: fit-content;
-  padding-left: 20px;
+  margin-left: 20px;
   padding-bottom: 10px;
-  align-items: flex-end;
+  display: inline-block;
+  flex-direction: row;
+
+  /* align-items: flex-end; */
   /* background-color: red; */
 }
 .container2{

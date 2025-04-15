@@ -1,3 +1,5 @@
+
+
 export const NamePicker = (props)=>{
     // console.log(props.options)
     let options = []
@@ -12,7 +14,7 @@ function handleChange(x){
     props.selecting(x.target.value)
 }
 return(<div className="buttons">
-    <label >{props.title}</label>
+    <label style={{textWrap:"nowrap"}}>{props.title}</label>
     <select onChange={(x)=>handleChange(x)} className="wordPicker" value={props.curval}>
             {options}
     </select>
@@ -26,9 +28,14 @@ export const NumberPicker = (props)=>{
         }
     }
 let out = <div className="buttons">
-<label htmlFor="quantity">Number of Comparison Scores to Show: </label>
+<label htmlFor="quantity" style={{textWrap:"nowrap"}}>Number of Comparison Scores to Show: </label>
 <input type="number" id="quantity" name="quantity" min="0" max="5000" onChange={(x)=>handleChange(x)} value={props.curval}
  className="numberPicker"></input>
 </div>
     return out
 }
+
+// import React, { useState, useRef, useEffect } from 'react';
+
+// const suggestionsList = ['Apple', 'Banana', 'Cherry', 'Date'];
+

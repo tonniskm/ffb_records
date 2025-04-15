@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ChooseNames, Round, UnpackRawLine } from "../calculations/other"
-import { NamePicker } from "./misc"
+import { NamePicker } from "./misc/misc"
 import '../../styles/weeklyReview.css'
 
 
@@ -113,7 +113,6 @@ try{
         {gamesOut}
     </div>
     return(<div>
-        <p>test</p>
         {pickYear}
         {pickWeek}
         {weekOverview}

@@ -1,4 +1,4 @@
-import { ChooseNames, DictKeysWithValue, DictMax, DictMin, SortNRank, UnpackProjLine } from "../other"
+import { ChooseNames, DictKeysWithValue, DictMax, DictMin, RecordToFrac, SortNRank, UnpackProjLine } from "../other"
 
 
 export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
@@ -206,6 +206,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     }//year
     let output = {}
     const minGames = 5
+    const minGamesOwned = 10
     const keys = ['Most Owned Player','Most Started Player','Most Benched Player','Most Flexed Player','Highest Scoring Player',
         'Best Proj Beater','Worst Proj Loser','Most Negative Player']
     const list = [['Most Owned Player','weeks owned'],['Most Started Player','weeks started'],
@@ -256,8 +257,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             for(const line of teamTracker[name]){
                 const pos = item[1]
                 const gp = line['record'][0]+line['record'][1]+line['record'][2]
-                if(pos!=line.pos || gp<minGames){continue}
-                const value = line[item[2]]
+                if(pos!=line.pos || (item[2]==='record'&&gp<minGamesOwned) || (item[2]==='startRecord'&&gp<minGames)){continue}
+                const value = RecordToFrac(line[item[2]])
                 vals.push({'value':value,'name':line.name,'meta':{'record':line['record']}})
                 onlyVals.push(value)
             }
@@ -284,7 +285,6 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             bestPlayers[name][item[0]] = new1
         }
     }//for name
-
 
     //fantasy teams
     const fantasyTeams = {}
@@ -691,5 +691,5 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     }
     
 // console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
-return {'awards':awards,'fantasyTeams':fantasyTeams}  
+return {'awards':awards,'fantasyTeams':fantasyTeams,'bestPlayers':bestPlayers,'playerTracker':playerTracker}  
 }

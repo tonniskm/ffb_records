@@ -213,3 +213,16 @@ export function SortNRank(onlyVals,vals,type){
 export function Round(val,digs=2){
     return Math.round(val*10**(digs))/(10**(digs))
 }
+
+export function RecordToFrac(record){
+    return((record[0]+record[2]/2)/Math.max(1,record[0]+record[1]+record[2]))
+}
+
+export function GetPickNo(round,ind,leagueSize){
+    if(round%2===1){//going right
+        return (round-1)*leagueSize+ind+1
+    }
+    else{
+        return round*leagueSize - ind
+    }
+}
