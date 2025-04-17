@@ -72,7 +72,7 @@ function App() {
   const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Draft']
  
   // const awardTypes = ['Name','Game','Week','Year','Proj','Player','NY']
-  const awardTypes = ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players']
+  const awardTypes = ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players','Draft']
   let nameSelectMessage
   if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
   else{nameSelectMessage='Filter by Name: '}
@@ -124,11 +124,11 @@ function App() {
   let shownRecords = []
   let allAwards = []
   if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
-    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards)}
-  
-        
+    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards)}
+    
+          
   if(records.nameAwards!=undefined){
-    if(macroType=='Records'){
+    if(macroType=='Records'){ 
       if(awardType=='All'){shownRecords = allAwards }
       const awardList = awardLists
       if(awardType=='Most Important'){shownRecords = allAwards.filter(x=>awardList.important.includes(x.title)) }
@@ -136,23 +136,24 @@ function App() {
       if(awardType=='Drop/All Related'){shownRecords = allAwards.filter(x=>awardList.daRelated.includes(x.title)) }
       if(awardType=='Projection Related'){shownRecords = allAwards.filter(x=>awardList.projRelated.includes(x.title)) }
       if(awardType=='Best/Worst Players'){shownRecords = allAwards.filter(x=>awardList.playerRelated.includes(x.title)) }
+      if(awardType=='Draft'){shownRecords = allAwards.filter(x=>awardList.draftRelated.includes(x.id)) }
         outTest = recordTable(shownRecords,allFocus,numToShow,allNames,allNFLNames)
       output =<div className='tableContainer' key={'tbc'}>
         {outTest}</div>
-    }  
+    }    
     else if (macroType=='Summary'){
       let type
       if(summaryYear=='All'){
         type = 'overall'
         try{
           outTest=summaryTable(records[type])
-        }catch(err){console.log(err)}
-      }else{
-        type=summaryYear
+        }catch(err){console.log(err)} 
+      }else{ 
+        type=summaryYear  
         outTest=summaryTable(records['year'][type])
       }
-      output=outTest
-    }
+      output=outTest  
+    }       
     else if(macroType=='Yearly Awards'){
       let type
       if(selectedYear=='overall'||selectedYear=='All'){type=2012}else{type=selectedYear}
@@ -189,11 +190,11 @@ function App() {
     }
     else if (macroType==='Draft'){
       output = <DraftReview year={selectedYear}></DraftReview>
-    } 
+    }  
   }  //end if undefined
   else{output=loadingScreen()}
        
-            
+             
   useEffect(()=>{ 
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
@@ -262,7 +263,7 @@ function App() {
           </div>
           <div className='topContainer' key={'topcont'}>
 {/* <button onClick={()=>Test1()}>testr123 </button> */}  
-            <button onClick={()=>Test4()}>testrecords</button> 
+            {/* <button onClick={()=>Test4()}>testrecords</button>  */}
             {/* {pickNFL} */}
             <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
@@ -277,7 +278,7 @@ function App() {
       </header>
     </div> 
   );
-}   
+}    
  
 export default App;
                      

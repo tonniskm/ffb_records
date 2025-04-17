@@ -1,3 +1,4 @@
+import { AnalyzeDraft } from "./draft/draftStats"
 import { GetOtherTables } from "./other"
 import { getPlayerStats } from "./player/getPlayerStats"
 import GetYearStats from "./raw2year/getYearStats"
@@ -13,10 +14,10 @@ import { getYearAwards } from "./sum2overall/getYearAwards"
 import { GetYearAwards } from "./year2sum/yearAwards"
 
 
-export default function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
+export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
 'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{},
-'isComplete':{},'bestPlayers':{},'playerTracker':{}
+'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[]
 }
    let regComplete = false
    let yearComplete = false
@@ -25,10 +26,10 @@ export default function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       if(lastType!='REG'){regComplete=true}
       if(lastType=='P3'||lastType=='P3'){yearComplete=true}
       out['isComplete']['reg'] = regComplete
-      out['isComplete']['year'] = yearComplete
+      out['isComplete']['year'] = yearComplete 
       out['isComplete']['lastYear'] = yearMax
-
-      let tables = GetOtherTables(vars,raw)         
+     
+      let tables = GetOtherTables(vars,raw)           
      //  console.log(tables)      
       for(let year=vars.yearMin;year<=yearMax;year++){ 
          const yearStats = GetYearStats(vars,raw,proj,fa,year,tables) 
@@ -63,8 +64,10 @@ export default function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       out['fantasyTeams'] = playerStats.fantasyTeams 
       out['bestPlayers'] = playerStats.bestPlayers
       out['playerTracker'] = playerStats.playerTracker
+      // try{await AnalyzeDraft(out,yearMax)}catch(e){console.log(e)}
+      await AnalyzeDraft(out,yearMax,vars)
      //  console.log(out)        
-      setRecords(out)        
-   }catch(e){console.log(e)}
-
-}                                                                             
+      setRecords(out)         
+   }catch(e){console.log(e)}   
+ 
+}                                                                                   
