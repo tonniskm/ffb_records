@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { posColors, valueToColor } from '../../styles/colors';
 import { GetPickNo } from '../calculations/other';
-import ToggleButton from './misc/toggle';
+import { NamePicker } from './misc/misc';
+import { maxPtsinYear, midPtsinYear } from '../constants/constants';
 
 export const DraftReview = (props) =>{
     const [draftCSV,setDraftCSV] = useState([])
     const [ranks,setRanks] = useState([])
     const [colorType,setColorType] = useState('Position')
+    const choices = ['Position','Reach Heat Map','Score Heat Map']
+    let scores = props.records.playerStats.filter(x=>x.id==='pa42')[0].values.filter(x=>x.year==props.year)
     
 
     useEffect(()=>{ //load csv
@@ -45,7 +48,6 @@ export const DraftReview = (props) =>{
 
         loadCSV()
     },[props.year])
-    console.log({draftCSV,ranks})
     let out
     if(draftCSV.length<=2){out=<div><p>No data for the selected year.</p></div>}
     else{
@@ -77,10 +79,17 @@ export const DraftReview = (props) =>{
                     const pickInd = keys.filter(x=>x!=='').indexOf(name)
                     const pickNo = GetPickNo(round,pickInd,keys.length-1)
                     const reachWeight = (pickNo-rank)/round
-                    const reachColor = valueToColor(reachWeight)
-                    const shownColor = colorType=='Position'?posColors[pos]:reachColor
+                    const reachColor = valueToColor(reachWeight,-10,5,0)
+                    const scoreLine = scores.filter(x=>x.name===NFLName)
+                    let score,usedPos
+                    scoreLine.length>0?score=scoreLine[0].value:score=0
+                    scoreLine.length>0?usedPos=scoreLine[0].pos:score=0
+                    // if(NFLName==="Saquon Barkley"){console.log({1:maxPtsinYear[usedPos],scoreLine,maxPtsinYear,usedPos})}
+                    const scoreColor = valueToColor(score,0,maxPtsinYear[usedPos]||200,midPtsinYear[usedPos]||0)
+                    const posColor = posColors[pos]               
+                    const shownColor = colorType=='Position'?posColor:(colorType=='Reach Heat Map'?reachColor:scoreColor)
                     row.push(<div className='tableCell' style={{backgroundColor:shownColor,borderColor:'black'}}><p className='txt' style={{color:"black"}}>{line[name]}</p></div>)
-                }
+                } 
                 row = <div className='tableRow'>
                     <div className='headerCell'><p className='txt'>{round}</p></div>
                     {row}
@@ -89,12 +98,15 @@ export const DraftReview = (props) =>{
             }
 
             out = <div className='tableContainer' key={'draft'}>
-                <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',paddingLeft:10}}><ToggleButton choiceA="Position"
+                <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',paddingLeft:10}}>
+                    {/* <ToggleButton choiceA="Position"
                               choiceB="Reach Heat Map"
-                              onToggle={(val) => setColorType(val)}></ToggleButton></div>
+                              onToggle={(val) => setColorType(val)}></ToggleButton> */}
+                              <NamePicker title={'Color Scheme: '} selecting={setColorType} curval={colorType} options={choices} key={'draft picker'}></NamePicker>
+                              </div>
                 {headerRow}{rows}</div>
         
     }
 
     return(out)
-}
+} 

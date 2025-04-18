@@ -6,3 +6,8 @@
  const draftRelated = ['draft1','draft2','draft3','draft4','draft5','draft6','draft7','draft8','draft9','draft10']
 
  export const awardLists = {important,groupEffort,daRelated,projRelated,playerRelated,draftRelated}
+
+
+
+ export const maxPtsinYear = {'QB':350,'RB':250,'WR':200,'TE':140,'D/ST':100,'K':125} 
+ export const midPtsinYear = {'QB':146,'RB':72,'WR':70,'TE':47,'D/ST':50,'K':60}

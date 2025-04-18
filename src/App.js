@@ -124,9 +124,9 @@ function App() {
   let shownRecords = []
   let allAwards = []
   if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
-    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards)}
-    
-          
+    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards).concat(records.teamAwards)}
+      
+
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){ 
       if(awardType=='All'){shownRecords = allAwards }
@@ -189,22 +189,21 @@ function App() {
       try{output=<PlayerTable records={records} vars={vars} focus={allFocus} showTop={numToShow} setShowTop={setNumToShow}></PlayerTable>}catch(err){console.log(err);output=<p>error</p>}
     }
     else if (macroType==='Draft'){
-      output = <DraftReview year={selectedYear}></DraftReview>
+      output = <DraftReview year={selectedYear} records={records}></DraftReview>
     }  
-  }  //end if undefined
-  else{output=loadingScreen()}
-       
+  }  //end if undefined 
+  else{output=loadingScreen()}    
              
-  useEffect(()=>{ 
+  useEffect(()=>{   
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
-  },[]) 
-  useEffect(()=>{ 
+  },[])   
+  useEffect(()=>{     
     // CallESPNRaw(vars,setRaw,loading,setLoading)
     if(proj['Week']!='init'){callProj(vars,setProj)}
-  },[])    
-    
-  useEffect(()=>{ 
+  },[])      
+   
+  useEffect(()=>{    
       if(Object.keys(raw).includes(currentYear.toString())&&Object.keys(proj).includes(currentYear.toString())&&!didMount){
         if(raw[currentYear].length > 2 && proj[currentYear].length > 2){
           setDidMount(true)
@@ -263,7 +262,7 @@ function App() {
           </div>
           <div className='topContainer' key={'topcont'}>
 {/* <button onClick={()=>Test1()}>testr123 </button> */}  
-            {/* <button onClick={()=>Test4()}>testrecords</button>  */}
+            <button onClick={()=>Test4()}>testrecords</button> 
             {/* {pickNFL} */}
             <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
@@ -281,4 +280,4 @@ function App() {
 }    
  
 export default App;
-                     
+                        

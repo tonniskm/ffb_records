@@ -19,7 +19,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         'startScore': score,'startProj': proj, 'starts': isStart, 'flexes': isFlex, 'benches': isBench, 'beatProj': beatProj,
             'startBeatProj': starterBeatProj,'pos':pos,'record':[isW,isL,isT],'recordStarting':[startW,startL,startT],
             'byes':isBye,'rings':isChamp,'deweyDoesTimes':isDew,'war':war,'warRate':war,'timesNegative':0,'highScore':score,
-            'lowScore':score,'times on IR':isIR}
+            'lowScore':score,'times on IR':isIR,'rawScoreInYear':{},'startScoreInYear':{}}
     }
     for(const name of names){teamTracker[name] = []}
     
@@ -34,11 +34,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
 
         for (const line of rawProjIn[year]){
             const yearNames = ChooseNames(vars,year)
-            const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
+            const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             if(week>lastWeek){continue}
             const gameType = types[team][week]
             if(gameType=='lame'){continue}
-            const name = nflName
+            const name = NFLName
             const rosterSpot = slot
             let rawScore = actual
             let rawProject = projected
@@ -155,6 +155,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                     playerTracker[playerTracker.length-1]['teamInYear'] = {}
                     playerTracker[playerTracker.length-1]['teamInYear'][year] = [team]
                     if (score < 0){playerTracker[playerTracker.length-1]['timesNegative'] = 1}
+                    playerTracker[playerTracker.length-1]['rawScoreInYear'][year] = rawScore
+                    playerTracker[playerTracker.length-1]['startScoreInYear'][year] = score
             }
             else{//already in playerTracker
                 const index = playerTracker.findIndex(x=>x.name==name)
@@ -162,16 +164,20 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                 if ((playerTracker[index]['years']).includes(year)){
                     if (!playerTracker[index]['teamInYear'][year].includes(team)){
                         playerTracker[index]['teamInYear'][year].push(team)}
+                    playerTracker[index]['rawScoreInYear'][year] += rawScore
+                    playerTracker[index]['startScoreInYear'][year] += score
                 }else{
                     playerTracker[index]['teamInYear'][year] = [team]
                     playerTracker[index]['years'].push(year)
+                    playerTracker[index]['rawScoreInYear'][year] = rawScore
+                    playerTracker[index]['startScoreInYear'][year] = score
                 }
                 if (!playerTracker[index]['teams'].includes(team)){playerTracker[index]['teams'].push(team)}
 
                 const additiveKeys = [['score',rawScore], ['proj',rawProject], ['startScore',score], ['startProj',proj],
                                 ['starts',isStart], ['flexes',isFlex], ['benches',isBench], ['beatProj',beatProj],
                                 ['startBeatProj',starterBeatProj],
-                                ['rings',isChamp],['deweyDoesTimes',isDew],['byes',isBye],['war',war]
+                                ['rings',isChamp],['deweyDoesTimes',isDew],['byes',isBye],['war',war],['times on IR',isIR]
                                 ]
 
                 playerTracker[index]['highScore'] = Math.max(playerTracker[index]['highScore'],score)
@@ -424,9 +430,13 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         {"id":"pa39","title":"Bad Day","description":"The worst score ever recorded","keyID":"lowScore","pos":"all","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa40","title":"Bad Day1","description":"The worst score ever recorded (no D/ST)","keyID":"lowScore","pos":"noDST","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {'id':'pa41','title':'Top Scorer','description':"The player who has scored the most points",'keyID':'score','pos':'all','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
-        {'id':'pa41','title':'Real Top Scorer','description':"The player who has scored the most points while starting",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
-        {'id':'pa41','title':'Real Best Scorer','description':"The player who has scored the most points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
-        {'id':'pa41','title':'Real Worst Scorer','description':"The player who has scored the fewest points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'min','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
+        {'id':'pa41.1','title':'Real Top Scorer','description':"The player who has scored the most points while starting",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
+        {'id':'pa41.2','title':'Real Best Scorer','description':"The player who has scored the most points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'max','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
+        {'id':'pa41.3','title':'Real Worst Scorer','description':"The player who has scored the fewest points while starting per start (min "+lowMinGames.toString()+" games played)",'keyID':'startScore','pos':'Each','MinMax':'min','calcType':'perStart','minGames':lowMinGames,'meta':['name']},
+        {'id':'pa42','title':'A Good Year','description':"The player who has scored the most points in a year",'keyID':'rawScoreInYear','pos':'Each','MinMax':'max','calcType':'years','minGames':0,'meta':['name','year']},
+        {'id':'pa43','title':'A Great Year','description':"The player who has scored the most points in a year while starting",'keyID':'startScoreInYear','pos':'Each','MinMax':'max','calcType':'years','minGames':0,'meta':['name','year']},
+        {'id':'pa44','title':'Glass Bones','description':'The player who has been on IR the most','keyID':'times on IR','pos':'all','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
+
     ]
     const winRateList = ['Consistent Winner','Actual Consistent Winner','Consistent QB','Consistent RB','Consistent WR',
         'Consistent TE','Consistent D/ST','Consistent K','Toxic Player','Toxic Starter','Toxic QB','Toxic RB','Toxic WR',
@@ -497,6 +507,16 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         value = {'value':onlyValue,'name':line.name}
                         for(const metaType of meta){value[metaType]=line[metaType]}
                     }
+                    else if(item.calcType==='years'){ //score in a year
+                        for(const year in line[item.keyID]){
+                            onlyValue = line[item.keyID][year]
+                            value = {'value':onlyValue,'name':line['name'],'year':year,'pos':pos}
+                            vals.push(value)
+                            onlyVals.push(onlyValue)
+                            valsEach[pos].push({...value})
+                            onlyValsEach[pos].push(onlyValue)
+                        }
+                    }
                     else{//just compare values, no calculations
                         onlyValue = line[key]
                         value = {'value':onlyValue,'name':line['name']}
@@ -507,10 +527,13 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         onlyValue=onlyValue/Math.max(1,line.starts)
                         value.value = onlyValue
                     }
-                    vals.push(value)
-                    onlyVals.push(onlyValue)
-                    valsEach[pos].push({...value})
-                    onlyValsEach[pos].push(onlyValue)
+                    
+                    if(item.calcType!=='years'){
+                        vals.push(value)
+                        onlyVals.push(onlyValue)
+                        valsEach[pos].push({...value})
+                        onlyValsEach[pos].push(onlyValue)
+                    }
                 }
     
                 // console.log({1:meta,2:item})
@@ -538,7 +561,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         const oppoScores = tables.oppoScores[year]
         const yearNames = ChooseNames(vars,year)
         for(const line of rawProjIn[year]){
-            const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
+            const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             if(slot!='FLEX'){continue}
             if(week>lastWeek){continue}
             const outcome = outcomes[team][week]
@@ -599,7 +622,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             alreadyCountedStart[name] = []
         }
         for(const line of rawProjIn[year]){
-            const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
+            const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             // if(slot!='FLEX'){continue}
             if(week>lastWeek){continue}
             const outcome = outcomes[team][week]
@@ -607,12 +630,12 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             const type = types[team][week]
             // if(type=='BYE'||type=='lame'){continue}
             if(type=='lame'){continue}
-            if(!alreadyCounted[team].includes(nflName)){
-                alreadyCounted[team].push(nflName)
+            if(!alreadyCounted[team].includes(NFLName)){
+                alreadyCounted[team].push(NFLName)
                 ownedInYears[team]['owned'][year] += 1
             }
-            if(!alreadyCountedStart[team].includes(nflName)&&slot!='Bench'&&slot!='IR'&&type!='lame'&&type!='BYE'){
-                alreadyCountedStart[team].push(nflName)
+            if(!alreadyCountedStart[team].includes(NFLName)&&slot!='Bench'&&slot!='IR'&&type!='lame'&&type!='BYE'){
+                alreadyCountedStart[team].push(NFLName)
                 ownedInYears[team]['started'][year] += 1
             }
         }

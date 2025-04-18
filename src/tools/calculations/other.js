@@ -1,6 +1,6 @@
 
 
-export function GetOtherTables(vars,raw){
+export function GetOtherTables(vars,raw,proj){
     let oppos = {}
     let scores = {}
     let types = {}
@@ -55,12 +55,29 @@ export function GetOtherTables(vars,raw){
                 outcome[year][names[parseInt(t2)]][week] = "W"
             }
         }
-        if(t2=='BYE'){outcome[year][names[t1]][week]='BYE'}
-        types[year][names[t1]][week] = type
+        if(t2=='BYE'){outcome[year][names[t1]][week]='BYE';types[year][names[t1]][week] = 'BYE'}
+        else{types[year][names[t1]][week] = type}
         if(t2!='BYE'){types[year][names[parseInt(t2)]][week] = type}
     }
 }//end year
-return {'oppos':oppos,'scores':scores,'types':types,'oppoScores':oppoScore,'outcomes':outcome}
+//proj stuff
+let myTeam = {}
+for(let year=Math.max(vars.yearMin,2018);year<=vars.currentYear;year++){
+    myTeam[year] = {}
+    let names = ChooseNames(vars,year)
+    for (const name of names){
+        myTeam[year][name] = {} 
+    }
+
+    for (const line of proj[year]){
+        const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
+        if(!(week in myTeam[year][team])){myTeam[year][team][week] = []}
+        myTeam[year][team][week].push({week,NFLName,actual,projected,team,pos,nflTeam,slot})
+        if(types[year][team][week]==undefined){types[year][team][week] = 'lame'}
+    }
+    
+}
+return {'oppos':oppos,'scores':scores,'types':types,'oppoScores':oppoScore,'outcomes':outcome,myTeam}
 }
 
 export function ChooseNames(vars,year){
@@ -189,16 +206,17 @@ export function UnpackRawLine(line,names){
 }
 export function UnpackProjLine(line,names){
     const week = parseInt(line['Week'])
-    const nflName = line['PlayerName']
+    const NFLName = NameFixer(line['PlayerName'])
     const actual = Math.round(parseFloat(line['PlayerScoreActual'])*100)/100
     const projected = parseFloat(line['PlayerScoreProj'])
     const team = names[parseInt(line['PlayerFantasyTeam'])]
-    const pos = line['Position']
+    let pos = line['Position']
     const nflTeam = line['ProTeam']
     const slot = line['PlayerRosterSlot']
-    return {'week':week,'nflName':nflName,'actual':actual,'projected':projected,'team':team,'pos':pos,'nflTeam':nflTeam,'slot':slot}
+    if(['QB','WR','RB','TE','D/ST','K'].includes(slot)){pos=slot}//Taysom Hill is a terrorist
+    return {'week':week,'NFLName':NFLName,'actual':actual,'projected':projected,'team':team,'pos':pos,'nflTeam':nflTeam,'slot':slot}
     // for (const line of proj){
-    //     const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
+    //     const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
 }
 
 export function SortNRank(onlyVals,vals,type){
@@ -225,4 +243,11 @@ export function GetPickNo(round,ind,leagueSize){
     else{
         return round*leagueSize - ind
     }
+}
+
+export function NameFixer(name){
+    let out = name
+    if(name==='Jaguars D/ST'){out='Jacquarfs D/ST'}
+    else if(name==="Ja'Marr Chase"){out = 'Chase Lay'}
+    return out
 }

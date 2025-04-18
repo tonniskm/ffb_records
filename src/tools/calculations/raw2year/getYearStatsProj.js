@@ -90,8 +90,8 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     //     const {week,t1,score1,t2,score2,winner,type} = UnpackRawLine()
     // }
     for (const line of proj){
-        const {week,nflName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
-        // console.log({1:projected,2:nflName,3:line})
+        const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
+        // console.log({1:projected,2:NFLName,3:line})
         if(week>finalWeek){continue}
         if(projections[team][week]==undefined){projections[team][week] = 0}
         if(slot!='Bench'&&slot!='IR'){projections[team][week]+=projected}
@@ -100,7 +100,7 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     for(const name of names){
         for(const week in myScore[name]){
             const thisType = type[name][week]
-            if(type=='BYE'||type=='lame'){continue}
+            if(thisType=='BYE'||thisType=='lame'){continue}
             const opponent = oppo[name][week]
             const score1 = myScore[name][week]
             const score2 = oppoScore[name][week]
