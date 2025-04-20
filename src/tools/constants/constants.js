@@ -7,7 +7,7 @@
 
  export const awardLists = {important,groupEffort,daRelated,projRelated,playerRelated,draftRelated}
 
-
+ export const awardTypes = ['Most Important','Group Effort','Drop/All Related','Projection Related','Best/Worst Players','Draft']
 
  export const maxPtsinYear = {'QB':350,'RB':250,'WR':200,'TE':140,'D/ST':100,'K':125} 
  export const midPtsinYear = {'QB':146,'RB':72,'WR':70,'TE':47,'D/ST':50,'K':60}

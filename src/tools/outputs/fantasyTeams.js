@@ -1,6 +1,12 @@
+import { useState } from "react"
+import { NamePicker } from "./misc/misc"
 
 
-export function fantasyTeams(dict,focusName){
+export const FantasyTeams =({dict,vars,pickMacro})=>{
+    const [focusName,setFocusName] = useState('All')
+    const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
+    
+    const relevantChoices=[pickMacro,pickName]
     let rows = []
     let body = []
     for(const name in dict){
@@ -36,8 +42,16 @@ for(const name in dict){
  </div>)   
 
 
-const out = <div className="tableContainer">
+const out = 
+<div>
+<div className='topContainer' key={'topcont'}>
+    <div className='buttonsContainer' key={'butcont'}>
+        {relevantChoices}
+    </div>  
+</div>
+<div className="tableContainer">
 {rows}
+</div>
 </div>
     return out
 

@@ -1,20 +1,31 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { RecordToFrac, Round } from "../calculations/other"
+import { NamePicker, NumberPicker } from "./misc/misc"
+import SuggestionInput from "./misc/suggestionPicker"
 
-export const PlayerTable = (props)=>{
-    const dataTable = props.records.bestPlayers
+export const PlayerTable = ({pickMacro,vars,records})=>{
+    const [focusName,setFocusName] = useState('All')
+    const [numToShow,setNumToShow] = useState(3) 
+    const [focusNFL,setFocusNFL] = useState('All')
+
+    const pickName = <NamePicker title={'Filter by Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
+    const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
+    let pickNFL = [SuggestionInput(vars.allNFLNames,focusNFL,setFocusNFL)]
+    if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Unfilter by NFL Name</button>)}
+    const relevantChoices=[pickMacro,pickName,pickNFL,pickNum]
+    const dataTable = records.bestPlayers
     let headers = []
     let body = []
-    const focusName = props.focus.name
-    const focusNFL = props.focus.NFLName
-    useEffect(()=>{props.setShowTop(1)},[]) // on mount set show top to 1
+    // const focusName = props.focus.name
+    // const focusNFL = props.focus.NFLName
+    // useEffect(()=>{setNumToShow(1)},[]) // on mount set show top to 1
     function getAward(vals){
         const filtered = vals.filter(x=>x.name===focusNFL||focusNFL==='All')
         // const filtered = vals
         if(filtered.length>0){
             const sorted = filtered.sort((a,b)=>a.rank-b.rank)
             let outList = []
-            for(let i=0;i<Math.min(sorted.length,Math.max(1,props.showTop));i++){
+            for(let i=0;i<Math.min(sorted.length,Math.max(1,numToShow));i++){
                 const best = sorted[i]
                 let val = Round(best.value)
                 let meta = []
@@ -30,7 +41,7 @@ export const PlayerTable = (props)=>{
                 outList = outList.concat(<p className="txt">{best.name}</p>,
                     <p className="txt">({best.rank} of {vals.length})</p>,
                     <p className="txt">{val}</p>,<p className="txt">{meta}</p>)
-                if(i!=Math.min(sorted.length,Math.max(1,props.showTop))-1){outList.push(<p>----------------------</p>)}
+                if(i!=Math.min(sorted.length,Math.max(1,numToShow))-1){outList.push(<p>----------------------</p>)}
             }
             return <div className="tableCell">{outList}</div>
         }else{return(<div className="tableCell"><p className="txt">NA</p></div>)}
@@ -55,12 +66,20 @@ export const PlayerTable = (props)=>{
     </div>
 
 
-    const out = <div className="tableContainer">
+    const out = 
+    <div>
+    <div className='topContainer' key={'topcont'}>
+        <div className='buttonsContainer' key={'butcont'}>
+            {relevantChoices}
+        </div>  
+    </div>
+    
+    <div className="tableContainer">
         <p style={{textAlign:'left',paddingLeft:'10px'}}>Min 5 games starting or 10 games owned.</p>
         {headRow}
         {body}
     </div>
-
+    </div>
 
     return(out)
 }

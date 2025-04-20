@@ -4,18 +4,22 @@ import { GetPickNo } from '../calculations/other';
 import { NamePicker } from './misc/misc';
 import { maxPtsinYear, midPtsinYear } from '../constants/constants';
 
-export const DraftReview = (props) =>{
+export const DraftReview = ({pickMacro,records,vars}) =>{
     const [draftCSV,setDraftCSV] = useState([])
     const [ranks,setRanks] = useState([])
     const [colorType,setColorType] = useState('Position')
+    const [selectedYear,setSelectedYear] = useState(2024)
+    const year = selectedYear
     const choices = ['Position','Reach Heat Map','Score Heat Map']
-    let scores = props.records.playerStats.filter(x=>x.id==='pa42')[0].values.filter(x=>x.year==props.year)
-    
+    const colorScheme = <NamePicker title={'Color Scheme: '} selecting={setColorType} curval={colorType} options={choices} key={'draft picker'}></NamePicker>
+    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={vars.activeYears} key={'yearp'}></NamePicker>
+    const relevantChoices=[pickMacro,pickYear,colorScheme]
+    let scores = records.playerStats.filter(x=>x.id==='pa42')[0].values.filter(x=>x.year==year)
 
     useEffect(()=>{ //load csv
         const loadCSV = async()=>{
             try{
-                const res = await fetch(`/drafts/${props.year.toString()}.csv`)
+                const res = await fetch(`/drafts/${year.toString()}.csv`)
                 const text = await res.text()
                 const lines = text.trim().split('\n');
                 const headers = lines[0].split(',');
@@ -28,7 +32,7 @@ export const DraftReview = (props) =>{
                   });
                   return row;
                 })
-                const res2 = await fetch(`/drafts/rankings/${props.year.toString()}rank.csv`)
+                const res2 = await fetch(`/drafts/rankings/${year.toString()}rank.csv`)
                 const text2 = await res2.text()
                 const lines2 = text2.trim().split('\n');
                 const headers2 = lines2[0].split(',');
@@ -47,7 +51,7 @@ export const DraftReview = (props) =>{
             }
 
         loadCSV()
-    },[props.year])
+    },[year])
     let out
     if(draftCSV.length<=2){out=<div><p>No data for the selected year.</p></div>}
     else{
@@ -97,14 +101,21 @@ export const DraftReview = (props) =>{
                 rows.push(row)
             }
 
-            out = <div className='tableContainer' key={'draft'}>
+            out =     <div>
+            <div className='topContainer' key={'topcont'}>
+                <div className='buttonsContainer' key={'butcont'}>
+                    {relevantChoices}
+                </div>  
+            </div>
+            
+            <div className='tableContainer' key={'draft'}>
                 <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',paddingLeft:10}}>
                     {/* <ToggleButton choiceA="Position"
                               choiceB="Reach Heat Map"
                               onToggle={(val) => setColorType(val)}></ToggleButton> */}
-                              <NamePicker title={'Color Scheme: '} selecting={setColorType} curval={colorType} options={choices} key={'draft picker'}></NamePicker>
                               </div>
                 {headerRow}{rows}</div>
+                </div>
         
     }
 

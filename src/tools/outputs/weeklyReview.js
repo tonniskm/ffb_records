@@ -5,9 +5,11 @@ import '../../styles/weeklyReview.css'
 
 
 
-export const  WeeklyReview = (props)=>{
-    const [week,setWeek] = useState(props.activeWeeks[props.activeWeeks.length-1])
-    const [year,setYear] = useState(props.activeYears[props.activeYears.length-1])
+export const  WeeklyReview = ({pickMacro,raw,proj,records,vars,awards})=>{
+    // pickMacro={pickMacro} raw={raw} proj={proj} records={records} vars={vars} awards={allAwards}></WeeklyReview>
+    
+    const [week,setWeek] = useState(vars.activeWeeks[vars.activeWeeks.length-1])
+    const [year,setYear] = useState(vars.activeYears[vars.activeYears.length-1])
     function SummaryLine(mine,vals,minmax){
         let sorted = [...vals].sort((a,b)=>a.value-b.value)
         if(minmax!=='min'){sorted=sorted.reverse()}
@@ -21,22 +23,22 @@ export const  WeeklyReview = (props)=>{
     }
 try{ 
 
-    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setYear} curval={year} options={props.activeYears} key={'wry'}></NamePicker>
-    const pickWeek = <NamePicker title={'Week: '} showAll={false} selecting={setWeek} curval={week} options={props.activeWeeks} key={'wrw'}></NamePicker>
+    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setYear} curval={year} options={vars.activeYears} key={'wry'}></NamePicker>
+    const pickWeek = <NamePicker title={'Week: '} showAll={false} selecting={setWeek} curval={week} options={vars.activeWeeks} key={'wrw'}></NamePicker>
 
-    const names = ChooseNames(props.vars,year)
-    // console.log(props.raw[2020].filter(x=>x.Week===10))
-    const rawGames = props.raw[year].filter(x=>x.Week==week)
+    const names = ChooseNames(vars,year)
+    // console.log(raw[2020].filter(x=>x.Week===10))
+    const rawGames = raw[year].filter(x=>x.Week==week)
     let gamesOut = []
-    const highScores = props.awards.filter(x=>x.id==='ga6')[0].values
-    const beatdown = {'winner':props.awards.filter(x=>x.id==='ga3')[0].values, //big blowout
-        'loser':props.awards.filter(x=>x.id==='ga3.1')[0].values }//big blowout loss
-    const takedown = {'winner':props.awards.filter(x=>x.id==='ga4')[0].values, // beat high score
-        'loser':props.awards.filter(x=>x.id==='ga4.1')[0].values} //loss with high score
-    const lowWin = {'winner':props.awards.filter(x=>x.id==='ga5')[0].values, //low win
-        'loser': props.awards.filter(x=>x.id==='ga5.1')[0].values} // lost to low
-    const shootout=props.awards.filter(x=>x.id==='ga1')[0].values
-    const bestWeek = props.awards.filter(x=>x.id==='wa1')[0].values
+    const highScores = awards.filter(x=>x.id==='ga6')[0].values
+    const beatdown = {'winner':awards.filter(x=>x.id==='ga3')[0].values, //big blowout
+        'loser':awards.filter(x=>x.id==='ga3.1')[0].values }//big blowout loss
+    const takedown = {'winner':awards.filter(x=>x.id==='ga4')[0].values, // beat high score
+        'loser':awards.filter(x=>x.id==='ga4.1')[0].values} //loss with high score
+    const lowWin = {'winner':awards.filter(x=>x.id==='ga5')[0].values, //low win
+        'loser': awards.filter(x=>x.id==='ga5.1')[0].values} // lost to low
+    const shootout=awards.filter(x=>x.id==='ga1')[0].values
+    const bestWeek = awards.filter(x=>x.id==='wa1')[0].values
     const thisWeek = bestWeek.filter(x=>x.year===year.toString()&&x.week==week)
     let weekOverview = []
     if(thisWeek.length>0){
@@ -113,6 +115,7 @@ try{
         {gamesOut}
     </div>
     return(<div>
+        {pickMacro}
         {pickYear}
         {pickWeek}
         {weekOverview}

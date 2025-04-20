@@ -1,5 +1,12 @@
+import { useState } from "react"
+import { NamePicker } from "./misc/misc"
 
-export function summaryTable(dict){
+export const SummaryTable = ({records,pickMacro,vars}) =>{
+    let dict
+    const [summaryYear,setSummaryYear] = useState('All')
+    if(summaryYear==='All'){dict=records['overall']}else{dict=records['year'][summaryYear]}
+    const pickSumYear = <NamePicker title={'Year: '} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={vars.activeYears} key={'st'}></NamePicker>
+    const relevantChoices=[pickMacro,pickSumYear]
     let out = []
     let cols = []
     let colDecs =[]
@@ -39,8 +46,16 @@ export function summaryTable(dict){
     //     {cols}
     // </div>)
     // console.log({1:out,2:dict})
-    out = <div className="container2">
-        {cols}
+    out = 
+    <div>
+        <div className='topContainer' key={'topcont'}>
+            <div className='buttonsContainer' key={'butcont'}>
+                {relevantChoices}
+            </div>  
+        </div>
+        <div className="container2">
+            {cols}
+        </div>
     </div>
     return out
 

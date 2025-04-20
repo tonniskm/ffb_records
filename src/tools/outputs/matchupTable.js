@@ -1,6 +1,12 @@
+import { useState } from "react"
+import { NamePicker } from "./misc/misc"
 
 
-export function matchupTable(dict,focusName){
+export const MatchupTable = ({pickMacro,dict,vars})=>{
+    const [focusName,setFocusName] = useState('All')
+
+    const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
+    const relevantChoices=[pickMacro,pickName]
     let cols = []
     let col1 = []
     for(const name in dict){
@@ -28,12 +34,20 @@ export function matchupTable(dict,focusName){
                     </div>)
 
     }
-const out = <div>
+const out = 
+<div>
+<div className='topContainer' key={'topcont'}>
+    <div className='buttonsContainer' key={'butcont'}>
+        {relevantChoices}
+    </div>  
+</div>
+    <div>
         <p className="titleTxt">Row's record vs Column.  Consolation games are ignored.</p>
     <div className="tableContainer">
         {cols}
     {/* <p>helloworld</p> */}
     </div>
+</div>
 </div>
 // console.log(cols)
 // const out = <p>hello world</p>

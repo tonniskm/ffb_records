@@ -1,6 +1,15 @@
+import { useState } from "react"
+import { NamePicker } from "./misc/misc"
+import { CompareRecords } from "../calculations/compareRecords"
 
 
-export function recentUpdates(lists){
+export const RecentUpdates = ({records,oldRecords,weekOldRecords,pickMacro,vars})=>{
+    const [weekYear,setWeekYear] = useState('Week')
+    let lists
+    weekYear=='Week'?lists=CompareRecords(records,weekOldRecords):lists=CompareRecords(records,oldRecords)
+
+    const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} curval={weekYear} options={['Week','Year']} key={'wy'}></NamePicker>
+    const relevantChoices=[pickMacro,pickWY]
 let out = []
 let head1 = 
     <div className="tableRow">
@@ -77,9 +86,18 @@ if(lists.overall.length+lists.fantasy.length!=0){
         )
     }
 }
-const realOut = <div className="tableContainer">
+const realOut = 
+<div>
+<div className='topContainer' key={'topcont'}>
+    <div className='buttonsContainer' key={'butcont'}>
+        {relevantChoices}
+    </div>  
+</div>
+
+<div className="tableContainer">
 {out}
 {overall}
+</div>
 </div>
 return realOut
 }

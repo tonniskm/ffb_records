@@ -1,9 +1,14 @@
+import { useState } from "react"
+import { NamePicker } from "./misc/misc"
 
 
-export function yearlyAwardTable(dict){
+export const YearlyAwardTable = ({records,pickMacro,vars})=>{
     let out = []
     let rows = []
-    
+    const [selectedYear,setSelectedYear] = useState(2024)
+    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={vars.activeYears} key={'yearp'}></NamePicker>
+    const relevantChoices=[pickMacro,pickYear]
+    const dict = records.yearSum[selectedYear]
     for (const key in dict){
         if(key=='league reg pts'){continue}
         const value = Math.round(100*dict[key][0])/100
@@ -22,8 +27,16 @@ export function yearlyAwardTable(dict){
     //     {cols}
     // </div>)
     // console.log({1:out,2:dict})
-    out = <div className="tableContainer">
+    out = 
+    <div>
+    <div className='topContainer' key={'topcont'}>
+        <div className='buttonsContainer' key={'butcont'}>
+            {relevantChoices}
+        </div>  
+    </div>
+    <div className="tableContainer">
         {rows}
+    </div>
     </div>
     return out
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
+import { findTopRow } from "./misc";
 
-export default function SuggestionInput(suggestionsList,choice,setChoice) {
+export default function SuggestionInput(suggestionsList,choice,setChoice,scrollInfo=null,freezeScroll=false) {
     const [input, setInput] = useState('');
     const [filtered, setFiltered] = useState([]);
     const containerRef = useRef(null);
@@ -70,6 +71,10 @@ export default function SuggestionInput(suggestionsList,choice,setChoice) {
                 <li
                   key={i}
                   onClick={() => {
+                    if(freezeScroll){
+                      const {scrollRef,stickyRef,id,rowRef} = scrollInfo
+                      rowRef.current = findTopRow(scrollRef,stickyRef,id)
+                    }
                     setInput(item);
                     setChoice(item);
                     setFiltered([]);

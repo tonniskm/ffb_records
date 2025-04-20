@@ -1,14 +1,66 @@
+// import { useEffect, useRef } from "react";
+
+import { useEffect, useRef, useState } from "react"
+import SuggestionInput from "./misc/suggestionPicker"
+import { NamePicker, NumberPicker } from "./misc/misc"
+import { awardLists, awardTypes } from "../constants/constants"
 
 
 
-export function recordTable(awards,focus,showTop,allNames,allNFLNames){
-    let out = [<div className="tableRow" key={'trh'}>
+export const RecordTable = (props)=>{
+    const {allAwards,scrollRef,pickMacro,vars} = props
+    const {allNFLNames,allNames,activeWeeks,activeYears,activeNames} = vars
+    const stickyRef = useRef(null)
+    const [focusNFL,setFocusNFL] = useState('All')
+    const [numToShow,setNumToShow] = useState(3) 
+    const [focusWeek,setFocusWeek] = useState('All')
+    const [focusName,setFocusName] = useState('All')
+    const [awardType,setAwardType] = useState('All')
+    const [summaryYear,setSummaryYear] = useState('All')
+    const rowRef = useRef(0)
+    // // const tableRef = useRef(null);
+    // const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
+    const pickSumYear = <NamePicker title={'Year: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={activeYears} key={'st'}></NamePicker>
+    const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} curval={awardType} options={awardTypes} key={'a'}></NamePicker>
+    const pickName = <NamePicker title={'Filter By Name: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setFocusName} curval={focusName} options={activeNames} key={'name'}></NamePicker>
+    const pickWeek = <NamePicker title={'Week: '} showAll={true} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} selecting={setFocusWeek} curval={focusWeek} options={activeWeeks} key={'week'}></NamePicker>
+    const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
+    let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
+    if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Unfilter by NFL Name</button>)}
+    const relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum]
+
+
+    let shownRecords
+    const awardList = awardLists
+    if(awardType==='All'){shownRecords = allAwards }
+        if(awardType==='Most Important'){shownRecords = allAwards.filter(x=>awardList.important.includes(x.title)) }
+        if(awardType==='Group Effort'){shownRecords =allAwards.filter(x=>awardList.groupEffort.includes(x.title)) }
+        if(awardType==='Drop/All Related'){shownRecords = allAwards.filter(x=>awardList.daRelated.includes(x.title)) }
+        if(awardType==='Projection Related'){shownRecords = allAwards.filter(x=>awardList.projRelated.includes(x.title)) }
+        if(awardType==='Best/Worst Players'){shownRecords = allAwards.filter(x=>awardList.playerRelated.includes(x.title)) }
+        if(awardType==='Draft'){shownRecords = allAwards.filter(x=>awardList.draftRelated.includes(x.id)) }
+    const focus = {'name':focusName,'week':focusWeek,'year':summaryYear,'NFLName':focusNFL}
+    useEffect(()=>{
+        const container = scrollRef.current;
+        const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
+        const row = container.querySelector(`[data-row="${rowRef.current}"]`);
+        if (!row) return;
+        const rect = row.getBoundingClientRect();
+        const offset = rect.top + scrollRef.current.scrollTop; 
+        container.scrollTop = offset - stickyHeight - 5
+    },[focus])
+        
+    const awards = shownRecords
+    let out = [<div className="tableRow" key={'trh'} data-row={0}>
                 <div className="headerCell" key={'rrh'}><p className="txt">Record</p></div>
                 <div className="headerCell" key={'drh'}><p className="txt">Description</p></div>
                 <div className="headerCell" key={'wrh'}><p className="txt">1st Place</p></div>
                 <div className="headerCell" key={'wnrh'}><p className="txt">Holder</p></div>
                 <div className="headerCell" key={'crh'}><p className="txt">Selected Comparison</p></div>
     </div>]
+
+
+
     function GenerateOutputList(list,type,metas,count,d){
         // const count = list.length
         let out = []
@@ -78,7 +130,8 @@ export function recordTable(awards,focus,showTop,allNames,allNFLNames){
         return out
     }
 
-    for(const award of awards){
+
+    for(const [ind,award] of awards.entries()){
         if(award.title=='Flex comparison'){continue}
         const count = award.values.length
         // const vals = []
@@ -95,30 +148,32 @@ export function recordTable(awards,focus,showTop,allNames,allNFLNames){
         if(award.meta.includes('week')){filtered = filtered.filter((x)=>x.week==focus['week']||focus['week']=='All')}
         if(award.meta.includes('year')){filtered = filtered.filter((x)=>x.year==focus['year']||focus['year']=='All')}
         filtered = filtered.filter(x=>x.rank!=1)
-        filtered = filtered.slice(0,Math.max(1,showTop))
+        filtered = filtered.slice(0,Math.max(1,numToShow))
         myRank = GenerateOutputList(filtered,'selected',award.meta,count,'hi')
 
-        // if(award.desc == 'The Most Rings'){console.log({1:focus})}
-        // if(focusName=='All'){ 
-        //     myRank = []
-        //     for(const line of sorted){
-        //         myRank.push(line.name+': '+line.value+'\n')
-        //     }
-
-        // }else{
-        //     const filtered = sorted.filter(x=>x.name==focusName)[0]
-        //     myRank = filtered.value+'\n ('+filtered.rank+' of '+count+')'
-        // }
+  
         out.push(
-            <div key={award.title} className="tableRow">
-                <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
+            <div key={award.title} className="tableRow" data-row={ind+1}>
+                <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}{`\n`}{ind+1}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
-                <div className="tableCell" key={award.title+'wv'}><p className="txt">{r1}</p></div>
-                <div className="tableCell otherScores" key={award.title+'w'}><p className="txt">{winners}</p></div>
+                <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}</p></div>
+                <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div>
                 <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
             </div>
         ) 
     }
-    return out
+
+    return <div>
+        <div className='topContainer' key={'topcont'} ref={stickyRef}>
+
+                <div className='buttonsContainer' key={'butcont'}>
+                {relevantChoices}
+       
+                </div>  
+         
+              </div>
+    
+    <div className='tableContainer' key={'tbc'}>{out}</div>
+    </div>
 
 }

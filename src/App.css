@@ -1,9 +1,9 @@
 .App {
   text-align: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background-color: #282c34;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 
 .App-logo {
@@ -22,9 +22,9 @@
 
 .App-header {
   background-color: #282c34;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex: 1; */
+  /* flex-direction: column; */
   color: white;
   width: 100%;
 
@@ -34,27 +34,29 @@
   color: #61dafb;
 }
 .appContainer {
-  display: table;
+  /* display: table; */
   flex-direction: column;
-  height: 100vh;
+  height: 400px;
+  min-height: 100vh;
   overflow-y: auto;
   background-color: #282c34;
+  position: relative;
   
 }
 .tableWrapper{
-    /* overflow-y: auto; */
-    flex-grow: 1;
+    /* flex-grow: 1; */
     height: 100%;
 }
 .tableContainer {
   background-color: #282c34;
-  flex-grow: 1;
-  /* overflow-y: auto; */
+  /* flex-grow: 1; */
+  /* overflow: visible; */
+
 }
 .topContainer {
   background-color: #282c34;
-  position:-webkit-sticky; 
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
   z-index: 10;
   min-width: 100vmax;
@@ -114,7 +116,8 @@
   text-wrap: unset;
 }
 .recordTitle{
-  text-wrap: unset;
+  text-wrap: wrap;
+  max-width: 250px;
 }
 .myScores{
   max-width: 300px;
@@ -122,6 +125,11 @@
 }
 .description{
   white-space:wrap;
+  max-width: 250px;
+}
+.holder{
+  max-width: 200px;
+  white-space: wrap;
 }
 .recordCell{
   white-space: pre;
