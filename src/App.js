@@ -29,7 +29,6 @@ function App() {
   const [weekOldRecords,setWeekOldRecords] = useState({})
 
   const [macroType,setMacroType] = useState('Records')
-  const [awardType,setAwardType] = useState('All')
   
 
   const [didMount,setDidMount] = useState(false) 
@@ -38,78 +37,6 @@ function App() {
   // const stickyRef = useRef(null);
   
 
-  const getOffsetRelativeToContainer = (child, container) => {
-    let offset = 0;
-    let el = child;
-    while (el && el !== container) {
-      offset += el.offsetTop;
-      el = el.offsetParent;
-    }
-    return offset;
-  };
-  
-
-// Function to track the topmost row relative to the container and sticky header
-const trackTopRow = () => {
-  const container = scrollRef.current;
-  const stickyHeight = 0//stickyRef.current?.offsetHeight || 0; // Height of the sticky div
-  const scrollTop = container.scrollTop;
-  const allRows = container.querySelectorAll('[data-row]');
-  
-  let topRow = null;
-  let minDistance = Infinity; // Track the closest row to the top of the container
-  
-  // Loop over each row to find the one closest to the top of the screen (below the sticky header)
-  allRows.forEach(el => {
-    const rect = el.getBoundingClientRect(); // Get bounding rect of the row relative to viewport
-    const rowTop = rect.top + scrollTop;  // Actual top position relative to the container
-    const rowBottom = rect.bottom + scrollTop;  // Bottom position of the row
-    
-    // Ensure the row is within the container's visible area (below sticky header)
-    if (rowTop >= scrollTop + stickyHeight && rowTop <= scrollTop + container.offsetHeight) {
-      const distance = Math.abs(rowTop - (scrollTop + stickyHeight)); // Distance from sticky header
-      
-      // Find the row whose top is closest to the sticky header
-      if (distance < minDistance) {
-        topRow = el;
-        minDistance = distance;
-      }
-    }
-  });
-  
-  // Set the top row ID and offset for later restoration
-  if (topRow) {
-    // topRowIdRef.current = topRow.getAttribute('data-row');
-    // offsetFromTopRef.current = topRow.offsetTop - stickyHeight;
-    // console.log('t'+topRowIdRef.current)
-  }
-};
-
-// Function to restore the scroll position
-const restoreScroll = (id) => {
-  // console.log('r'+topRowIdRef.current)
-  const container = scrollRef.current;
-  const stickyHeight = 0//stickyRef.current?.offsetHeight || 0; // Sticky header height
-  // if (!container || !topRowIdRef.current) return;
-
-  const row = container.querySelector(`[data-row="${id}"]`);
-  if (!row) return;
-
-  const rect = row.getBoundingClientRect();
-  const offset = rect.top + scrollRef.current.scrollTop;  // Get actual position of row
-
-  // Adjust the scrollTop so that the row is positioned just below the sticky header
-  container.scrollTop = offset - stickyHeight;
-};
-
-  
-  
-  // console.log(scrollRef.current.scrollTop)
-  // console.log(topRowIdRef.current,getOffsetRelativeToContainer(scrollRef.current.querySelector(`[data-row="${128}"]`))," "+scrollRef.current.scrollTop)
-  // const container = scrollRef.current;
-  // const row = container.querySelector(`[data-row="${12}"]`);
-  // const offset = getOffsetRelativeToContainer(row, container);
-  // console.log(scrollRef.current.scrollTop,offset)
   const yearMin = 2012    
   const currentYear = new Date().getFullYear() -1;
   const weekMax =18 
@@ -274,7 +201,7 @@ const restoreScroll = (id) => {
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
-            <button onClick={()=>Test4()}>testrecords</button> 
+            {/* <button onClick={()=>Test4()}>testrecords</button>  */}
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
           <div className='bannerContainer' >
           

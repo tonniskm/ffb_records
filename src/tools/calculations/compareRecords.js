@@ -68,7 +68,7 @@ export function CompareRecords(records,oldRecords){
 
     
     }
-    const list = [['nameAwards','name'],['gameAwards','wy'],['weekAwards','wy'],['yearAwards','year'],['nyAwards','ny'],['projAwards','nwy'],['playerStats','name']]
+    const list = [['nameAwards','name'],['gameAwards','wy'],['weekAwards','wy'],['yearAwards','year'],['nyAwards','ny'],['projAwards','nwy'],['playerStats','name'],['draftAwards','name'],['teamAwards','name']]
     for(const item of list){ // records
         for(let i=0;i<records[item[0]].length;i++){
             const award = records[item[0]][i]

@@ -11,7 +11,7 @@ export const RecentUpdates = ({records,oldRecords,weekOldRecords,pickMacro,vars}
     const pickWY =   <NamePicker title={'Past week or year: '} showAll={false} selecting={setWeekYear} curval={weekYear} options={['Week','Year']} key={'wy'}></NamePicker>
     const relevantChoices=[pickMacro,pickWY]
 let out = []
-let head1 = 
+let head1 =  
     <div className="tableRow">
         <div className="headerCell"><p className="txt">Record Title</p></div>
         <div className="headerCell description"><p className="txt">Description</p></div>
@@ -41,7 +41,7 @@ if(!lists.records.length==0){
                 prevVal=val
             }
         }
-        if(newLoseLine.length==0){newLoseLine=['Everyone Except:'].concat(item.now.winner.filter(x=>!item.now.loser.includes(x)))}
+        if(newLoseLine.length==0){newLoseLine=['Record Holders Except:'].concat(item.now.winner.filter(x=>!item.now.loser.includes(x)))}
         // let oldWin = item.was.winnerValue[0]
         // let oldLose = item.was.loserValue[0]
         if(!isNaN(newWin)){newWin=Math.round(100*newWin)/100}else{newWin='N/A'}

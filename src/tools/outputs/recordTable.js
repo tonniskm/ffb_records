@@ -24,9 +24,10 @@ export const RecordTable = (props)=>{
     const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} curval={awardType} options={awardTypes} key={'a'}></NamePicker>
     const pickName = <NamePicker title={'Filter By Name: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setFocusName} curval={focusName} options={activeNames} key={'name'}></NamePicker>
     const pickWeek = <NamePicker title={'Week: '} showAll={true} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} selecting={setFocusWeek} curval={focusWeek} options={activeWeeks} key={'week'}></NamePicker>
-    const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
+    const pickNum =  <NumberPicker selecting={setNumToShow} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} curval={numToShow}></NumberPicker>
     let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
-    if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Unfilter by NFL Name</button>)}
+    if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Reset</button>)}
+    pickNFL = <div style={{flexDirection:'column',whiteSpace:'nowrap'}}>{pickNFL}</div>
     const relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum]
 
 
@@ -48,7 +49,7 @@ export const RecordTable = (props)=>{
         const rect = row.getBoundingClientRect();
         const offset = rect.top + scrollRef.current.scrollTop; 
         container.scrollTop = offset - stickyHeight - 5
-    },[focus])
+    },[focusName,focusWeek,summaryYear,focusNFL,numToShow])
         
     const awards = shownRecords
     let out = [<div className="tableRow" key={'trh'} data-row={0}>
@@ -154,7 +155,7 @@ export const RecordTable = (props)=>{
   
         out.push(
             <div key={award.title} className="tableRow" data-row={ind+1}>
-                <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}{`\n`}{ind+1}</p></div>
+                <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
                 <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}</p></div>
                 <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div>
