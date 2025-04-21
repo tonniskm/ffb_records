@@ -9,7 +9,7 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
     const [focusNFL,setFocusNFL] = useState('All')
 
     const pickName = <NamePicker title={'Filter by Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
-    const pickNum =  <NumberPicker selecting={setNumToShow} curval={numToShow}></NumberPicker>
+    const pickNum =  <NumberPicker key={'pnu'} selecting={setNumToShow} curval={numToShow}></NumberPicker>
     let pickNFL = [SuggestionInput(vars.allNFLNames,focusNFL,setFocusNFL)]
     if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Unfilter by NFL Name</button>)}
     const relevantChoices=[pickMacro,pickName,pickNFL,pickNum]
@@ -19,7 +19,7 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
     // const focusName = props.focus.name
     // const focusNFL = props.focus.NFLName
     // useEffect(()=>{setNumToShow(1)},[]) // on mount set show top to 1
-    function getAward(vals){
+    function getAward(vals,keyName){
         const filtered = vals.filter(x=>x.name===focusNFL||focusNFL==='All')
         // const filtered = vals
         if(filtered.length>0){
@@ -38,12 +38,12 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
                     if(Array.isArray(mess)){mess=(Round(RecordToFrac(mess)*100)).toString()+'%'}  //if is record
                     meta.push((isNaN(key)?key:metaList[key])+': '+mess+' ')}
                 
-                outList = outList.concat(<p className="txt">{best.name}</p>,
+                outList = outList.concat(<p className="txt" >{best.name}</p>,
                     <p className="txt">({best.rank} of {vals.length})</p>,
                     <p className="txt">{val}</p>,<p className="txt">{meta}</p>)
                 if(i!=Math.min(sorted.length,Math.max(1,numToShow))-1){outList.push(<p>----------------------</p>)}
             }
-            return <div className="tableCell">{outList}</div>
+            return <div className="tableCell" key={'tc'+keyName}>{outList}</div>
         }else{return(<div className="tableCell"><p className="txt">NA</p></div>)}
     }
 
@@ -51,16 +51,16 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
         if(focusName!=='All'&&name!==focusName){continue}
         let bodyData = []
         for(const key in dataTable[name]){
-            bodyData.push(getAward(dataTable[name][key].values))
+            bodyData.push(getAward(dataTable[name][key].values,key))
         }
-        body.push(<div className="tableRow">
+        body.push(<div className="tableRow" key={name+'tr'}>
             <div className="headerCell"><p className="txt">{name}</p></div>
             {bodyData}</div>)
     }
     for(const key in dataTable.Kevin){
-        headers.push(<div className="headerCell"><p className="txt" key={'key'+key}>{key}</p></div>)
+        headers.push(<div className="headerCell" key={key+'hr'}><p className="txt" key={'key'+key}>{key}</p></div>)
     }
-    const headRow = <div className="tableRow">
+    const headRow = <div className="tableRow" key={'tr0'}>
         <div className="headerCell"><p className="txt">Name</p></div>
         {headers}
     </div>
@@ -68,13 +68,13 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
 
     const out = 
     <div>
-    <div className='topContainer' key={'topcont'}>
+    <div className='topContainer' key={'topcontplayert'}>
         <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
         </div>  
     </div>
     
-    <div className="tableContainer">
+    <div className="tableContainer" key={'playertable'}>
         <p style={{textAlign:'left',paddingLeft:'10px'}}>Min 5 games starting or 10 games owned.</p>
         {headRow}
         {body}

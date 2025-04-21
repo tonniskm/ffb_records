@@ -48,7 +48,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     // console.log({1:out,2:dict})
     out = 
     <div>
-        <div className='topContainer' key={'topcont'}>
+        <div className='topContainer' key={'topcontsum'}>
             <div className='buttonsContainer' key={'butcont'}>
                 {relevantChoices}
             </div>  

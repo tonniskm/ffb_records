@@ -22,9 +22,9 @@ export const RecordTable = (props)=>{
     // const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
     const pickSumYear = <NamePicker title={'Year: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={activeYears} key={'st'}></NamePicker>
     const pickAward= <NamePicker title={'Filter Records: '} showAll={true} selecting={setAwardType} curval={awardType} options={awardTypes} key={'a'}></NamePicker>
-    const pickName = <NamePicker title={'Filter By Name: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setFocusName} curval={focusName} options={activeNames} key={'name'}></NamePicker>
-    const pickWeek = <NamePicker title={'Week: '} showAll={true} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} selecting={setFocusWeek} curval={focusWeek} options={activeWeeks} key={'week'}></NamePicker>
-    const pickNum =  <NumberPicker selecting={setNumToShow} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} curval={numToShow}></NumberPicker>
+    const pickName = <NamePicker title={'Filter By Name: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setFocusName} curval={focusName} options={activeNames} key={'1name'}></NamePicker>
+    const pickWeek = <NamePicker title={'Week: '} showAll={true} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} selecting={setFocusWeek} curval={focusWeek} options={activeWeeks} key={'1week'}></NamePicker>
+    const pickNum =  <NumberPicker selecting={setNumToShow} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} curval={numToShow} key={'numpic'}></NumberPicker>
     let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
     if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Reset</button>)}
     pickNFL = <div style={{flexDirection:'column',whiteSpace:'nowrap'}}>{pickNFL}</div>
@@ -165,7 +165,7 @@ export const RecordTable = (props)=>{
     }
 
     return <div>
-        <div className='topContainer' key={'topcont'} ref={stickyRef}>
+        <div className='topContainer' key={'topcontrecord'} ref={stickyRef}>
 
                 <div className='buttonsContainer' key={'butcont'}>
                 {relevantChoices}

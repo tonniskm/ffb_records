@@ -18,7 +18,7 @@ export const  WeeklyReview = ({pickMacro,raw,proj,records,vars,awards})=>{
         if(total===5&&mine===1){console.log({mine,vals,minmax,rank})}
         const perc =  Math.round(10000-10000*rank/total)/100
         return([
-            <p className="smallText">{rank} of {total} ({perc}%)</p>
+            <p className="smallText" >{rank} of {total} ({perc}%)</p>
         ])
     }
 try{ 
@@ -42,8 +42,8 @@ try{
     const thisWeek = bestWeek.filter(x=>x.year===year.toString()&&x.week==week)
     let weekOverview = []
     if(thisWeek.length>0){
-        weekOverview.push(<p>Weekly Average Score: {Round(thisWeek[0].value)}</p>)
-        weekOverview.push(<p>{SummaryLine(thisWeek[0].value,bestWeek,'max')}</p>)
+        weekOverview.push(<div>Weekly Average Score: {Round(thisWeek[0].value)}</div>)
+        weekOverview.push(<div>{SummaryLine(thisWeek[0].value,bestWeek,'max')}</div>)
     }else{
         // weekOverview.push(<p>Weekly Average Scores Only Considered if everyone plays.</p>)
     }
@@ -85,7 +85,7 @@ try{
                 for(const [i,stat] of winnerStats.entries()){
                     winStats.push(<p className="titleText">{stat.title[item]}</p>)
                     // winStats.push(<p>{SummaryLine(stat.val,stat.award[item])}</p>)
-                    winStats.push(<p className="smallText">{SummaryLine(stat.val,stat.award[item].filter(x=>x.name===name),stat.MinMax)}</p>)
+                    winStats.push(<div className="smallText">{SummaryLine(stat.val,stat.award[item].filter(x=>x.name===name),stat.MinMax)}</div>)
                 }
             }
         // console.log(topLineStats)
@@ -94,15 +94,15 @@ try{
         let gameCard = []
         if(winner!=='TIE'){gameCard=gameCard.concat([
             <p className="titleText">Margin of Victory: {Round(dif)}</p>,
-            <p className="smallText">{SummaryLine(dif,beatdown.winner,'max')}</p>,
+            <div className="smallText">{SummaryLine(dif,beatdown.winner,'max')}</div>,
             <p className="titleText">High Score Defeated: {Round(sLose)}</p>,
-            <p className="smallText">{SummaryLine(sLose,takedown.winner,'max')}</p>,
+            <div className="smallText">{SummaryLine(sLose,takedown.winner,'max')}</div>,
             <p className="titleText">Low Win Score: {Round(sWin)}</p>,
-            <p className="smallText">{SummaryLine(sWin,lowWin.winner,'min')}</p>,
+            <div className="smallText">{SummaryLine(sWin,lowWin.winner,'min')}</div>,
         ])}
         gameCard=gameCard.concat([
             <p className="titleText">High Combined Score: {Round(sWin+sLose)}</p>,
-            <p className="smallText">{SummaryLine(sWin+sLose,shootout,'max')}</p>
+            <div className="smallText">{SummaryLine(sWin+sLose,shootout,'max')}</div>
         ])
         gamesOut.push(
             <div className="game">

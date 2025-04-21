@@ -12,7 +12,7 @@ export const RecentUpdates = ({records,oldRecords,weekOldRecords,pickMacro,vars}
     const relevantChoices=[pickMacro,pickWY]
 let out = []
 let head1 =  
-    <div className="tableRow">
+    <div className="tableRow" key={'hr0'}>
         <div className="headerCell"><p className="txt">Record Title</p></div>
         <div className="headerCell description"><p className="txt">Description</p></div>
         <div className="headerCell"><p className="txt">New Record</p></div>
@@ -49,7 +49,7 @@ if(!lists.records.length==0){
         // if(!isNaN(oldWin)){oldWin=Math.round(100*oldWin)/100}else{oldWin='N/A'}
         // if(!isNaN(oldLose)){oldLose=Math.round(100*oldLose)/100}else{oldLose='N/A'}
         
-        const row = <div className="tableRow">
+        const row = <div className="tableRow" key={item.title}>
             <div className="headerCell"><p className="txt">{item.title}</p></div>
             <div className="tableCell description"><p className="txt">{item.desc}</p></div>
             <div className="tableCell"><p className="txt">{newWin+'\n'+item.now.winner.join('\n')}</p></div>
@@ -88,7 +88,7 @@ if(lists.overall.length+lists.fantasy.length!=0){
 }
 const realOut = 
 <div>
-<div className='topContainer' key={'topcont'}>
+<div className='topContainer' key={'topcontrecent'}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
     </div>  

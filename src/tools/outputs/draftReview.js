@@ -102,7 +102,7 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
             }
 
             out =     <div>
-            <div className='topContainer' key={'topcont'}>
+            <div className='topContainer' key={'topcontdraftrev'}>
                 <div className='buttonsContainer' key={'butcont'}>
                     {relevantChoices}
                 </div>  
