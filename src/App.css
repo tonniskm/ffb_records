@@ -1,21 +1,11 @@
 .App {
   text-align: center;
-  /* min-height: 100vh; */
-  min-height: 200vh;
   background-color: #282c34;
-  overflow-x: auto;
-  display: inline-block;
-  height: auto;
-  overflow-y: visible;
-  /* display: flex;
-  flex-direction: column; */
+  /* min-width: 100vw; */
+  /* display: inline-block; */
+
 }
-@media (min-height: 1000px) {
-  /* Adjust for zoomed-out view */
-  .full-height-div {
-    height: calc(100vh + 100vh); /* Example: Adjust as needed */
-  }
-}
+
 
 
 .App-logo {
@@ -34,9 +24,10 @@
 
 .App-header {
   background-color: #282c34;
-  height: auto;
-  min-height: 200vh;
-  display: flex;
+
+  /* height: auto; */
+  min-height: 100%;
+  /* display: flex; */
   color: white;
 
 
@@ -46,43 +37,63 @@
   color: #61dafb;
 }
 .appContainer {
-  /* display: table; */
-  flex-direction: column;
-  /* height: 400px; */
-  height: auto;
-  /* min-height: auto; */
+   /* width: 100vw; */
+  min-width: 100vw;
+  max-height: 100vh;
+  /* min-height: 200vh;  */
   overflow-y: auto;
   overflow-x: auto;
+  /* box-sizing: border-box; */
   background-color: #282c34;
-  position: relative;
-  /* display: flex; */
-  
+
 }
 .tableWrapper{
     /* min-height: auto; */
     height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* width: auto; */
+    /* white-space: nowrap; */
+    /* background-color: orange; */
+    /* flex-grow: 1; */
+
     
 }
 .tableContainer {
   background-color: #282c34;
+  max-width: 100vw;
+  flex-grow: 1;
+  width: 100;
+  min-width: 0;
+  
   /* min-height: auto; */
 
 
 }
 .topContainer {
-  background-color: #282c34;
+  background-color: blue;
   position: sticky;
   position: -webkit-sticky;
   top: 0;
+  left:0;
   z-index: 10;
-  min-width: 100vmax;
-  /* height: 50px; */
+  display: inline-block;
+  flex-grow: 1;
+  width: 100;
+  /* border: solid blue 1px; */
+  /* background-color: #fff; */
+
 }
 .bannerContainer {
-  height: 200px;
-  background-color: #282c34;
-  flex-shrink: 0;
-  width: 100vmax;
+  height: 100vh;
+  width: 100%;
+  min-width: unset;
+  /* background-color: orange; */
+  display: block;
+
+  /* flex-shrink: 0; */
+  /* width: 100vmax; */
 }
 .buttonsContainer{
   align-items: center;
@@ -90,6 +101,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   border-bottom: solid white;
+  background-color: red;
+  width: 100%;
 }
 .buttons{
   margin-left: 20px;

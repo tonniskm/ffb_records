@@ -49,6 +49,7 @@ export const RecordTable = (props)=>{
         const rect = row.getBoundingClientRect();
         const offset = rect.top + scrollRef.current.scrollTop; 
         container.scrollTop = offset - stickyHeight - 5
+        return ()=> container.scrollTop = 0
     },[focusName,focusWeek,summaryYear,focusNFL,numToShow])
         
     const awards = shownRecords

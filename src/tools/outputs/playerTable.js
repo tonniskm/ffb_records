@@ -5,7 +5,7 @@ import SuggestionInput from "./misc/suggestionPicker"
 
 export const PlayerTable = ({pickMacro,vars,records})=>{
     const [focusName,setFocusName] = useState('All')
-    const [numToShow,setNumToShow] = useState(3) 
+    const [numToShow,setNumToShow] = useState(1) 
     const [focusNFL,setFocusNFL] = useState('All')
 
     const pickName = <NamePicker title={'Filter by Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>

@@ -47,16 +47,16 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     // </div>)
     // console.log({1:out,2:dict})
     out = 
-    <div>
-        <div className='topContainer' key={'topcontsum'}>
+    // <div style={{alignItems:'flex-start',justifyContent:'left',display:'inline-block',flexDirection:"column",backgroundColor:'blue',width:'auto'}}>
+        [<div className='topContainer' key={'topcontsum'}>
             <div className='buttonsContainer' key={'butcont'}>
                 {relevantChoices}
             </div>  
-        </div>
-        <div className="container2">
+        </div>,
+        <div className="tableContainer">
             {cols}
-        </div>
-    </div>
+        </div>]
+    {/* </div> */}
     return out
 
 }
