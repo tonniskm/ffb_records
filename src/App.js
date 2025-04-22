@@ -203,12 +203,12 @@ function App() {
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
-          <div className='bannerContainer' >
+          {/* <div className='bannerContainer' > */}
           
-          <div className='tableWrapper'>
+          {/* <div className='tableWrapper'> */}
           {output}
-          </div>
-        </div>
+          {/* </div> */}
+        {/* </div> */}
           </div>
       </header>
     </div> 

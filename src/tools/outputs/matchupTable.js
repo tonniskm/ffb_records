@@ -35,20 +35,20 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
 
     }
 const out = 
-<div>
-<div className='topContainer' key={'topcontmatchup'}>
+{/* <div> */}
+[<div className='topContainer' key={'topcontmatchup'}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
     </div>  
-</div>
+</div>,
     <div>
         <p className="titleTxt">Row's record vs Column.  Consolation games are ignored.</p>
     <div className="tableContainer">
         {cols}
     {/* <p>helloworld</p> */}
     </div>
-</div>
-</div>
+</div>]
+// </div>
 // console.log(cols)
 // const out = <p>hello world</p>
 return out

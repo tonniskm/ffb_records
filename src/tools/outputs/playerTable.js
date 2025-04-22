@@ -67,19 +67,19 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
 
 
     const out = 
-    <div>
-    <div className='topContainer' key={'topcontplayert'}>
+    // <div>
+    [<div className='topContainer' key={'topcontplayert'}>
         <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
         </div>  
-    </div>
+    </div>,
     
     <div className="tableContainer" key={'playertable'}>
         <p style={{textAlign:'left',paddingLeft:'10px'}}>Min 5 games starting or 10 games owned.</p>
         {headRow}
         {body}
-    </div>
-    </div>
+    </div>]
+    // </div>
 
     return(out)
 }

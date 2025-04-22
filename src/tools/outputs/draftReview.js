@@ -101,12 +101,12 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
                 rows.push(row)
             }
 
-            out =     <div>
-            <div className='topContainer' key={'topcontdraftrev'}>
+            out =     //<div>
+            [<div className='topContainer' key={'topcontdraftrev'}>
                 <div className='buttonsContainer' key={'butcont'}>
                     {relevantChoices}
                 </div>  
-            </div>
+            </div>,
             
             <div className='tableContainer' key={'draft'}>
                 <div style={{display:'flex',alignItems:'flex-start',justifyContent:'flex-start',paddingLeft:10}}>
@@ -114,8 +114,8 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
                               choiceB="Reach Heat Map"
                               onToggle={(val) => setColorType(val)}></ToggleButton> */}
                               </div>
-                {headerRow}{rows}</div>
-                </div>
+                {headerRow}{rows}</div>]
+                // </div>
         
     }
 

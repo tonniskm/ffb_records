@@ -165,17 +165,17 @@ export const RecordTable = (props)=>{
         ) 
     }
 
-    return <div>
-        <div className='topContainer' key={'topcontrecord'} ref={stickyRef}>
+    // return //<div>
+        return [<div className='topContainer' key={'topcontrecord'} ref={stickyRef}>
 
                 <div className='buttonsContainer' key={'butcont'}>
                 {relevantChoices}
        
                 </div>  
          
-              </div>
+              </div>,
     
-    <div className='tableContainer' key={'tbc'}>{out}</div>
-    </div>
+    <div className='tableContainer' key={'tbc'}>{out}</div>]
+    // </div>
 
 }

@@ -87,17 +87,17 @@ if(lists.overall.length+lists.fantasy.length!=0){
     }
 }
 const realOut = 
-<div>
-<div className='topContainer' key={'topcontrecent'}>
+{/* <div> */}
+[<div className='topContainer' key={'topcontrecent'}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
     </div>  
-</div>
+</div>,
 
 <div className="tableContainer">
 {out}
 {overall}
-</div>
-</div>
+</div>]
+// </div>
 return realOut
 }

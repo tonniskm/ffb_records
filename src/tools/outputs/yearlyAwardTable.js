@@ -28,16 +28,16 @@ export const YearlyAwardTable = ({records,pickMacro,vars})=>{
     // </div>)
     // console.log({1:out,2:dict})
     out = 
-    <div>
-    <div className='topContainer' key={'topcontyear'}>
+    // <div>
+    [<div className='topContainer' key={'topcontyear'}>
         <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
         </div>  
-    </div>
+    </div>,
     <div className="tableContainer">
         {rows}
-    </div>
-    </div>
+    </div>]
+    // </div>
     return out
 
 }
