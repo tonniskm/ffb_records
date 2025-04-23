@@ -11,3 +11,4 @@
 
  export const maxPtsinYear = {'QB':350,'RB':250,'WR':200,'TE':140,'D/ST':100,'K':125} 
  export const midPtsinYear = {'QB':146,'RB':72,'WR':70,'TE':47,'D/ST':50,'K':60}
+ export const poses = ['QB','RB','WR','TE','D/ST','K']

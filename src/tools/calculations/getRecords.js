@@ -1,5 +1,5 @@
 import { AnalyzeDraft } from "./draft/draftStats"
-import { GetOtherTables } from "./other"
+import { expandProj, GetOtherTables } from "./other"
 import { getPlayerStats } from "./player/getPlayerStats"
 import { GetTeamAwards } from "./player/getTeamAwards"
 import GetYearStats from "./raw2year/getYearStats"
@@ -18,7 +18,7 @@ import { GetYearAwards } from "./year2sum/yearAwards"
 export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
 'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{},
-'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[]
+'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[],'tables':{},'allProj':[]
 } 
    let regComplete = false
    let yearComplete = false 
@@ -69,8 +69,10 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       GetTeamAwards(vars,tables,out)  
       // try{await AnalyzeDraft(out,yearMax)}catch(e){console.log(e)}
       await AnalyzeDraft(out,yearMax,vars)
-     //  console.log(out)        
+     //  console.log(out) 
+     out.tables = tables
+     out.allProj = expandProj(proj,tables,vars)       
       setRecords(out)          
    }catch(e){console.log(e)}   
   
-}                                                                      
+}                                                                   

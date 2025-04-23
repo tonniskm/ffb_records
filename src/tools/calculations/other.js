@@ -251,3 +251,26 @@ export function NameFixer(name){
     else if(name==="Ja'Marr Chase"){out = 'Chase Lay'}
     return out
 }
+
+export function expandProj(proj,tables,vars){
+    const combinedArray = Object.entries(proj).flatMap(
+        ([year, arr]) => arr.map(obj => ({ ...obj, year }))
+      );
+      let filtered = []
+      for (const line of combinedArray){
+          const year = line.year
+          const names = ChooseNames(vars,year)
+          const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
+          const type = tables.types[year][team][week]
+          if(type==='lame'||type==='BYE'){continue}
+          const oppo = tables.oppos[year][team][week]
+          if(oppo==='BYE'){continue}
+          const outcome = tables.outcomes[year][team][week]
+          let didStart
+          if(slot==='Bench'||slot==='IR'){didStart=false}else{didStart=true}
+
+          filtered.push({year,week,NFLName,actual,projected,pos,team,nflTeam,slot,type,oppo,outcome,didStart})
+      }
+      
+      return filtered
+}

@@ -183,6 +183,10 @@
   text-wrap: unset;
   
 }
+.headerRow{
+  position: sticky;
+  position: -webkit-sticky;
+}
 .txt{
   padding: 2px;
 }

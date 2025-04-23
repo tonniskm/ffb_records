@@ -1,12 +1,16 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
 
 export const SummaryTable = ({records,pickMacro,vars}) =>{
     let dict
     const [summaryYear,setSummaryYear] = useState('All')
+    const [focusName,setFocusName] = useState('All')
+    const stickyRef = useRef(null)
+    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
     if(summaryYear==='All'){dict=records['overall']}else{dict=records['year'][summaryYear]}
     const pickSumYear = <NamePicker title={'Year: '} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={vars.activeYears} key={'st'}></NamePicker>
-    const relevantChoices=[pickMacro,pickSumYear]
+    const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
+    const relevantChoices=[pickMacro,pickSumYear,pickName]
     let out = []
     let cols = []
     let colDecs =[]
@@ -14,9 +18,10 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     for (const name in dict['W']){
         if(name=='t0'){continue}
         if(dict['games played'][name]==0){continue}
-        nameCells.push(<div className="headerCell"><p className="txt">{name}</p></div>)
+        if(focusName!=='All'&&name!==focusName){continue}
+        nameCells.push(<div className="headerCell" ><p className="txt">{name}</p></div>)
     }
-    cols.push(<div className="tableRow">
+    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}}>
         <div className="headerCell"><p className="txt">Name</p></div>
         {nameCells}
     </div>)
@@ -28,6 +33,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
         for(const name in dict[key]){
             if(name=='t0'){continue}
             if(dict['games played'][name]==0){continue}
+            if(focusName!=='All'&&name!==focusName){continue}
             let value
             if(key=='Record vs Mid'){value = dict[key][name][0]+'-'+dict[key][name][1]+'-'+dict[key][name][2]}
             else if(key=='KO by'||key=='last until'){value=dict[key][name]}
@@ -48,7 +54,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     // console.log({1:out,2:dict})
     out = 
     // <div style={{alignItems:'flex-start',justifyContent:'left',display:'inline-block',flexDirection:"column",backgroundColor:'blue',width:'auto'}}>
-        [<div className='topContainer' key={'topcontsum'}>
+        [<div className='topContainer' key={'topcontsum'} ref={stickyRef}>
             <div className='buttonsContainer' key={'butcont'}>
                 {relevantChoices}
             </div>  

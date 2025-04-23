@@ -201,7 +201,7 @@ function App() {
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
-        {/* <PinchZoomDiv style={{ width: '100%', height: '100%', backgroundColor: '#eee' }}> */}
+        <PinchZoomDiv style={{ width: '100%', height: '100%', backgroundColor: '#eee' }}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
@@ -213,10 +213,10 @@ function App() {
           {/* </div> */}
         {/* </div> */}
           </div>
-        {/* </PinchZoomDiv> */}
-      </header>
+        </PinchZoomDiv>
+      </header>  
     </div> 
-  );
+  ); 
 }    
  
 export default App;

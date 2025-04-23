@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { RecordToFrac, Round } from "../calculations/other"
 import { NamePicker, NumberPicker } from "./misc/misc"
 import SuggestionInput from "./misc/suggestionPicker"
@@ -7,6 +7,8 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
     const [focusName,setFocusName] = useState('All')
     const [numToShow,setNumToShow] = useState(1) 
     const [focusNFL,setFocusNFL] = useState('All')
+    const stickyRef = useRef(null)
+    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
 
     const pickName = <NamePicker title={'Filter by Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
     const pickNum =  <NumberPicker key={'pnu'} selecting={setNumToShow} curval={numToShow}></NumberPicker>
@@ -60,7 +62,7 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
     for(const key in dataTable.Kevin){
         headers.push(<div className="headerCell" key={key+'hr'}><p className="txt" key={'key'+key}>{key}</p></div>)
     }
-    const headRow = <div className="tableRow" key={'tr0'}>
+    const headRow = <div className="tableRow headerRow" key={'tr0'} style={{top:stickyHeight}}>
         <div className="headerCell"><p className="txt">Name</p></div>
         {headers}
     </div>
@@ -68,7 +70,7 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
 
     const out = 
     // <div>
-    [<div className='topContainer' key={'topcontplayert'}>
+    [<div className='topContainer' key={'topcontplayert'} ref={stickyRef}>
         <div className='buttonsContainer' key={'butcont'}>
             {relevantChoices}
         </div>  

@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
 
 
 export const FantasyTeams =({dict,vars,pickMacro})=>{
     const [focusName,setFocusName] = useState('All')
+    const stickyRef = useRef(null)
+    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
     const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
     
     const relevantChoices=[pickMacro,pickName]
@@ -13,7 +15,7 @@ export const FantasyTeams =({dict,vars,pickMacro})=>{
         if(focusName!='All'&&focusName!=name){continue}
         body.push(<div className="headerCell"><p className="txt">{name}</p></div>)
     }
-    rows.push(<div className="tableRow">
+    rows.push(<div className="tableRow headerRow" style={{top:stickyHeight}}>
         <div className="headerCell"><p className="txt">Pos</p></div>
         {body}
     </div>)
@@ -44,7 +46,7 @@ for(const name in dict){
 
 const out = 
 
-[<div className='topContainer' key={'topcontfantasyteams'}>
+[<div className='topContainer' key={'topcontfantasyteams'} ref={stickyRef}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
     </div>  
@@ -53,7 +55,6 @@ const out =
 {rows}
 </div>]
 // </div>
-console.log(out)
     return out
 
 }

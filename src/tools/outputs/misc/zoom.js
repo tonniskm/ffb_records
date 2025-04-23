@@ -1,57 +1,63 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 
-export default function PinchZoomDiv({ children, style }) {
+export default function PinchZoomDiv({
+  children,
+  minScale = 0.5,
+  maxScale = 3,
+  style = {},
+}) {
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
-  const [lastDistance, setLastDistance] = useState(null);
+  const lastDistance = useRef(null);
 
-  const getDistance = (touches) => {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
+  const getDistance = useCallback((touch1, touch2) => {
+    const dx = touch2.pageX - touch1.pageX;
+    const dy = touch2.pageY - touch1.pageY;
+    return Math.hypot(dx, dy);
+  }, []);
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = useCallback((e) => {
     if (e.touches.length === 2) {
-      e.preventDefault(); // prevent scrolling
-      const distance = getDistance(e.touches);
-      if (lastDistance !== null) {
-        const delta = distance / lastDistance;
-        setScale((prev) => Math.min(Math.max(prev * delta, 1), 4));
+      const dist = getDistance(e.touches[0], e.touches[1]);
+      if (lastDistance.current) {
+        const delta = dist / lastDistance.current;
+        setScale((prev) => {
+          const next = Math.min(Math.max(prev * delta, minScale), maxScale);
+          return next;
+        });
       }
-      setLastDistance(distance);
+      lastDistance.current = dist;
+      e.preventDefault(); // Prevent scroll during pinch
     }
-  };
+  }, [getDistance, minScale, maxScale]);
 
-  const resetTouch = () => setLastDistance(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    el.addEventListener('touchmove', handleTouchMove, { passive: false });
-    el.addEventListener('touchend', resetTouch);
-    el.addEventListener('touchcancel', resetTouch);
-
-    return () => {
-      el.removeEventListener('touchmove', handleTouchMove);
-      el.removeEventListener('touchend', resetTouch);
-      el.removeEventListener('touchcancel', resetTouch);
-    };
-  }, [lastDistance]);
+  const handleTouchEnd = useCallback(() => {
+    lastDistance.current = null;
+  }, []);
 
   return (
     <div
       ref={containerRef}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       style={{
+        overflow: 'auto',
+        width: '100%',
+        height: '100%',
         touchAction: 'none',
-        transform: `scale(${scale})`,
-        transformOrigin: 'center',
-        transition: 'transform 0.05s linear',
+        WebkitOverflowScrolling: 'touch',
         ...style,
       }}
     >
-      {children}
+      <div
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: '0 0',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

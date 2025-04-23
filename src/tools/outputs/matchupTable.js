@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
 
 
 export const MatchupTable = ({pickMacro,dict,vars})=>{
     const [focusName,setFocusName] = useState('All')
+    const stickyRef = useRef(null)
+    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
 
     const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
     const relevantChoices=[pickMacro,pickName]
@@ -13,7 +15,7 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
         if(name=='t0'){continue}
         col1.push(<div className="headerCell" key={name}><p className="txt">{name}</p></div>)
     }
-    cols.push(<div className="tableRow">
+    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}}>
         <div className="headerCell" key={'head'}>name</div>
         {col1}
     </div>)
@@ -35,7 +37,7 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
 
     }
 const out = 
-[<div className='topContainer' key={'topcontmatchup'}>
+[<div className='topContainer' key={'topcontmatchup'} ref={stickyRef}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
     </div>  
