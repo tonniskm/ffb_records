@@ -18,6 +18,7 @@ import { callRaw } from './tools/fetching/callRaw2';
 import { WeeklyReview } from './tools/outputs/weeklyReview';
 import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
+import PinchZoomDiv from './tools/outputs/misc/zoom';
 // import { styleSheet } from './tools/styles/styles';   
 
 function App() {
@@ -200,6 +201,8 @@ function App() {
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
+        {/* <PinchZoomDiv style={{ width: '100%', height: '100%', backgroundColor: '#eee' }}> */}
+
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
             <img key={'trophy'} src={trophy} className='logo' alt="logo" />
@@ -210,6 +213,7 @@ function App() {
           {/* </div> */}
         {/* </div> */}
           </div>
+        {/* </PinchZoomDiv> */}
       </header>
     </div> 
   );

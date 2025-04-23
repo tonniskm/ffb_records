@@ -43,7 +43,7 @@ for(const name in dict){
 
 
 const out = 
-{/* <div> */}
+
 [<div className='topContainer' key={'topcontfantasyteams'}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
@@ -53,6 +53,7 @@ const out =
 {rows}
 </div>]
 // </div>
+console.log(out)
     return out
 
 }

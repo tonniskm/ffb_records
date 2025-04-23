@@ -35,7 +35,6 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
 
     }
 const out = 
-{/* <div> */}
 [<div className='topContainer' key={'topcontmatchup'}>
     <div className='buttonsContainer' key={'butcont'}>
         {relevantChoices}
