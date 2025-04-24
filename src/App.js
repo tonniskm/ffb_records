@@ -137,7 +137,7 @@ function App() {
     }  
   }  //end if undefined 
   else{output=loadingScreen()}    
-             
+    // output = loadingScreen()    testing 
   useEffect(()=>{   
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
@@ -201,7 +201,7 @@ function App() {
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
-        <PinchZoomDiv style={{ width: '100%', height: '100%', backgroundColor: '#eee' }}>
+        <PinchZoomDiv style={{ height: '100vh', }}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}

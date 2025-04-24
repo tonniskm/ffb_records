@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react';
 
-export default function PinchZoomDiv({
+export default function PinchZoomContainer({
   children,
   minScale = 0.5,
   maxScale = 3,
@@ -27,7 +27,7 @@ export default function PinchZoomDiv({
         });
       }
       lastDistance.current = dist;
-      e.preventDefault(); // Prevent scroll during pinch
+      e.preventDefault();
     }
   }, [getDistance, minScale, maxScale]);
 
@@ -42,7 +42,7 @@ export default function PinchZoomDiv({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
       style={{
-        overflow: 'auto',
+        // overflow: 'auto',
         width: '100%',
         height: '100%',
         touchAction: 'none',
@@ -52,11 +52,15 @@ export default function PinchZoomDiv({
     >
       <div
         style={{
-          transform: `scale(${scale})`,
-          transformOrigin: '0 0',
+          width: `${100 * scale}%`,
+          height: `${100 * scale}%`,
+          transform: `scale(${1 / scale})`,
+          transformOrigin: 'top left',
         }}
       >
-        {children}
+        <div style={{ width: '100%', height: '100%' }}>
+          {children}
+        </div>
       </div>
     </div>
   );
