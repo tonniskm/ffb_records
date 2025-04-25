@@ -19,6 +19,8 @@ import { WeeklyReview } from './tools/outputs/weeklyReview';
 import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom';
+import { callProj2 } from './tools/fetching/callProj3';
+
 // import { styleSheet } from './tools/styles/styles';   
 
 function App() {
@@ -144,7 +146,7 @@ function App() {
   },[])   
   useEffect(()=>{     
     // CallESPNRaw(vars,setRaw,loading,setLoading)
-    if(proj['Week']!='init'){callProj(vars,setProj)}
+    if(proj['Week']!='init'){callProj2(vars,setProj)}
   },[])      
 
   useEffect(()=>{    
