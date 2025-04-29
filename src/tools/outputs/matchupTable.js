@@ -1,11 +1,16 @@
-import { useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
 
 
 export const MatchupTable = ({pickMacro,dict,vars})=>{
     const [focusName,setFocusName] = useState('All')
     const stickyRef = useRef(null)
-    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
+    const [stickyHeight,setStickyHeight] = useState(0)
+    useLayoutEffect(() => {
+        if (stickyRef.current) {
+            setStickyHeight(stickyRef.current.offsetHeight)
+        }
+    }, []) // empty dependency ensures this runs once after first layout
 
     const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
     const relevantChoices=[pickMacro,pickName]
@@ -15,7 +20,7 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
         if(name=='t0'){continue}
         col1.push(<div className="headerCell" key={name}><p className="txt">{name}</p></div>)
     }
-    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}}>
+    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}} key={'headers'}>
         <div className="headerCell" key={'head'}>name</div>
         {col1}
     </div>)
@@ -42,7 +47,7 @@ const out =
         {relevantChoices}
     </div>  
 </div>,
-    <div>
+    <div key={'div2'}>
         <p className="titleTxt">Row's record vs Column.  Consolation games are ignored.</p>
     <div className="tableContainer">
         {cols}

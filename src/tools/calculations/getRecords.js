@@ -13,7 +13,7 @@ import { getOverallStatsProj } from "./sum2overall/getOverallStatsProj"
 import { getWeekAwards } from "./sum2overall/getWeekAwards"
 import { getYearAwards } from "./sum2overall/getYearAwards"
 import { GetYearAwards } from "./year2sum/yearAwards"
- 
+
  
 export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},

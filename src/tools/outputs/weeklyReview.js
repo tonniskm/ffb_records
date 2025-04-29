@@ -46,8 +46,8 @@ try{
     const thisWeek = bestWeek.filter(x=>x.year===year.toString()&&x.week==week)
     let weekOverview = []
     if(thisWeek.length>0){
-        weekOverview.push(<div>Weekly Average Score: {Round(thisWeek[0].value)}</div>)
-        weekOverview.push(<div>{SummaryLine(thisWeek[0].value,bestWeek,'max','value')}</div>)
+        weekOverview.push(<div key={'avg'}>Weekly Average Score: {Round(thisWeek[0].value)}</div>)
+        weekOverview.push(<div key={'avg summary'}>{SummaryLine(thisWeek[0].value,bestWeek,'max','value')}</div>)
     }else{
         // weekOverview.push(<p>Weekly Average Scores Only Considered if everyone plays.</p>)
     }
@@ -77,12 +77,12 @@ try{
             const oppoScore = scores.filter(x=>x!==score)[0]
             // console.log({name,score,winner,loser,ind})
             const topLineStats = [
-            <p className="bigText">{name}</p>,
-            <p className="bigText" >{score}</p>,
-            <p className="titleText">Score</p>,
-            <div className="smallText">vs all: {SummaryLine(score,highScores,'max','value')[0].props.children.join("")}</div>,
-            <div className="smallText">vs self: {SummaryLine(score,highScores.filter(x=>x.name===name),'max','value')[0].props.children.join("")}</div>,
-            <div className="smallText">oppo vs self: {SummaryLine(oppoScore,highScores.filter(x=>x.name===oppo),'max')[0].props.children.join("")}</div>
+            <p className="bigText" key={'tl'+name}>{name}</p>,
+            <p className="bigText" key={'tl1'+name}>{score}</p>,
+            <p className="titleText" key={'tl2'+name}>Score</p>,
+            <div className="smallText" key={'tl3'+name}>vs all: {SummaryLine(score,highScores,'max','value')[0].props.children.join("")}</div>,
+            <div className="smallText" key={'tl4'+name}>vs self: {SummaryLine(score,highScores.filter(x=>x.name===name),'max','value')[0].props.children.join("")}</div>,
+            <div className="smallText" key={'tl5'+name}>oppo vs self: {SummaryLine(oppoScore,highScores.filter(x=>x.name===oppo),'max')[0].props.children.join("")}</div>
             ]
             if(winner!=='TIE'){
                 const winnerStats = [
@@ -91,33 +91,33 @@ try{
                     {'title':{'winner':'Lowest Winning Score','loser':'Lowest Score Lost To'},'award':lowWin,'val':sWin,'MinMax':'min'}
                 ]
                 for(const [i,stat] of winnerStats.entries()){
-                    winStats.push(<p className="titleText">{stat.title[item]}</p>)
+                    winStats.push(<p className="titleText" key={'winstats'+i+stat}>{stat.title[item]}</p>)
                     // winStats.push(<p>{SummaryLine(stat.val,stat.award[item])}</p>)
-                    winStats.push(<div className="smallText">{SummaryLine(stat.val,stat.award[item].filter(x=>x.name===name),stat.MinMax,'value')}</div>)
+                    winStats.push(<div className="smallText" key={'winstats2'+i+stat}>{SummaryLine(stat.val,stat.award[item].filter(x=>x.name===name),stat.MinMax,'value')}</div>)
                 }
             }
             let flexStats = []
             for (const pos of poses){
                 if(pos==='D/ST'){
-                    winStats.push(<div className="titleText">FLEX</div>)
+                    winStats.push(<div className="titleText" key={'flex'}>FLEX</div>)
                     winStats=winStats.concat(flexStats)}
                 const all = records.allProj.filter(x=>x.didStart)
                 const allPos = all.filter(x=>x.pos===pos)
                 const allMyPos = allPos.filter(x=>x.team===name)
                 const allPosVsOppo = allPos.filter(x=>x.oppo===oppo)
                 const myStart = allMyPos.filter(x=>x.week===week&&x.year==year).sort((a,b)=>a.actual > b.actual)
-                winStats.push(<div className="titleText">{pos}</div>)
+                winStats.push(<div className="titleText" key={pos}>{pos}</div>)
                 for(const line of myStart){
                     if(line.slot==='FLEX'){
-                        flexStats.push(<div className="midText">{line.NFLName}, {line.actual}</div>)
-                        flexStats.push(<div className="smallText">{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
-                        flexStats.push(<div className="smallText">{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
-                        flexStats.push(<div className="smallText">{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)        
+                        flexStats.push(<div className="midText" key={'flex1'}>{line.NFLName}, {line.actual}</div>)
+                        flexStats.push(<div className="smallText" key={'flex2'}>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
+                        flexStats.push(<div className="smallText" key={'flex3'}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
+                        flexStats.push(<div className="smallText" key={'flex4'}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)        
                     }else{
-                        winStats.push(<div className="midText">{line.NFLName}, {line.actual}</div>)
-                        winStats.push(<div className="smallText"><p></p>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
-                        winStats.push(<div className="smallText">{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
-                        winStats.push(<div className="smallText">{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
+                        winStats.push(<div className="midText" key={line.NFLName+1}>{line.NFLName}, {line.actual}</div>)
+                        winStats.push(<div className="smallText" key={line.NFLName+2}><p></p>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
+                        winStats.push(<div className="smallText" key={line.NFLName+3}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
+                        winStats.push(<div className="smallText" key={line.NFLName+4}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
                     }
                 }
             }
@@ -138,7 +138,7 @@ try{
             <div className="smallText">{SummaryLine(sWin+sLose,shootout,'max')}</div>
         ])
         gamesOut.push(
-            <div className="game">
+            <div className="game" key={winner}>
                 <div className="players">{playerCards}</div>
                 {gameCard}
             </div>
@@ -155,7 +155,7 @@ try{
         {pickName}
         </div>
         </div>,
-        <div>
+        <div key={'div2'}>
         {weekOverview}
         {gamesOut}
         </div>]

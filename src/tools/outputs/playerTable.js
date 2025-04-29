@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { RecordToFrac, Round } from "../calculations/other"
 import { NamePicker, NumberPicker } from "./misc/misc"
 import SuggestionInput from "./misc/suggestionPicker"
@@ -8,7 +8,12 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
     const [numToShow,setNumToShow] = useState(1) 
     const [focusNFL,setFocusNFL] = useState('All')
     const stickyRef = useRef(null)
-    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
+    const [stickyHeight,setStickyHeight] = useState(0)
+    useLayoutEffect(() => {
+        if (stickyRef.current) {
+            setStickyHeight(stickyRef.current.offsetHeight)
+        }
+    }, []) // empty dependency ensures this runs once after first layout
 
     const pickName = <NamePicker title={'Filter by Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'name'}></NamePicker>
     const pickNum =  <NumberPicker key={'pnu'} selecting={setNumToShow} curval={numToShow}></NumberPicker>
@@ -40,13 +45,13 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
                     if(Array.isArray(mess)){mess=(Round(RecordToFrac(mess)*100)).toString()+'%'}  //if is record
                     meta.push((isNaN(key)?key:metaList[key])+': '+mess+' ')}
                 
-                outList = outList.concat(<p className="txt" >{best.name}</p>,
+                outList = outList.concat(<p className="txt" key={'list'+i}>{best.name}</p>,
                     <p className="txt">({best.rank} of {vals.length})</p>,
                     <p className="txt">{val}</p>,<p className="txt">{meta}</p>)
-                if(i!=Math.min(sorted.length,Math.max(1,numToShow))-1){outList.push(<p>----------------------</p>)}
+                if(i!=Math.min(sorted.length,Math.max(1,numToShow))-1){outList.push(<p key={'skip'+i}>----------------------</p>)}
             }
             return <div className="tableCell" key={'tc'+keyName}>{outList}</div>
-        }else{return(<div className="tableCell"><p className="txt">NA</p></div>)}
+        }else{return(<div className="tableCell" key={'na'+keyName}><p className="txt">NA</p></div>)}
     }
 
     for(const name in dataTable){

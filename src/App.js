@@ -20,7 +20,7 @@ import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom';
 import { callProj2 } from './tools/fetching/callProj3';
-
+ 
 // import { styleSheet } from './tools/styles/styles';   
 
 function App() {
@@ -40,8 +40,8 @@ function App() {
   // const stickyRef = useRef(null);
   
 
-  const yearMin = 2012    
-  const currentYear = new Date().getFullYear() -1;
+  const yearMin = 2012     
+  const currentYear = new Date().getFullYear();
   const weekMax =18 
   const names2012 = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Kevin', 'Eric',
     'Nick', 'Jake Knapke', 'Brenna', 'Uncle Steve', 'Regan Crone', 'RJ', 'Claire', 'Lance', 'Adam', 'Nate']
@@ -59,8 +59,10 @@ function App() {
   let  summaryYears = ['All']
   for(let i=1;i<18;i++){activeWeeks.push(i)}
   for(let i=yearMin;i<=currentYear;i++){
-    activeYears.push(i)
-    summaryYears.push(i)
+    if(Object.keys(raw).includes(i.toString())){
+      activeYears.push(i)
+      summaryYears.push(i)
+    }
   }  
   let allNFLNames = []
   if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
@@ -73,7 +75,7 @@ function App() {
   const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
   
 //  console.log(raw) 
-    
+
   const vars = {'currentYear':currentYear,
     'names':names, 
     'names2012':names2012,
@@ -90,8 +92,7 @@ function App() {
     'activeNames':activeNames
   }
 
-  let outTest = []
-  
+  let outTest = [] 
   
   let output = []
   let shownRecords = []
@@ -148,24 +149,26 @@ function App() {
     // CallESPNRaw(vars,setRaw,loading,setLoading)
     if(proj['Week']!='init'){callProj2(vars,setProj)}
   },[])      
-
+ 
   useEffect(()=>{    
-      if(Object.keys(raw).includes(currentYear.toString())&&Object.keys(proj).includes(currentYear.toString())&&!didMount){
-        if(raw[currentYear].length > 2 && proj[currentYear].length > 2){
+      if(Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString())&&!didMount){
+        const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
+        const lastYear = Math.max(...lastYear1)
+        if(raw[lastYear].length > 2 && proj[lastYear].length > 2){
           setDidMount(true)
-          GetRecords(vars,currentYear,setRecords,raw,proj,fa)
-          GetRecords(vars,currentYear-1,setOldRecords,raw,proj,fa)
+          GetRecords(vars,lastYear,setRecords,raw,proj,fa)
+          GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
           let truncRaw = {...raw}
           let truncProj = {...proj}
-          const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
-          truncRaw[currentYear] = truncRaw[currentYear].filter(x=>x.Week!=lastWeek)
-          truncProj[currentYear] = truncProj[currentYear].filter(x=>x.Week<lastWeek)
+          const lastWeek = raw[lastYear][raw[lastYear].length-1].Week
+          truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!=lastWeek)
+          truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
           // console.log({truncRaw,truncProj})
           // truncRaw.append(0)
-          if(lastWeek==1){GetRecords(vars,currentYear-1,setWeekOldRecords,raw,proj,fa)}
-          else{GetRecords(vars,currentYear,setWeekOldRecords,truncRaw,truncProj,fa)}
+          if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
+          else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
         }
-      }else{    
+      }else{     
         // console.log('cll') 
         // CallESPNProj(vars,setProj,loading,setLoading)  
     }  
@@ -186,24 +189,27 @@ function App() {
   }    
 
   function Test4(){
-    GetRecords(vars,currentYear,setRecords,raw,proj,fa)
-    GetRecords(vars,currentYear-5,setOldRecords,raw,proj,fa)
+    const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
+    const lastYear = Math.max(...lastYear1)
+
+    GetRecords(vars,lastYear,setRecords,raw,proj,fa)
+    GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
     let truncRaw = {...raw}
     let truncProj = {...proj}
-    const lastWeek = raw[currentYear][raw[currentYear].length-1].Week
-    truncRaw[currentYear] = truncRaw[currentYear].filter(x=>x.Week!=lastWeek)
-    truncProj[currentYear] = truncProj[currentYear].filter(x=>x.Week<lastWeek)
+    const lastWeek = raw[lastYear][raw[lastYear].length-1].Week
+    truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!=lastWeek)
+    truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
     // console.log({truncRaw,truncProj})
     // truncRaw.append(0)
-    if(lastWeek==1){GetRecords(vars,currentYear-1,setWeekOldRecords,raw,proj,fa)}
-    else{GetRecords(vars,currentYear,setWeekOldRecords,truncRaw,truncProj,fa)}
+    if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
+    else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
   }                                 
   // console.log(proj)   
   return (                               
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
-        <PinchZoomDiv style={{ height: '100vh', }}>
+        <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
@@ -212,13 +218,13 @@ function App() {
           
           {/* <div className='tableWrapper'> */}
           {output}
-          {/* </div> */}
+          {/* </div> */} 
         {/* </div> */}
           </div>
         </PinchZoomDiv>
-      </header>  
+      </header>   
     </div> 
-  ); 
+  );  
 }    
  
 export default App;

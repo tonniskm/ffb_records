@@ -8,6 +8,7 @@ export function GetOtherTables(vars,raw,proj){
     let outcome = {}
 
     for(let year=vars.yearMin;year<=vars.currentYear;year++){
+        if(!Object.keys(raw).includes(year.toString())){continue}
         oppos[year] = {}
         scores[year] = {}
         types[year] = {}
@@ -63,6 +64,7 @@ export function GetOtherTables(vars,raw,proj){
 //proj stuff
 let myTeam = {}
 for(let year=Math.max(vars.yearMin,2018);year<=vars.currentYear;year++){
+    if(!Object.keys(raw).includes(year.toString())){continue}
     myTeam[year] = {}
     let names = ChooseNames(vars,year)
     for (const name of names){

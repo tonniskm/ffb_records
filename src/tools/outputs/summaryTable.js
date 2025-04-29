@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
 
 export const SummaryTable = ({records,pickMacro,vars}) =>{
@@ -6,14 +6,19 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     const [summaryYear,setSummaryYear] = useState('All')
     const [focusName,setFocusName] = useState('All')
     const stickyRef = useRef(null)
-    const stickyHeight = stickyRef.current?.offsetHeight || 0; // Sticky header height
+    const [stickyHeight,setStickyHeight] = useState(0)
+    useLayoutEffect(() => {
+        if (stickyRef.current) {
+            setStickyHeight(stickyRef.current.offsetHeight)
+        }
+    }, []) // empty dependency ensures this runs once after first layout
     if(summaryYear==='All'){dict=records['overall']}else{dict=records['year'][summaryYear]}
     const pickSumYear = <NamePicker title={'Year: '} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={vars.activeYears} key={'st'}></NamePicker>
     const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
     const relevantChoices=[pickMacro,pickSumYear,pickName]
     let out = []
     let cols = []
-    let colDecs =[]
+    // let colDecs =[]
     let nameCells = []
     for (const name in dict['W']){
         if(name=='t0'){continue}
@@ -21,14 +26,14 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
         if(focusName!=='All'&&name!==focusName){continue}
         nameCells.push(<div className="headerCell" ><p className="txt">{name}</p></div>)
     }
-    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}}>
+    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}} key={'headerrow'}>
         <div className="headerCell"><p className="txt">Name</p></div>
         {nameCells}
     </div>)
     for (const key in dict){
         if(key=='point stats'){continue}
         if(key=='ind records'){continue}
-        colDecs.push(<col></col>)
+        // colDecs.push(<col></col>)
         let vals = []
         for(const name in dict[key]){
             if(name=='t0'){continue}
@@ -41,7 +46,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
             vals.push(<div className="tableCell"><p className="txt">{value}</p></div>)
         }
         cols.push(
-            <div className="tableRow">
+            <div className="tableRow" key={key}>
                 <div className="headerCell"><p className="txt">{key}</p></div>
                 {vals}
             </div>
@@ -59,7 +64,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
                 {relevantChoices}
             </div>  
         </div>,
-        <div className="tableContainer">
+        <div className="tableContainer" key={'2nd'}>
             {cols}
         </div>]
     {/* </div> */}

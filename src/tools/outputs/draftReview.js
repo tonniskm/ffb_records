@@ -8,7 +8,7 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
     const [draftCSV,setDraftCSV] = useState([])
     const [ranks,setRanks] = useState([])
     const [colorType,setColorType] = useState('Position')
-    const [selectedYear,setSelectedYear] = useState(2024)
+    const [selectedYear,setSelectedYear] = useState(vars.activeYears[vars.activeYears.length-1])
     const year = selectedYear
     const choices = ['Position','Reach Heat Map','Score Heat Map']
     const colorScheme = <NamePicker title={'Color Scheme: '} selecting={setColorType} curval={colorType} options={choices} key={'draft picker'}></NamePicker>
@@ -58,7 +58,7 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
         let headerRow = []
         for(const name in draftCSV[0]){
             if(name===''){continue}
-            headerRow.push(<div className='headerCell'><p className='txt'>{name}</p></div>)
+            headerRow.push(<div className='headerCell' key={name}><p className='txt'>{name}</p></div>)
         }
         headerRow = <div className='tableRow'>
             <div className='headerCell'><p className='txt'>Round</p></div>
@@ -92,9 +92,9 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
                     const scoreColor = valueToColor(score,0,maxPtsinYear[usedPos]||200,midPtsinYear[usedPos]||0)
                     const posColor = posColors[pos]               
                     const shownColor = colorType=='Position'?posColor:(colorType=='Reach Heat Map'?reachColor:scoreColor)
-                    row.push(<div className='tableCell' style={{backgroundColor:shownColor,borderColor:'black'}}><p className='txt' style={{color:"black"}}>{line[name]}</p></div>)
+                    row.push(<div className='tableCell' style={{backgroundColor:shownColor,borderColor:'black'}} key={ind+' '+i}><p className='txt' style={{color:"black"}}>{line[name]}</p></div>)
                 } 
-                row = <div className='tableRow'>
+                row = <div className='tableRow' key={ind}>
                     <div className='headerCell'><p className='txt'>{round}</p></div>
                     {row}
                 </div>
