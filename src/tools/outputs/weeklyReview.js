@@ -52,7 +52,7 @@ try{
         // weekOverview.push(<p>Weekly Average Scores Only Considered if everyone plays.</p>)
     }
 
-    for(const game of rawGames){
+    for(const [gameNo,game] of rawGames.entries()){
         let {week,t1,score1,t2,score2,winner,type} = UnpackRawLine(game,names)
         if(type==='lame'||t2==='BYE'){continue}
         let sWin,sLose,loser
@@ -66,14 +66,15 @@ try{
         const WLscores = [sWin,sLose]
         const scores = [score1,score2]
         const dif = Math.max(score1-score2,score2-score1)
+        let name,oppo
         if(!teams.includes(focusName)&&focusName!=='All'){continue}
         for(const [ind,item] of ['winner','loser'].entries()){
             let winStats = []
             // let topLineStats = []
-            let name,score
+            let score
             if(winner==='TIE'){name=teams[ind];score=scores[ind]}
             else{name=WLteams[ind];score=WLscores[ind]}
-            const oppo = teams.filter(x=>x!==name)[0]
+            oppo = teams.filter(x=>x!==name)[0]
             const oppoScore = scores.filter(x=>x!==score)[0]
             // console.log({name,score,winner,loser,ind})
             const topLineStats = [
@@ -134,8 +135,10 @@ try{
             <div className="smallText">{SummaryLine(sWin,lowWin.winner,'min')}</div>,
         ])}
         gameCard=gameCard.concat([
-            <p className="titleText">High Combined Score: {Round(sWin+sLose)}</p>,
-            <div className="smallText">{SummaryLine(sWin+sLose,shootout,'max')}</div>
+            <p className="titleText" key={'tt'+gameNo}>High Combined Score: {Round(sWin+sLose)}</p>,
+            <div className="smallText" key={'tt1'+gameNo}>{SummaryLine(sWin+sLose,shootout,'max')}</div>,
+            <p className="titleText" key={'mm'+gameNo}>Matchup Record: {oppo} vs {name}</p>,
+            <p className="smallText" key={'mm1'+gameNo}>{records.matchupTable[oppo][name].join("-")}</p>
         ])
         gamesOut.push(
             <div className="game" key={winner}>

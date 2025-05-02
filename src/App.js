@@ -18,7 +18,7 @@ import { callRaw } from './tools/fetching/callRaw2';
 import { WeeklyReview } from './tools/outputs/weeklyReview';
 import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
-import PinchZoomDiv from './tools/outputs/misc/zoom';
+import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
  
 // import { styleSheet } from './tools/styles/styles';   

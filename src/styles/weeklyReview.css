@@ -7,7 +7,7 @@
     min-width: 1530px;
 }
 .game{
-    width:500px;
+    width:550px;
     /* background-color: blue; */
     display: flex;
     flex-direction: column;
