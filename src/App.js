@@ -20,9 +20,10 @@ import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
+import { savedProj } from './tools/fetching/saved_jsons/proj/saved';
  
 // import { styleSheet } from './tools/styles/styles';   
-
+    
 function App() {
   const [raw,setRaw] = useState([{'Week':'init'}])
   const [proj,setProj] = useState([{'Week':'init'}])
@@ -204,7 +205,8 @@ function App() {
     if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
     else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
   }                                 
-  // console.log(proj)   
+//   console.log(proj)   
+//  console.log(raw)  
   return (                               
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
