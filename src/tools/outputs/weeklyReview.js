@@ -19,9 +19,9 @@ export const  WeeklyReview = ({pickMacro,raw,proj,records,vars,awards})=>{
         const rank = sorted.findIndex(x=>x[valueKey]===mine) + 1
         const total = vals.length
         // if(total===5&&mine===1){console.log({mine,vals,minmax,rank})}
-        const perc =  Math.round(10000-10000*rank/total)/100
+        const perc =  Math.round(10000-10000*(rank-1)/Math.max(1,(total-1)))/100
         return([
-            <p className="smallText" >{rank} of {total} ({perc}%)</p>
+            <p className="smallText" key={'unique'}>{rank} of {total} ({perc}%)</p>
         ])
     }
 try{ 
@@ -142,7 +142,7 @@ try{
         ])
         gamesOut.push(
             <div className="game" key={winner}>
-                <div className="players">{playerCards}</div>
+                <div className="players" key={winner+'1'}>{playerCards}</div>
                 {gameCard}
             </div>
         )

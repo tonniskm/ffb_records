@@ -46,8 +46,8 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
                     meta.push((isNaN(key)?key:metaList[key])+': '+mess+' ')}
                 
                 outList = outList.concat(<p className="txt" key={'list'+i}>{best.name}</p>,
-                    <p className="txt">({best.rank} of {vals.length})</p>,
-                    <p className="txt">{val}</p>,<p className="txt">{meta}</p>)
+                    <p className="txt" key={'list1'+i}>({best.rank} of {vals.length})</p>,
+                    <p className="txt" key={'list2'+i}>{val}</p>,<p className="txt" key={'list3'+i}>{meta}</p>)
                 if(i!=Math.min(sorted.length,Math.max(1,numToShow))-1){outList.push(<p key={'skip'+i}>----------------------</p>)}
             }
             return <div className="tableCell" key={'tc'+keyName}>{outList}</div>

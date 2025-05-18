@@ -18,7 +18,7 @@ import { GetYearAwards } from "./year2sum/yearAwards"
 export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
 'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{},
-'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[],'tables':{},'allProj':[]
+'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[],'tables':{},'allProj':[],'incompleteAwards':[]
 } 
    let regComplete = false
    let yearComplete = false 
@@ -52,13 +52,14 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       const nameAwards = getNameAwards(vars,out)
       out['nameAwards'] = nameAwards  
       const nyAwards = getNameYearAwards(vars,out)
-      out['nyAwards'] = nyAwards 
+      out['nyAwards'] = nyAwards.awards 
+      out['incompleteAwards'] = out['incompleteAwards'].concat(nyAwards.incomplete)
       const gameAwards = getGameAwards(vars,raw) 
       out['gameAwards'] = gameAwards
       const weekAwards = getWeekAwards(vars,out) 
       out['weekAwards'] = weekAwards  
       const yearAwards = getYearAwards(vars,out)
-      out['yearAwards'] = yearAwards 
+      out['yearAwards'] = yearAwards  
       const projAwards = getAwardsProj(vars,out) 
       out['projAwards'] = projAwards
       const playerStats = getPlayerStats(vars,raw,proj,out,tables,yearMax)

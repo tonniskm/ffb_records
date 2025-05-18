@@ -5,6 +5,7 @@ export function getNameYearAwards(vars,input){
     //looks at each year
     const stats = input.year
     let awards = []
+    let incomplete = []
     const list2 = [
         {'id': 'nya1', 'title': 'Peak Performer', 'description': 'The best ever regular season record', 'keyID': 'pct', 'MinMax': null, 'agg': 'total','req':'reg'},
         {'id': 'nya2', 'title': 'Please Forget', 'description': 'The worst ever regular season record', 'keyID': 'pct', 'MinMax': 'min', 'agg': 'total','req':'reg'},
@@ -23,8 +24,8 @@ export function getNameYearAwards(vars,input){
     for(const item of list2){
         let vals = []
         let onlyVals = []
+        let incompleteVals = []
         for(const year in stats){
-            if(!input.isComplete.reg&&item.req=='reg'&&year==input.isComplete.lastYear){continue}
             for(const name of vars.allNames){
                 const ind = name
                 if(vars.lameDucks.includes(name)){continue}
@@ -34,6 +35,9 @@ export function getNameYearAwards(vars,input){
                     value = stats[year][item.keyID][name]/stats[year]['reg games played'][name]
                 }else{value = stats[year][item.keyID][name]}
                 if(value=='null'||value=='NA'||value==undefined){continue}
+                if(!input.isComplete.reg&&item.req=='reg'&&year==input.isComplete.lastYear){
+                    incompleteVals.push({'name':name,'year':year,'value':value,'rank':999999})
+                    continue}
                 vals.push({'name':name,'year':year,'value':value})
                 onlyVals.push(value)
             }
@@ -44,6 +48,7 @@ export function getNameYearAwards(vars,input){
         line['rank'] = sorted.indexOf(line.value) + 1
     }
     awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['name','year'],'id':item.id})
+    incomplete.push({'title':item.title,'desc':item.description,'values':incompleteVals,'meta':['name','year'],'id':item.id})
     }
-    return awards
+    return {awards,incomplete}
 }

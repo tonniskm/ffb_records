@@ -27,7 +27,7 @@ export const RecordTable = (props)=>{
     const pickNum =  <NumberPicker selecting={setNumToShow} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} curval={numToShow} key={'numpic'}></NumberPicker>
     let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
     if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Reset</button>)}
-    pickNFL = <div style={{flexDirection:'column',whiteSpace:'nowrap'}}>{pickNFL}</div>
+    pickNFL = <div style={{flexDirection:'column',whiteSpace:'nowrap'}} key={'pickNFL1'}>{pickNFL}</div>
     const relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum]
 
 

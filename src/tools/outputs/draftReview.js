@@ -53,7 +53,11 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
         loadCSV()
     },[year])
     let out
-    if(draftCSV.length<=2){out=<div><p>No data for the selected year.</p></div>}
+    if(draftCSV.length<=2){out=[<div className='topContainer' key={'topcontdraftrev'}>
+        <div className='buttonsContainer' key={'butcont'}>
+            {relevantChoices}
+        </div>  
+    </div>,<div key={'bottom1'}><p key={'bottom2'}>No data for the selected year.</p></div>]}
     else{
         let headerRow = []
         for(const name in draftCSV[0]){

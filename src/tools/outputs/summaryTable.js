@@ -24,10 +24,10 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
         if(name=='t0'){continue}
         if(dict['games played'][name]==0){continue}
         if(focusName!=='All'&&name!==focusName){continue}
-        nameCells.push(<div className="headerCell" ><p className="txt">{name}</p></div>)
+        nameCells.push(<div className="headerCell" key={name}><p className="txt" key={name+'txt'}>{name}</p></div>)
     }
     cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}} key={'headerrow'}>
-        <div className="headerCell"><p className="txt">Name</p></div>
+        <div className="headerCell" key={'headrow1'}><p className="txt" key={'headrow2'}>Name</p></div>
         {nameCells}
     </div>)
     for (const key in dict){
@@ -43,11 +43,11 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
             if(key=='Record vs Mid'){value = dict[key][name][0]+'-'+dict[key][name][1]+'-'+dict[key][name][2]}
             else if(key=='KO by'||key=='last until'){value=dict[key][name]}
             else{value =Math.round(100*dict[key][name])/100}
-            vals.push(<div className="tableCell"><p className="txt">{value}</p></div>)
+            vals.push(<div className="tableCell" key={name+'1'}><p className="txt" key={name+'txt1'}>{value}</p></div>)
         }
         cols.push(
             <div className="tableRow" key={key}>
-                <div className="headerCell"><p className="txt">{key}</p></div>
+                <div className="headerCell" key={'a'+key}><p className="txt" key={'b'+key}>{key}</p></div>
                 {vals}
             </div>
 

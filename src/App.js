@@ -21,6 +21,7 @@ import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
 import { savedProj } from './tools/fetching/saved_jsons/proj/saved';
+import { YearlyReview } from './tools/outputs/yearlyReview';
  
 // import { styleSheet } from './tools/styles/styles';   
     
@@ -67,7 +68,7 @@ function App() {
   }  
   let allNFLNames = []
   if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Draft']
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Yearly Review','Draft']
  
   let nameSelectMessage
   if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
@@ -130,9 +131,10 @@ function App() {
 
       }catch(err){console.log(err)}
     }
-    else if(macroType=='Weekly Review'){
+    else if(macroType==='Weekly Review'){
         output = <WeeklyReview pickMacro={pickMacro} raw={raw} proj={proj} records={records} vars={vars} awards={allAwards}></WeeklyReview>
     } 
+    else if (macroType==='Yearly Review'){output=<YearlyReview pickMacro={pickMacro} records={records} vars={vars}></YearlyReview>}
     else if(macroType==='Players by Team'){
       try{output=<PlayerTable  pickMacro={pickMacro} records={records} vars={vars}></PlayerTable>}catch(err){console.log(err);output=<p>error</p>}
     }
@@ -145,7 +147,7 @@ function App() {
   useEffect(()=>{   
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
-  },[])   
+  },[])    
   useEffect(()=>{     
     // CallESPNRaw(vars,setRaw,loading,setLoading)
     if(proj['Week']!='init'){callProj2(vars,setProj)}
@@ -227,7 +229,7 @@ function App() {
       </header>   
     </div> 
   );  
-}    
+}     
  
 export default App;
-                        
+                           
