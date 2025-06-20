@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Legend, Bar, Cell, ResponsiveContainer, Scatter, ScatterChart } from 'recharts';
 import { NamePicker } from './misc';
 
@@ -22,21 +22,26 @@ export const Chart = (props) =>{
     })
     if(arraysEqual(meta,['year', 'week', 't1', 't2', 's1', 's2'])){meta=['year','week']}
     if(arraysEqual(meta,['name', 'year', 'week', 't1', 't2', 's1', 's2'])){meta=['name','year','week']}
-    // console.log(data)
-    const [sortBy,setSortBy] = useState('Value')
+
     const [xAxisPick,setXAxisPick] = useState(meta.includes('name')?'name':'year')
+    let sortButton = null
+    let xAxis,xAxisButton
+    arraysEqual(meta,['name'])?xAxis='name':
+    arraysEqual(meta,['year'])?xAxis='year':
+    arraysEqual(meta,['year','week'])||arraysEqual(meta,['name','year'])||arraysEqual(meta,['name','year','week'])?xAxis=xAxisPick:
+    xAxis='name'
+    const [sortBy,setSortBy] = useState(xAxis==='week'?'Week':'Year')
     const sortPick = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Year']} key={'sb'}></NamePicker>
-    // const xAxisPicker = <NamePicker title={'xAxis: '} showAll={false} selecting={setXAxisPick} curval={xAxisPick} options={['name','year']} key={'xxs'}></NamePicker>
+    const sortPick2 = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Week']} key={'sb'}></NamePicker>
     
-    // console.log(props,data)
-    // console.log(meta)
+    // const xAxisPicker = <NamePicker title={'xAxis: '} showAll={false} selecting={setXAxisPick} curval={xAxisPick} options={['name','year']} key={'xxs'}></NamePicker>
+    useEffect(()=>{
+        if(sortBy==='Week'){setSortBy('Year')}
+        if(sortBy==='Year'){setSortBy('Week')}
+    },[xAxisPick])
+
     // if(arraysEqual(meta,['name'])||arraysEqual(meta,['year'])||arraysEqual(meta,['year','week'])||arraysEqual(meta,['name','year'])||arraysEqual(meta,['name','record'])||arraysEqual(meta,['name','recordStarting'])||arraysEqual(meta,['name','teams'])||arraysEqual(meta,['name','year','week'])){ // name bar chart
-        let sortButton = null
-        let xAxis,xAxisButton
-        arraysEqual(meta,['name'])?xAxis='name':
-        arraysEqual(meta,['year'])?xAxis='year':
-        arraysEqual(meta,['year','week'])||arraysEqual(meta,['name','year'])||arraysEqual(meta,['name','year','week'])?xAxis=xAxisPick:
-        xAxis='name'
+
         // if(arraysEqual(meta,['year','week'])){sortButton=xAxisPicker}
 
         if(arraysEqual(meta,['year','week'])){
@@ -55,15 +60,19 @@ export const Chart = (props) =>{
             sortButton = sortPick
             if(sortBy==='Year'){data=data.sort((a,b)=>a.year-b.year)}else{data=dataIn}
         }
+        if(xAxis==='week'){
+            sortButton = sortPick2
+            if(sortBy==='Week'){data=data.sort((a,b)=>a.week-b.week)}else{data=dataIn}
+        }
         
         const uniqueX = [...new Set(data.map(item => item[xAxis]))];
-        if (xAxis==='name'||xAxis==='year'){
+        if (xAxis==='name'||xAxis==='year'||xAxis==='week'){
             data.forEach(d => {
                 d.xNum = uniqueX.indexOf(d[xAxis]);
             });
             // xAxis='xNum'
         }
-        // console.log(uniqueX,data,xAxis,meta)
+        // console.log(uniqueX,data,xAxis,meta,sortBy)
         return (
             <div style={{width:'100%',height:'100%'}}>
                 {sortButton}
@@ -71,10 +80,10 @@ export const Chart = (props) =>{
                 <p>{title}</p>
                 <p>{desc}</p>
         <ResponsiveContainer>
-        <ScatterChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 90 }}>
+        <ScatterChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 70 }}>
         <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-            dataKey={xAxis==='name'||xAxis==='year'?'xNum':xAxis}
+            dataKey={xAxis==='name'||xAxis==='year'||xAxis==='week'?'xNum':xAxis}
             // {...((xAxis !== 'name'&&xAxis!=='year') && {
             //     domain:([min,max])=>xAxis==='name'?['auto','auto']:[min-1,max+1],
             //     type:'number',
@@ -106,7 +115,7 @@ export const Chart = (props) =>{
             tick={{
                 dx: -8,  // shift left or right as needed
                 dy: 0,   // push down so it's under the axis
-                fill:'white'
+                fill:'white',
             }}
             tickLine={{stroke:'white'}}
             />

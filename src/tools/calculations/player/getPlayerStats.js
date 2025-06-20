@@ -684,7 +684,10 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                     }
                 }else{//minOnly
                     if(!input.isComplete.season&&item.requires=='season'){
-                    const filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
+                    let filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
+                    filtered = Object.fromEntries(  //removing skipped years
+                        Object.entries(filtered).filter(([key, value]) => value > 0)
+                        );
                     const minValue = DictMin(filtered)
                     const meta = DictKeysWithValue(filtered,minValue)
                     onlyVals.push(minValue)

@@ -206,7 +206,7 @@ export const RecordTable = (props)=>{
                 <button
                 disabled={chartVisible}
                 onClick={() => {chartData.current={data:sorted,title:award.title,desc:award.desc,meta:award.meta};setChartVisible(true)}}
-                style={{backgroundColor:'transparent',position:'absolute',inset:0,zIndex:chartVisible?-1:1}}
+                style={{backgroundColor:'transparent',position:'absolute',inset:0,zIndex:chartVisible?-1:1,borderWidth:0}}
                 className="tableRow"
                 >
                 </button>
