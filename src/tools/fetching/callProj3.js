@@ -4,12 +4,17 @@ import { savedProj } from "./saved_jsons/proj/saved";
 export function callProj2(vars,setProj){
     const yearMax = vars.currentYear
     let out = {...savedProj}
+    // console.log(out[2023].filter(x=>x.Week==1))
     let dataCopy = [...missingData]
-    for(const line of dataCopy){
-        line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
-        line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
-        out[2023].push(line)
+    // console.log(out[2023].filter(x=>x.Week).length>0,out[2023].filter(x=>x.Week).length)
+    if(!out[2023].filter(x=>x.Week==1).length>0){
+        for(const line of dataCopy){
+            line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
+            line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
+            out[2023].push(line)
+        }
     }
+        // console.log(out[2023].filter(x=>x.Week==1))
     const lastSavedYear = Math.max(...Object.keys(savedProj).map(x=>parseInt(x)))
     const lastSavedWeek = Math.max(...savedProj[lastSavedYear].map(x=>x.Week))
     if(lastSavedYear==yearMax&&lastSavedWeek>=18){

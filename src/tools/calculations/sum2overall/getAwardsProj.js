@@ -11,7 +11,7 @@ export function getAwardsProj(vars,input){
         {'id': 'ap1', 'title': 'Great Expectations', 'description': 'The highest projection ever', 'keyID': 'Best Proj', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap2', 'title': 'Poor Outlook', 'description': 'The worst highest projection ever', 'keyID': 'Best Proj', 'MinMax': 'min', 'meta': ['name', 'year', 'week'], 'agg': 'person','sort':'high'},
         {'id': 'ap3', 'title': 'Not My Week', 'description': 'The lowest projection ever', 'keyID': 'Worst Proj', 'MinMax': 'min', 'meta': ['name', 'year', 'week'], 'agg': 'total'},
-        {'id': 'ap4', 'title': 'Never a Bad Week', 'description': 'The best lowest projection ever', 'keyID': 'Worst Proj', 'MinMax': 'low', 'meta': ['name', 'year', 'week'], 'agg': 'person','sort':'high'},
+        {'id': 'ap4', 'title': 'Never a Bad Week', 'description': 'The best lowest projection ever', 'keyID': 'Worst Proj', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'person','sort':'low'},
         {'id': 'ap5', 'title': 'Exceeds Expectations', 'description': 'The most a person has beaten their projection by', 'keyID': 'Best Beat Proj', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap6', 'title': 'Life is Often Disappointing', 'description': 'The most a person has underperformed their projection', 'keyID': 'Worst Lose Proj', 'MinMax': 'min', 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap7', 'title': 'Feeling Confident', 'description': 'The biggest projected difference', 'keyID': 'Best Proj Dif', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},

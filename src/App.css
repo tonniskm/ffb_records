@@ -133,6 +133,7 @@
 .tableRow{
   display: table-row;
   background-color: #282c34;
+  position:relative
   /* transform: translateX(-50%); */
 }
 .tableColumn{

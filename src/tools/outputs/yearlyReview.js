@@ -71,10 +71,12 @@ export const YearlyReview = ({pickMacro,vars,records})=>{
                 if(focusName!=='All'&&name!==focusName){continue}
                 const mine = vals.filter(x=>x.name===name&&x.year==selectedYear)[0].value
                 const myVals = vals.filter(x=>x.name===name)
+                const yearVals = vals.filter(x=>x.year==selectedYear)
                 row.push(<div className="tableCell" key={'row'+item.id+name}>
                     <p className="txt" key={'row1'+item.id+name}>{Round(mine,2)}</p>
-                    <p className="txt" key={'row2'+item.id+name}>{SummaryLine(mine,vals,'max')}</p>
-                    <p className="txt" key={'row3'+item.id+name}>{SummaryLine(mine,myVals,'max')}</p>
+                    <p className="txt" key={'row2'+item.id+name}>All: {SummaryLine(mine,vals,'max')}</p>
+                    <p className="txt" key={'row3'+item.id+name}>Me: {SummaryLine(mine,myVals,'max')}</p>
+                    <p className="txt" key={'row3'+item.id+name}>Year: {SummaryLine(mine,yearVals,'max')}</p>
                     </div>)
             }
             rows.push(<div className="tableRow" key={'trow'+item.id}><div className="headerCell" key={'trow1'+item.id}><p className="txt" key={'trow2'+item.id}>{item.name}{(regIsComplete?"":' (pace)')}</p></div>{row}</div>)

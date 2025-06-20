@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react"
 import SuggestionInput from "./misc/suggestionPicker"
 import { NamePicker, NumberPicker } from "./misc/misc"
 import { awardLists, awardTypes } from "../constants/constants"
+import { Chart } from "./misc/chart"
 
+function arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+  return a.every((val, i) => val === b[i]);
+}
 
 
 export const RecordTable = (props)=>{
@@ -17,7 +22,11 @@ export const RecordTable = (props)=>{
     const [focusName,setFocusName] = useState('All')
     const [awardType,setAwardType] = useState('All')
     const [summaryYear,setSummaryYear] = useState('All')
+    const [chartVisible,setChartVisible] = useState(false)
+    const chartData = useRef(null)
+    const chartRef = useRef(null)
     const rowRef = useRef(0)
+    const containerRef = useRef(null)
     // // const tableRef = useRef(null);
     // const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
     const pickSumYear = <NamePicker title={'Year: '} freezeScroll={true} scrollInfo={{scrollRef,stickyRef,'id':'data-row','rowRef':rowRef}} showAll={true} selecting={setSummaryYear} curval={summaryYear} options={activeYears} key={'st'}></NamePicker>
@@ -51,6 +60,37 @@ export const RecordTable = (props)=>{
         container.scrollTop = offset - stickyHeight - 5
         return ()=> container.scrollTop = 0
     },[focusName,focusWeek,summaryYear,focusNFL,numToShow])
+
+    useEffect(() => {
+    if (!chartVisible) return;
+
+    const handleClickOutside = (event) => {
+// console.log("event.target:", event.target);
+// console.log("chartRef contains it:", chartRef.current?.contains(event.target));
+// console.log(chartRef.current.getBoundingClientRect());
+// console.log(event.composedPath?.().includes(chartRef.current))
+
+
+
+      if (chartRef.current && !chartRef.current.contains(event.target)&&containerRef?.current.contains(event.target)) {
+        setChartVisible(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setChartVisible(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [chartVisible]);
+
         
     const awards = shownRecords
     let out = [<div className="tableRow" key={'trh'} data-row={0}>
@@ -153,14 +193,23 @@ export const RecordTable = (props)=>{
         filtered = filtered.slice(0,Math.max(1,numToShow))
         myRank = GenerateOutputList(filtered,'selected',award.meta,count,'hi')
 
-  
+            // if(award.meta.includes('meta')){console.log(award.meta,award.title,award)}
+            // if(!(arraysEqual(award.meta,['name'])||arraysEqual(award.meta,['year'])||arraysEqual(award.meta,['year','week'])||arraysEqual(award.meta,['name','year'])||arraysEqual(award.meta,['name','record'])||arraysEqual(award.meta,['name','recordStarting'])||arraysEqual(award.meta,['name','teams']))){console.log(award.meta,award.title)}
         out.push(
             <div key={award.title} className="tableRow" data-row={ind+1}>
+
                 <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
                 <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}</p></div>
                 <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div>
                 <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
+                <button
+                disabled={chartVisible}
+                onClick={() => {chartData.current={data:sorted,title:award.title,desc:award.desc,meta:award.meta};setChartVisible(true)}}
+                style={{backgroundColor:'transparent',position:'absolute',inset:0,zIndex:chartVisible?-1:1}}
+                className="tableRow"
+                >
+                </button>
             </div>
         ) 
     }
@@ -175,7 +224,35 @@ export const RecordTable = (props)=>{
          
               </div>,
     
-    <div className='tableContainer' key={'tbc'}>{out}</div>]
+    <div className='tableContainer' key={'tbc'} ref={containerRef}>{out}</div>,
+    <div key={'chart1'}>{chartVisible && (<div
+        ref={chartRef}
+          style={{
+        position: 'fixed',
+        top: '23%',
+        left: '10%',
+        width:'80%',
+        height:'55vh',
+        // transform: 'translate(-50%, -50%)',
+        backgroundColor: 'white',
+        padding: '20px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+        // borderColor:'red',
+        zIndex: 1000,
+            // position: 'absolute',
+            // top: '80px',
+            // left: '40px',
+            backgroundColor: '#282c34',
+            border: '1px solid #ccc',
+            padding: '20px',
+            // zIndex: 10,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          }}
+        >
+          {/* <p>This is a popup. Click outside to close.</p> */}
+          <Chart info={chartData.current} focus={focus} />
+    </div>)}</div>
+]
     // </div>
 
 }

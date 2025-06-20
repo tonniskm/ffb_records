@@ -13,15 +13,14 @@ import { MatchupTable} from './tools/outputs/matchupTable';
 import { FantasyTeams } from './tools/outputs/fantasyTeams';
 import { loadingScreen } from './tools/outputs/loadingScreen';
 import { RecentUpdates } from './tools/outputs/recentUpdates';
-import { callProj } from './tools/fetching/callProj2';
 import { callRaw } from './tools/fetching/callRaw2';
 import { WeeklyReview } from './tools/outputs/weeklyReview';
 import { PlayerTable } from './tools/outputs/playerTable';
 import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
-import { savedProj } from './tools/fetching/saved_jsons/proj/saved';
 import { YearlyReview } from './tools/outputs/yearlyReview';
+
  
 // import { styleSheet } from './tools/styles/styles';   
     
@@ -179,7 +178,8 @@ function App() {
 
 
            
-  console.log({records,oldRecords,weekOldRecords})
+  console.log({records,raw,proj})
+  // console.log(proj.filter(x=>x.Week==1&&x.PlayerFantasyTeam===14))
   // console.log(proj)
   
  
@@ -213,6 +213,7 @@ function App() {
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
+        {/* <Chart data={records?.nameAwards[0].values} name={'Kevin'} year={null}/> */}
         <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
