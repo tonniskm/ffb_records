@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Legend, Bar, Cell, ResponsiveContainer, Scatter, ScatterChart } from 'recharts';
 import { NamePicker } from './misc';
 
@@ -14,12 +14,18 @@ export const Chart = (props) =>{
     let name = props.focus.name
     let year =props.focus.year
     let week = props.focus.week
+
+    const containerRef = useRef(null);
+    const topRef = useRef(null)
+    const [containerHeight, setContainerHeight] = useState(0);
+    const [topHeight, setTopHeight] = useState(0);
     // let {name,year,week} = {name:props.focus.focusName,year:props.focus.focusYear,week:props.focus.focusWeek}
     let data = dataIn.filter(x=>true)
     let meta = metaIn.filter(x=>true)
     data.forEach(x=>{
         x.year = parseInt(x?.year||0)
     })
+
     if(arraysEqual(meta,['year', 'week', 't1', 't2', 's1', 's2'])){meta=['year','week']}
     if(arraysEqual(meta,['name', 'year', 'week', 't1', 't2', 's1', 's2'])){meta=['name','year','week']}
 
@@ -30,15 +36,49 @@ export const Chart = (props) =>{
     arraysEqual(meta,['year'])?xAxis='year':
     arraysEqual(meta,['year','week'])||arraysEqual(meta,['name','year'])||arraysEqual(meta,['name','year','week'])?xAxis=xAxisPick:
     xAxis='name'
-    const [sortBy,setSortBy] = useState(xAxis==='week'?'Week':'Year')
+
+    const [sortBy,setSortBy] = useState(xAxis==='name'?'Value':(xAxis==='week'?'Value':'Value'))
+
     const sortPick = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Year']} key={'sb'}></NamePicker>
-    const sortPick2 = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Week']} key={'sb'}></NamePicker>
-    
+    const sortPick2 = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Week']} key={'sb1'}></NamePicker>
+    const sortPick3 = <NamePicker title={'Sort By: '} showAll={false} selecting={setSortBy} curval={sortBy} options={['Value','Alphabet']} key={'sb2'}></NamePicker>
     // const xAxisPicker = <NamePicker title={'xAxis: '} showAll={false} selecting={setXAxisPick} curval={xAxisPick} options={['name','year']} key={'xxs'}></NamePicker>
     useEffect(()=>{
-        if(sortBy==='Week'){setSortBy('Year')}
-        if(sortBy==='Year'){setSortBy('Week')}
+        if(['Week','Year','Alphabet'].includes(sortBy)){
+            if(xAxisPick==='year'){setSortBy('Year')}
+            if(xAxisPick==='week'){setSortBy('Week')}
+            if(xAxisPick==='name'){setSortBy('Alphabet')}
+        }
     },[xAxisPick])
+
+      useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect) {
+          setContainerHeight(entry.contentRect.height);
+        }
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!topRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect) {
+          setTopHeight(entry.contentRect.height);
+        }
+      }
+    });
+
+    observer.observe(topRef.current);
+    return () => observer.disconnect();
+  }, []);
 
     // if(arraysEqual(meta,['name'])||arraysEqual(meta,['year'])||arraysEqual(meta,['year','week'])||arraysEqual(meta,['name','year'])||arraysEqual(meta,['name','record'])||arraysEqual(meta,['name','recordStarting'])||arraysEqual(meta,['name','teams'])||arraysEqual(meta,['name','year','week'])){ // name bar chart
 
@@ -64,6 +104,10 @@ export const Chart = (props) =>{
             sortButton = sortPick2
             if(sortBy==='Week'){data=data.sort((a,b)=>a.week-b.week)}else{data=dataIn}
         }
+        if(xAxis==='name'){
+            sortButton= sortPick3
+            if(sortBy==='Alphabet'){data=data.sort((a,b)=>a.name.localeCompare(b.name))}else(data=dataIn)
+        }
         
         const uniqueX = [...new Set(data.map(item => item[xAxis]))];
         if (xAxis==='name'||xAxis==='year'||xAxis==='week'){
@@ -74,13 +118,17 @@ export const Chart = (props) =>{
         }
         // console.log(uniqueX,data,xAxis,meta,sortBy)
         return (
-            <div style={{width:'100%',height:'100%'}}>
-                {sortButton}
-                {xAxisButton}
-                <p>{title}</p>
-                <p>{desc}</p>
+            <div style={{width:'100%',height:'100%',flexDirection:'column'}} ref={containerRef}
+                  >
+                <div style={{}} ref={topRef}>
+                <div style={{}}>{sortButton}
+                {xAxisButton}</div>
+                <div style={{gap:0}}><p style={{margin:5}}>{title}</p>
+                <p style={{margin:5}}>{desc}</p></div>
+                </div>
+        <div style={{height:containerHeight?containerHeight-topHeight:0,width:'100%'}}>
         <ResponsiveContainer>
-        <ScatterChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 70 }}>
+        <ScatterChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
             <XAxis
             dataKey={xAxis==='name'||xAxis==='year'||xAxis==='week'?'xNum':xAxis}
@@ -169,6 +217,7 @@ export const Chart = (props) =>{
         </Scatter>
         </ScatterChart>
         </ResponsiveContainer>
+        </div>
             </div>
       );
     

@@ -23,6 +23,7 @@ export const RecordTable = (props)=>{
     const [awardType,setAwardType] = useState('All')
     const [summaryYear,setSummaryYear] = useState('All')
     const [chartVisible,setChartVisible] = useState(false)
+    const [chartInd,setChartInd] = useState({})
     const chartData = useRef(null)
     const chartRef = useRef(null)
     const rowRef = useRef(0)
@@ -205,7 +206,7 @@ export const RecordTable = (props)=>{
                 <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
                 <button
                 disabled={chartVisible}
-                onClick={() => {chartData.current={data:sorted,title:award.title,desc:award.desc,meta:award.meta};setChartVisible(true)}}
+                onClick={() => {setChartInd({data:sorted,title:award.title,desc:award.desc,meta:award.meta});setChartVisible(true)}}
                 style={{backgroundColor:'transparent',position:'absolute',inset:0,zIndex:chartVisible?-1:1,borderWidth:0}}
                 className="tableRow"
                 >
@@ -228,12 +229,13 @@ export const RecordTable = (props)=>{
     <div key={'chart1'}>{chartVisible && (<div
         ref={chartRef}
           style={{
+            overflow:'hidden',
         position: 'fixed',
-        top: '23%',
-        left: '10%',
+        top: '50%',
+        left: '50%',
         width:'80%',
         height:'55vh',
-        // transform: 'translate(-50%, -50%)',
+        transform: 'translate(-50%, -50%)',
         backgroundColor: 'white',
         padding: '20px',
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
@@ -250,7 +252,7 @@ export const RecordTable = (props)=>{
           }}
         >
           {/* <p>This is a popup. Click outside to close.</p> */}
-          <Chart info={chartData.current} focus={focus} />
+          <Chart info={chartInd} focus={focus} />
     </div>)}</div>
 ]
     // </div>

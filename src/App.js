@@ -20,14 +20,18 @@ import { DraftReview } from './tools/outputs/draftReview';
 import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
 import { YearlyReview } from './tools/outputs/yearlyReview';
+import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
+import { predone } from './tools/calculations/draft/predone';
 
- 
+  
 // import { styleSheet } from './tools/styles/styles';   
-    
+const UPDATE_DRAFT_INFO = false
+//update proj by copying from chrome calling api
 function App() {
   const [raw,setRaw] = useState([{'Week':'init'}])
   const [proj,setProj] = useState([{'Week':'init'}])
   const [fa,setFa] = useState([{'Week':'init'}])
+  // const [NFLstats,setNFLstats] = useState([])
   const [records,setRecords] = useState({})
   const [oldRecords,setOldRecords] = useState({})
   const [weekOldRecords,setWeekOldRecords] = useState({})
@@ -90,7 +94,8 @@ function App() {
     'activeWeeks':activeWeeks,
     'activeYears':activeYears,
     'allNFLNames':allNFLNames,
-    'activeNames':activeNames
+    'activeNames':activeNames,
+    // NFLstats:NFLstats,setNFLstats
   }
 
   let outTest = [] 
@@ -145,12 +150,13 @@ function App() {
     // output = loadingScreen()    testing 
   useEffect(()=>{   
     if(raw['Week']!='init'){callRaw(vars,setRaw)}
+    if(UPDATE_DRAFT_INFO){getPlayerIDInfo(vars)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
   },[])    
   useEffect(()=>{     
     // CallESPNRaw(vars,setRaw,loading,setLoading)
     if(proj['Week']!='init'){callProj2(vars,setProj)}
-  },[])      
+  },[])        
  
   useEffect(()=>{    
       if(Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString())&&!didMount){
@@ -209,6 +215,7 @@ function App() {
   }                                 
 //   console.log(proj)   
 //  console.log(raw)  
+  // console.log(predone.filter(x=>x.height))
   return (                               
     <div className="App" key={'app'}>         
       <header className="App-header" key={'head'}> 

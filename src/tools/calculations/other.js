@@ -276,3 +276,29 @@ export function expandProj(proj,tables,vars){
       
       return filtered
 }
+
+const replacements = [['Jaguars D/ST','Jacquarfs D/ST'],["Ja'Marr Chase",'Chase Lay'],['Hollywood Brown','Marquise Brown'],
+['Chig Okonkwo','Chigoziem Okonkwo']]
+export function CleanName(name){
+    let cleanName = name
+        for (const replacement of replacements){
+        cleanName = cleanName.replace(replacement[1],replacement[0])
+    }
+        cleanName = FixJrs(cleanName)
+    return cleanName
+}
+export function DirtyName(name){
+    let out = name
+    for (const replacement of replacements){
+        out = out.replace(replacement[0],replacement[1])
+    }
+    return out
+}
+const JRS = [' Jr.',' Sr.',' II',' III',' IV']
+export function FixJrs(name){
+    let out = name
+    for(const jr of JRS){
+       out = out.replace(jr,'')
+    }
+    return out
+}

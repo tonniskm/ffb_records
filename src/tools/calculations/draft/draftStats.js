@@ -1,12 +1,16 @@
-import { GetPickNo, SortNRank } from "../other";
+import { CleanName, GetPickNo, SortNRank } from "../other";
+import { predone } from "./predone";
 
-
-export async function AnalyzeDraft(records,yearMax,vars){
+//cahnge false to true below to download an updated json
+export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,playerInfo=null){
     let promises = []
     let rawDrafts = {}
     let rawRanks = {}
-    let draftInfo = []
+    // let draftInfo = []
+    const draftInfo = updateSaved?[]:predone
+    const yearsDone = [...new Set(draftInfo.flatMap(obj => Object.values(obj)))].map(x=>parseInt(x))
     for(let year=2015;year<=yearMax;year++){
+        if(yearsDone.includes(year)&&!updateSaved){continue}
         promises.push(fetch(`/drafts/${year.toString()}.csv`).then(res=>
             res.text()).then(text=>{
                 const lines = text.trim().split('\n');
@@ -68,11 +72,39 @@ export async function AnalyzeDraft(records,yearMax,vars){
                         const pickNo = GetPickNo(round,pickInd,keys.length-1)
                         const reach = pickNo - rank
                         const reachWeight = reach/round
-                        draftInfo.push({year,name,pickNo,rank,NFLteam,NFLName,bye,pos,reachWeight})
+                        
+                        let height, weight, dob, age
+                        // const statsLines = vars.NFLstats.filter(x=>x.name===CleanName(NFLName))
+                        const statsLines = playerInfo.find(x=>x.name===CleanName(NFLName))
+                        if(statsLines!==undefined){
+                            const statLine = statsLines
+                            height = statLine.height/12 //in to ft
+                            weight = statLine.weight
+                            dob = statLine.dob
+                            const convdob = new Date(dob)
+                            const sept1 = new Date(`${year}-09-01T00:00:00Z`);
+                            const msPerYear = 1000 * 60 * 60 * 24 * 365.2425; // average accounting for leap years
+                            const ageInMilliseconds = sept1 - convdob;
+                            age = ageInMilliseconds / msPerYear;
+                        }
+                        draftInfo.push({year,name,pickNo,rank,NFLteam,NFLName,bye,pos,reachWeight,height,weight,dob,whratio:height>0?weight/height:undefined,age})
                     }//key
             }//line
         }//year
     })//then
+    // console.log(draftInfo)
+    if(updateSaved){ // do this to update already finished
+        const blob = new Blob([JSON.stringify(draftInfo,null,2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+    
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        a.click();
+        URL.revokeObjectURL(url); // Clean up
+        return
+    }
+
     const list = [
         {'id':'draft1','title':'Who Dey!','desc':'The person who has drafted the most Bengals','filter':'NFLteam','by':'cin','MinMax':'max','meta':['name'],'agg':'name'},
         {'id':'draft2','title':'Bad Fan','desc':'The person who has drafted the fewest Bengals','filter':'NFLteam','by':'cin','MinMax':'min','meta':['name'],'agg':'name'},
@@ -83,7 +115,12 @@ export async function AnalyzeDraft(records,yearMax,vars){
         {'id':'draft7','title':"Brenna's Curse",'desc':'The person with the earliest average pick','filter':'pickNo','by':'sp','MinMax':'min','meta':['name'],'agg':'name'},
         {'id':'draft8','title':'Bored','desc':'The person with the latest average pick','filter':'pickNo','by':'sp','MinMax':'max','meta':['name'],'agg':'name'},
         {'id':'draft9','title':'Bargain Hunter','desc':'The person with best average draft value','filter':'reachWeight','by':'avg','MinMax':'max','meta':['name'],'agg':'name'},
-        {'id':'draft10','title':'Hey Big Spender!','desc':'The person with worst average draft value','filter':'reachWeight','by':'avg','MinMax':'min','meta':['name'],'agg':'name'}
+        {'id':'draft10','title':'Hey Big Spender!','desc':'The person with worst average draft value','filter':'reachWeight','by':'avg','MinMax':'min','meta':['name'],'agg':'name'},
+        {'id':'draft11','title':'Height Supremecist','desc':'The person who drafts the tallest players (ft)','filter':'height','by':'avg','MinMax':'max','meta':['name'],'agg':'name'},
+        {'id':'draft12','title':'Chubby Chaser','desc':'The person who drafts the heaviest players (lbs)','filter':'weight','by':'avg','MinMax':'max','meta':['name'],'agg':'name'},
+        {'id':'draft13','title':'Big Chongus','desc':'The person who drafts the highest weight/height ratio (lbs/ft)','filter':'whratio','by':'avg','MinMax':'max','meta':['name'],'agg':'name'},
+        {'id':'draft14','title':'Elder Respecter','desc':'The person who drafts the oldest players on average (yrs)','filter':'age','by':'avg','MinMax':'max','meta':['name'],'agg':'name'}
+      
       ]
     const poses = ['QB','RB','WR','TE','D/ST','K']
 
@@ -104,6 +141,7 @@ export async function AnalyzeDraft(records,yearMax,vars){
                     onlyVals.push(value)
                 }
                 else if(item.by==='avg'){
+                    filtered = filtered.filter(x=>x[item.filter])
                     const value = filtered.reduce((sum,x)=>sum+x[item.filter],0)/filtered.length
                     vals.push({value,name})
                     onlyVals.push(value)
