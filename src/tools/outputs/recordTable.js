@@ -27,6 +27,7 @@ export const RecordTable = (props)=>{
     const chartData = useRef(null)
     const chartRef = useRef(null)
     const rowRef = useRef(0)
+    const ignoreNextRowClick = useRef(false);
     const containerRef = useRef(null)
     // // const tableRef = useRef(null);
     // const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
@@ -74,7 +75,11 @@ export const RecordTable = (props)=>{
 
 
       if (chartRef.current && !chartRef.current.contains(event.target)&&containerRef?.current.contains(event.target)) {
+        ignoreNextRowClick.current = true;
         setChartVisible(false);
+        setTimeout(() => {
+        ignoreNextRowClick.current = false;
+      }, 0);
       }
     };
     const handleKeyDown = (e) => {
@@ -198,7 +203,8 @@ export const RecordTable = (props)=>{
             // if(!(arraysEqual(award.meta,['name'])||arraysEqual(award.meta,['year'])||arraysEqual(award.meta,['year','week'])||arraysEqual(award.meta,['name','year'])||arraysEqual(award.meta,['name','record'])||arraysEqual(award.meta,['name','recordStarting'])||arraysEqual(award.meta,['name','teams']))){console.log(award.meta,award.title)}
         out.push(
             <div key={award.title} className="tableRow" data-row={ind+1}
-            onClick={() => {setChartInd({data:sorted,title:award.title,desc:award.desc,meta:award.meta});setChartVisible(true)}}
+            onClick={() => {if(!chartVisible && !ignoreNextRowClick.current){setChartInd({data:sorted,title:award.title,desc:award.desc,meta:award.meta});setChartVisible(true)}}}
+            // disabled={chartVisible}
             >
                 <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
@@ -234,8 +240,8 @@ export const RecordTable = (props)=>{
         position: 'fixed',
         top: '50%',
         left: '50%',
-        width:'80%',
-        height:'55vh',
+        width:'75%',
+        height:'45%',
         transform: 'translate(-50%, -50%)',
         backgroundColor: 'white',
         padding: '20px',
