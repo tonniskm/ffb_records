@@ -197,20 +197,21 @@ export const RecordTable = (props)=>{
             // if(award.meta.includes('meta')){console.log(award.meta,award.title,award)}
             // if(!(arraysEqual(award.meta,['name'])||arraysEqual(award.meta,['year'])||arraysEqual(award.meta,['year','week'])||arraysEqual(award.meta,['name','year'])||arraysEqual(award.meta,['name','record'])||arraysEqual(award.meta,['name','recordStarting'])||arraysEqual(award.meta,['name','teams']))){console.log(award.meta,award.title)}
         out.push(
-            <div key={award.title} className="tableRow" data-row={ind+1}>
-
+            <div key={award.title} className="tableRow" data-row={ind+1}
+            onClick={() => {setChartInd({data:sorted,title:award.title,desc:award.desc,meta:award.meta});setChartVisible(true)}}
+            >
                 <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
                 <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}</p></div>
                 <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div>
                 <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
-                <button
+                {/* <button
                 disabled={chartVisible}
                 onClick={() => {setChartInd({data:sorted,title:award.title,desc:award.desc,meta:award.meta});setChartVisible(true)}}
                 style={{backgroundColor:'transparent',position:'absolute',inset:0,zIndex:chartVisible?-1:1,borderWidth:0}}
                 className="tableRow"
                 >
-                </button>
+                </button> */}
             </div>
         ) 
     }

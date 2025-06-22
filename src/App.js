@@ -21,7 +21,7 @@ import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
 import { YearlyReview } from './tools/outputs/yearlyReview';
 import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
-import { predone } from './tools/calculations/draft/predone';
+
 
   
 // import { styleSheet } from './tools/styles/styles';   
