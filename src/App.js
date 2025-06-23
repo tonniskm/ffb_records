@@ -229,7 +229,7 @@ function App() {
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         {/* <Chart data={records?.nameAwards[0].values} name={'Kevin'} year={null}/> */}
-        <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'}>
+        {/* <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'}> */}
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
@@ -241,7 +241,7 @@ function App() {
           {/* </div> */} 
         {/* </div> */}
           </div>
-        </PinchZoomDiv>
+        {/* </PinchZoomDiv> */}
       </header>   
     </div> 
   );  
