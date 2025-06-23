@@ -217,7 +217,15 @@ function App() {
 //  console.log(raw)  
   // console.log(predone.filter(x=>x.height))
   return (                               
-    <div className="App" key={'app'}>         
+    <div className="App" key={'app'}  style={{
+    paddingTop: 'env(safe-area-inset-top)',
+    paddingBottom: 'env(safe-area-inset-bottom)',
+    paddingLeft: 'env(safe-area-inset-left)',
+    paddingRight: 'env(safe-area-inset-right)',
+    height: '100vh',
+    boxSizing: 'border-box',
+    overflow:'hidden'
+  }}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         {/* <Chart data={records?.nameAwards[0].values} name={'Kevin'} year={null}/> */}
