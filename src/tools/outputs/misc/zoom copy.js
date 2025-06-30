@@ -5,9 +5,10 @@ export default function PinchZoomContainer({
   minScale = 0.5,
   maxScale = 3,
   style = {},
+  scale,
+  setScale
 }) {
   const containerRef = useRef(null);
-  const [scale, setScale] = useState(1);
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const lastDistance = useRef(null);
 
@@ -73,7 +74,7 @@ export default function PinchZoomContainer({
     >
       <div
   style={{
-    width: '100%',
+    width:`${100/scale}%`,
     height: '100%',
     transform: `scale(${scale})`,
     transformOrigin: '0 0',

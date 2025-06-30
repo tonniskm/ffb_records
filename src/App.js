@@ -40,6 +40,8 @@ function App() {
   
 
   const [didMount,setDidMount] = useState(false) 
+  const [scale, setScale] = useState(1);
+  
 
   const scrollRef  = useRef(null)
   // const stickyRef = useRef(null);
@@ -229,7 +231,7 @@ function App() {
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         {/* <Chart data={records?.nameAwards[0].values} name={'Kevin'} year={null}/> */}
-        <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'}>
+        <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'} scale={scale} setScale={setScale}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
