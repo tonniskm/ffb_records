@@ -17,7 +17,7 @@ export const RecordTable = (props)=>{
     const {allNFLNames,allNames,activeWeeks,activeYears,activeNames} = vars
     const stickyRef = useRef(null)
     const [focusNFL,setFocusNFL] = useState('All')
-    const [numToShow,setNumToShow] = useState(3) 
+    const [numToShow,setNumToShow] = useState(1) 
     const [focusWeek,setFocusWeek] = useState('All')
     const [focusName,setFocusName] = useState('All')
     const [awardType,setAwardType] = useState('All')

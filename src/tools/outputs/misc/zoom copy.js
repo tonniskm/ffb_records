@@ -63,7 +63,7 @@ export default function PinchZoomContainer({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
       style={{
-        // overflow: 'auto',
+        overflow: 'auto',
         width: '100%',
         height: '100%',
         touchAction: 'none',

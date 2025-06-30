@@ -128,7 +128,7 @@
   /* flex-shrink: 1; */
 }
 .buttons{
-  margin-left: 20px;
+  margin-left: 7px;
   padding-bottom: 5px;
   font-size: 16;
   display: inline-block;
@@ -182,7 +182,7 @@
   max-width: 150px;
 }
 .holder{
-  max-width: 150px;
+  max-width: 100px;
   white-space: wrap;
 }
 .recordCell{
@@ -204,7 +204,7 @@
   position: -webkit-sticky;
 }
 .txt{
-  padding: 2px;
+  padding: 1px;
   font-size: 12px;
 }
 .titleTxt{
