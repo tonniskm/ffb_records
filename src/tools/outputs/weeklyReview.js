@@ -127,12 +127,12 @@ try{
         }//for winner, loser
         let gameCard = []
         if(winner!=='TIE'){gameCard=gameCard.concat([
-            <p className="titleText">Margin of Victory: {Round(dif)}</p>,
-            <div className="smallText">{SummaryLine(dif,beatdown.winner,'max')}</div>,
-            <p className="titleText">High Score Defeated: {Round(sLose)}</p>,
-            <div className="smallText">{SummaryLine(sLose,takedown.winner,'max')}</div>,
-            <p className="titleText">Low Win Score: {Round(sWin)}</p>,
-            <div className="smallText">{SummaryLine(sWin,lowWin.winner,'min')}</div>,
+            <p className="titleText" key={'ttt'+gameNo}>Margin of Victory: {Round(dif)}</p>,
+            <div className="smallText" key={'ttt1'+gameNo}>{SummaryLine(dif,beatdown.winner,'max')}</div>,
+            <p className="titleText" key={'ttt2'+gameNo}>High Score Defeated: {Round(sLose)}</p>,
+            <div className="smallText" key={'ttt3'+gameNo}>{SummaryLine(sLose,takedown.winner,'max')}</div>,
+            <p className="titleText" key={'ttt4'+gameNo}>Low Win Score: {Round(sWin)}</p>,
+            <div className="smallText" key={'ttt5'+gameNo}>{SummaryLine(sWin,lowWin.winner,'min')}</div>,
         ])}
         gameCard=gameCard.concat([
             <p className="titleText" key={'tt'+gameNo}>High Combined Score: {Round(sWin+sLose)}</p>,
@@ -141,7 +141,7 @@ try{
             <p className="smallText" key={'mm1'+gameNo}>{records.matchupTable[oppo][name].join("-")}</p>
         ])
         gamesOut.push(
-            <div className="game" key={winner}>
+            <div className="game" key={winner+gameNo}>
                 <div className="players" key={winner+'1'}>{playerCards}</div>
                 {gameCard}
             </div>

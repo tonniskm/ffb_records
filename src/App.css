@@ -129,7 +129,8 @@
 }
 .buttons{
   margin-left: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+  font-size: 16;
   display: inline-block;
   flex-direction: row;
 
@@ -178,10 +179,10 @@
 }
 .description{
   white-space:wrap;
-  max-width: 200px;
+  max-width: 150px;
 }
 .holder{
-  max-width: 200px;
+  max-width: 150px;
   white-space: wrap;
 }
 .recordCell{
@@ -204,6 +205,7 @@
 }
 .txt{
   padding: 2px;
+  font-size: 12px;
 }
 .titleTxt{
   color: white;
@@ -213,12 +215,12 @@
 .numberPicker{
   padding-left: 2px;
   padding-right: 0px;
-  font-size: 20px;
+  font-size: 16px;
   max-width: 40px;
   width: auto;
 }
 .wordPicker{
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
 }
 .lds-spinner,

@@ -72,17 +72,19 @@ export default function PinchZoomContainer({
       }}
     >
       <div
-        style={{
-          width: `${100 * scale}%`,
-          height: `${100 * scale}%`,
-          transform: `scale(${1 / scale})`,
-          transformOrigin: `${origin.x}px ${origin.y}px`,
-        }}
-      >
-        <div style={{ width: '100%', height: '100%' }}>
-          {children}
-        </div>
-      </div>
+  style={{
+    width: '100%',
+    height: '100%',
+    transform: `scale(${scale})`,
+    transformOrigin: '0 0',
+    willChange: 'transform',
+  }}
+>
+  <div style={{ width: '100%', height: '100%' }}>
+    {children}
+  </div>
+</div>
+
     </div>
   );
 }
