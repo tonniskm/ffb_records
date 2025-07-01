@@ -40,7 +40,7 @@ function App() {
   
 
   const [didMount,setDidMount] = useState(false) 
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(.5);
   
 
   const scrollRef  = useRef(null)
