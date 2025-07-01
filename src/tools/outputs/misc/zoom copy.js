@@ -75,7 +75,7 @@ export default function PinchZoomContainer({
       <div
   style={{
     width:`${100/scale}%`,
-    height: '100%',
+    height:`${100/scale}%`,
     transform: `scale(${scale})`,
     transformOrigin: '0 0',
     willChange: 'transform',
