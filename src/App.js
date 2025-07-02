@@ -224,15 +224,15 @@ function App() {
     paddingBottom: 'env(safe-area-inset-bottom)',
     paddingLeft: 'env(safe-area-inset-left)',
     paddingRight: 'env(safe-area-inset-right)',
-    height: '100vh',
-    width:'100vw',
+    height: '100%',
+    width:'100%',
     boxSizing: 'border-box',
     overflow:'hidden'
   }}>         
       <header className="App-header" key={'head'}> 
         {/* <div>{loading['raw']}</div> */}
         {/* <Chart data={records?.nameAwards[0].values} name={'Kevin'} year={null}/> */}
-        <PinchZoomDiv style={{ height: '100vh', }} key={'pinchzoomdiv'} scale={scale} setScale={setScale}>
+        <PinchZoomDiv style={{ height: '100%', }} key={'pinchzoomdiv'} scale={scale} setScale={setScale}>
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
