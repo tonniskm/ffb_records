@@ -225,6 +225,7 @@ function App() {
     paddingLeft: 'env(safe-area-inset-left)',
     paddingRight: 'env(safe-area-inset-right)',
     height: '100vh',
+    width:'100vw',
     boxSizing: 'border-box',
     overflow:'hidden'
   }}>         

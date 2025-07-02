@@ -103,7 +103,7 @@ export const RecordTable = (props)=>{
                 <div className="headerCell" key={'rrh'}><p className="txt">Record</p></div>
                 <div className="headerCell" key={'drh'}><p className="txt">Description</p></div>
                 <div className="headerCell" key={'wrh'}><p className="txt">1st Place</p></div>
-                <div className="headerCell" key={'wnrh'}><p className="txt">Holder</p></div>
+                {/* <div className="headerCell" key={'wnrh'}><p className="txt">Holder</p></div> */}
                 <div className="headerCell" key={'crh'}><p className="txt">Selected Comparison</p></div>
     </div>]
 
@@ -208,8 +208,8 @@ export const RecordTable = (props)=>{
             >
                 <div className="tableCell recordTitle" key={award.title+'title'}><p className="txt">{award.title}</p></div>
                 <div className="tableCell description" key={award.title+'d'}><p className="txt">{award.desc}</p></div>
-                <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}</p></div>
-                <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div>
+                <div className="tableCell holder" key={award.title+'wv'}><p className="txt">{r1}{`\n`}{winners}</p></div>
+                {/* <div className="tableCell holder" key={award.title+'w'}><p className="txt">{winners}</p></div> */}
                 <div className="tableCell myScores" key={award.title+'c'}><p className="txt">{myRank}</p></div>
                 {/* <button
                 disabled={chartVisible}
