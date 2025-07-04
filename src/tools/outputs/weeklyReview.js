@@ -11,6 +11,7 @@ export const  WeeklyReview = ({pickMacro,raw,proj,records,vars,awards})=>{
     
     const [week,setWeek] = useState(vars.activeWeeks[vars.activeWeeks.length-1])
     const [year,setYear] = useState(vars.activeYears[vars.activeYears.length-1])
+    const [compType,setCompType] = useState('All Time')
     const [focusName,setFocusName] = useState('All')
 
     function SummaryLine(mine,vals,minmax,valueKey='value'){
@@ -29,20 +30,21 @@ try{
     const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setYear} curval={year} options={vars.activeYears} key={'wry'}></NamePicker>
     const pickWeek = <NamePicker title={'Week: '} showAll={false} selecting={setWeek} curval={week} options={vars.activeWeeks} key={'wrw'}></NamePicker>
     const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
+    const pickComp = <NamePicker title={'Comparisons vs: '} showAll={false} selecting={setCompType} curval={compType} options={['All Time','This Year']} key={'1comp'}></NamePicker>
     
     const names = ChooseNames(vars,year)
     // console.log(raw[2020].filter(x=>x.Week===10))
     const rawGames = raw[year].filter(x=>x.Week==week)
     let gamesOut = []
-    const highScores = awards.filter(x=>x.id==='ga6')[0].values
-    const beatdown = {'winner':awards.filter(x=>x.id==='ga3')[0].values, //big blowout
-        'loser':awards.filter(x=>x.id==='ga3.1')[0].values }//big blowout loss
-    const takedown = {'winner':awards.filter(x=>x.id==='ga4')[0].values, // beat high score
-        'loser':awards.filter(x=>x.id==='ga4.1')[0].values} //loss with high score
-    const lowWin = {'winner':awards.filter(x=>x.id==='ga5')[0].values, //low win
-        'loser': awards.filter(x=>x.id==='ga5.1')[0].values} // lost to low
-    const shootout=awards.filter(x=>x.id==='ga1')[0].values
-    const bestWeek = awards.filter(x=>x.id==='wa1')[0].values
+    const highScores = awards.filter(x=>x.id==='ga6')[0].values.filter(x=>compType==='All Time'||x.year==year)
+    const beatdown = {'winner':awards.filter(x=>x.id==='ga3')[0].values.filter(x=>compType==='All Time'||x.year==year), //big blowout
+        'loser':awards.filter(x=>x.id==='ga3.1')[0].values.filter(x=>compType==='All Time'||x.year==year) }//big blowout loss
+    const takedown = {'winner':awards.filter(x=>x.id==='ga4')[0].values.filter(x=>compType==='All Time'||x.year==year), // beat high score
+        'loser':awards.filter(x=>x.id==='ga4.1')[0].values.filter(x=>compType==='All Time'||x.year==year)} //loss with high score
+    const lowWin = {'winner':awards.filter(x=>x.id==='ga5')[0].values.filter(x=>compType==='All Time'||x.year==year), //low win
+        'loser': awards.filter(x=>x.id==='ga5.1')[0].values.filter(x=>compType==='All Time'||x.year==year)} // lost to low
+    const shootout=awards.filter(x=>x.id==='ga1')[0].values.filter(x=>compType==='All Time'||x.year==year)
+    const bestWeek = awards.filter(x=>x.id==='wa1')[0].values.filter(x=>compType==='All Time'||x.year==year)
     const thisWeek = bestWeek.filter(x=>x.year===year.toString()&&x.week==week)
     let weekOverview = []
     if(thisWeek.length>0){
@@ -102,7 +104,7 @@ try{
                 if(pos==='D/ST'){
                     winStats.push(<div className="titleText" key={'flex'}>FLEX</div>)
                     winStats=winStats.concat(flexStats)}
-                const all = records.allProj.filter(x=>x.didStart)
+                const all = records.allProj.filter(x=>x.didStart).filter(x=>compType==='All Time'||x.year==year)
                 const allPos = all.filter(x=>x.pos===pos)
                 const allMyPos = allPos.filter(x=>x.team===name)
                 const allPosVsOppo = allPos.filter(x=>x.oppo===oppo)
@@ -156,6 +158,7 @@ try{
         {pickYear}
         {pickWeek}
         {pickName}
+        {pickComp}
         </div>
         </div>,
         <div key={'div2'}>

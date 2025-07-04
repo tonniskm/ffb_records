@@ -112,7 +112,7 @@ function App() {
   if(records.nameAwards!=undefined){
     if(macroType=='Records'){ 
 
-        outTest = <RecordTable allAwards={allAwards} vars={vars}
+        outTest = <RecordTable allAwards={allAwards} vars={vars} scale={scale}
           scrollRef={scrollRef}  pickMacro={pickMacro}></RecordTable>
       output =outTest
     }    
@@ -236,7 +236,7 @@ function App() {
 
         <div className='appContainer' key={'appcont'} ref={scrollRef}>
             {/* <button onClick={()=>Test4()}>testrecords</button>  */}
-            <img key={'trophy'} src={trophy} className='logo' alt="logo" />
+            <div className='logoContainer'><img key={'trophy'} src={trophy} className='logo' alt="logo" /></div>
           {/* <div className='bannerContainer' > */}
           
           {/* <div className='tableWrapper'> */}

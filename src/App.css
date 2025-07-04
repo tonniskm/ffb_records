@@ -21,7 +21,13 @@
   pointer-events: none;
 }
 .logo{
-  height:200px
+  height:200px;
+}
+.logoContainer{
+  position: sticky;
+  position: -webkit-sticky;
+  width:100%;
+  left:0;
 }
 
 @media (prefers-reduced-motion: no-preference) {

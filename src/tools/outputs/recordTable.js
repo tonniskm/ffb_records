@@ -13,7 +13,7 @@ function arraysEqual(a, b) {
 
 
 export const RecordTable = (props)=>{
-    const {allAwards,scrollRef,pickMacro,vars} = props
+    const {allAwards,scrollRef,pickMacro,vars,scale} = props
     const {allNFLNames,allNames,activeWeeks,activeYears,activeNames} = vars
     const stickyRef = useRef(null)
     const [focusNFL,setFocusNFL] = useState('All')
@@ -59,7 +59,7 @@ export const RecordTable = (props)=>{
         if (!row) return;
         const rect = row.getBoundingClientRect();
         const offset = rect.top + scrollRef.current.scrollTop; 
-        container.scrollTop = offset - stickyHeight - 5
+        container.scrollTop = (offset - stickyHeight)/scale - 5
         return ()=> container.scrollTop = 0
     },[focusName,focusWeek,summaryYear,focusNFL,numToShow])
 
@@ -67,12 +67,6 @@ export const RecordTable = (props)=>{
     if (!chartVisible) return;
 
     const handleClickOutside = (event) => {
-// console.log("event.target:", event.target);
-// console.log("chartRef contains it:", chartRef.current?.contains(event.target));
-// console.log(chartRef.current.getBoundingClientRect());
-// console.log(event.composedPath?.().includes(chartRef.current))
-
-
 
       if (chartRef.current && !chartRef.current.contains(event.target)&&containerRef?.current.contains(event.target)) {
         ignoreNextRowClick.current = true;

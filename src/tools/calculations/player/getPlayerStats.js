@@ -670,7 +670,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             if(item.personFilter=='maxOnly'||item.personFilter=='minOnly'){//only names?
                 let value
                 if(item.personFilter=='maxOnly'){
-                    if(!input.isComplete.season&&item.requires=='season'){
+                    if(!input.isComplete.year&&item.requires=='season'){
                         const filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
                         const maxValue = DictMax(filtered)
                         const meta = DictKeysWithValue(filtered,maxValue)
@@ -683,7 +683,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         vals.push({'value':maxValue,'year':meta,'name':name})
                     }
                 }else{//minOnly
-                    if(!input.isComplete.season&&item.requires=='season'){
+                    if(!input.isComplete.year&&item.requires=='season'){
                     let filtered = Object.fromEntries(Object.entries(ownedInYears[name][item.keyID]).filter(([key])=>key!=input.isComplete.lastYear))
                     filtered = Object.fromEntries(  //removing skipped years
                         Object.entries(filtered).filter(([key, value]) => value > 0)
@@ -702,7 +702,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             }else{
                 for(const year in ownedInYears[name]['owned']){
                     if(ownedInYears[name]['owned'][year]<=0){continue}
-                    if(!input.isComplete.season&&item.requires=='season'&&year==input.isComplete.lastYear){continue}
+                    if(!input.isComplete.year&&item.requires=='season'&&year==input.isComplete.lastYear){continue}
                     let value
                     value=ownedInYears[name][item.keyID][year]
                     onlyVals.push(value)

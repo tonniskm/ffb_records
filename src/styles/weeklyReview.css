@@ -22,18 +22,18 @@
 }
 .bigText{
     font-weight: bold;
-    font-size: 28px;
+    font-size: 24px;
     line-height: 5px;
 }
 .smallText{
-    font-size: 16px;
+    font-size: 14px;
     margin: 0.25rem 0;
     white-space: nowrap;
     flex-direction: column;
 
 }
 .titleText{
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     margin: 0.25rem 0;
     margin-top: 1rem;
