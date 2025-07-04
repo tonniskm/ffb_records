@@ -1,4 +1,4 @@
-export const posColors = {'QB':'blue','RB':'green','WR':'orange','TE':'gold','D/ST':'gray','K':'purple','NA':''}
+export const posColors = {'QB':'#2C5DA3','RB':'green','WR':'#BF6C07','TE':'#CEDC00','D/ST':'#505050','K':'purple','NA':'white'}
 
 export function valueToColor(value, min, max, center) {
     if (value === center) {
