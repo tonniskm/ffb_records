@@ -29,8 +29,8 @@ try{
 
     const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setYear} curval={year} options={vars.activeYears} key={'wry'}></NamePicker>
     const pickWeek = <NamePicker title={'Week: '} showAll={false} selecting={setWeek} curval={week} options={vars.activeWeeks} key={'wrw'}></NamePicker>
-    const pickName = <NamePicker title={'Filter By Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
-    const pickComp = <NamePicker title={'Comparisons vs: '} showAll={false} selecting={setCompType} curval={compType} options={['All Time','This Year']} key={'1comp'}></NamePicker>
+    const pickName = <NamePicker title={'Filter Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
+    const pickComp = <NamePicker title={'Compare vs: '} showAll={false} selecting={setCompType} curval={compType} options={['All Time','This Year']} key={'1comp'}></NamePicker>
     
     const names = ChooseNames(vars,year)
     // console.log(raw[2020].filter(x=>x.Week===10))
