@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { posColors, valueToColor } from '../../styles/colors';
-import { GetPickNo } from '../calculations/other';
+import { CleanName, GetPickNo } from '../calculations/other';
 import { NamePicker } from './misc/misc';
 import { maxPtsinYear, midPtsinYear } from '../constants/constants';
 
@@ -81,14 +81,14 @@ export const DraftReview = ({pickMacro,records,vars}) =>{
                     const name = keys[i]
                     const NFLName = line[name].replaceAll('"','')
                     if (name===''){continue}
-                    const rankLines = ranks.filter(x=>x.Name===NFLName)
+                    const rankLines = ranks.filter(x=>CleanName(x.Name)===CleanName(NFLName))
                     let pos,rank
-                    if(rankLines.length>0){pos=rankLines[0].Pos;rank=rankLines[0].Rank}else{pos='NA';rank=301}
+                    if(rankLines.length>0){pos=rankLines[0].Pos;rank=rankLines[0].Rank}else{pos='NA';rank=ranks.length+1}
                     const pickInd = keys.filter(x=>x!=='').indexOf(name)
                     const pickNo = GetPickNo(round,pickInd,keys.length-1)
                     const reachWeight = (pickNo-rank)/round
                     const reachColor = valueToColor(reachWeight,-10,5,0)
-                    const scoreLine = scores.filter(x=>x.name===NFLName)
+                    const scoreLine = scores.filter(x=>CleanName(x.name)===CleanName(NFLName))
                     let score,usedPos
                     scoreLine.length>0?score=scoreLine[0].value:score=0
                     scoreLine.length>0?usedPos=scoreLine[0].pos:score=0

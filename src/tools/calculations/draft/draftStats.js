@@ -24,7 +24,7 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
                 });
                 return row;
                         })
-                rawDrafts[year] = data
+                if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawDrafts[year] = data}
                 }))
     promises.push(fetch(`/drafts/rankings/${year.toString()}rank.csv`).then(res=>
         res.text()).then(text=>{
@@ -39,12 +39,13 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
             });
             return row;
                     })
-            rawRanks[year] = data
+            if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawRanks[year] = data}
             }))
     }
     await Promise.all(promises).then(()=>{
         for(const year in rawDrafts){
             const ranks = rawRanks[year]
+            ranks.forEach(x=>x.Name=CleanName(x.Name))
             for(const [ind,line] of rawDrafts[year].entries()){
                     let round
                     if(line[""]===''||line['""']==''){continue}
@@ -53,9 +54,9 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
                     const keys = Object.keys(line)
                     for(let i=0;i<keys.length;i++){
                         const name = keys[i]
-                        const NFLName = line[name]
+                        const NFLName = CleanName(line[name])
                         if (name===''){continue}
-                        const rankLines = ranks.filter(x=>x.Name===NFLName)
+                        const rankLines = ranks.filter(x=>x.Name===CleanName(NFLName))
                         let pos,rank,NFLteam,bye
                         if(rankLines.length>0){
                             pos=rankLines[0].Pos;
