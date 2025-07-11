@@ -20,8 +20,8 @@ export const FantasyTeams =({dict,vars,pickMacro})=>{
         if(focusName!='All'&&focusName!=name){continue}
         body.push(<div className="headerCell" key={'headercell'+name}><p className="txt">{name}</p></div>)
     }
-    rows.push(<div className="tableRow headerRow" style={{top:stickyHeight}} key={'headerrow'}>
-        <div className="headerCell"><p className="txt">Pos</p></div>
+    rows.push(<div className="tableRow headerRow" style={{top:stickyHeight,zIndex:3}} key={'headerrow'}>
+        <div className="headerCell headerRow" style={{top:stickyHeight,zIndex:3,left:0}}><p className="txt">Pos</p></div>
         {body}
     </div>)
 
@@ -34,7 +34,7 @@ for(const pos in dict['Kevin']){
             body1.push(<div className="tableCell recordCell" key={name+pos}><p className="txt">{val}</p></div>)
         }
         rows.push(<div className="tableRow" key={pos}>
-            <div className="headerCell"><p className="txt">{pos}</p></div>
+            <div className="headerCell headerRow" style={{left:0,zIndex:2}}><p className="txt">{pos}</p></div>
             {body1}
         </div>)
     }
@@ -44,7 +44,7 @@ for(const name in dict){
     finalRowBody.push(<div className="tableCell recordCell" key={name}><p className="txt">{Math.round(100*dict[name]['Total'])/100}</p></div>)
 }
  rows.push(<div className="tableRow" key={'total'}>
-    <div className="headerCell"><p className="txt">Total</p></div>
+    <div className="headerCell headerRow" style={{left:0,zIndex:2}}><p className="txt">Total</p></div>
     {finalRowBody}
  </div>)   
 

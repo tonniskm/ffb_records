@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { NamePicker } from "./misc/misc";
 import { CompareRecords } from "../calculations/compareRecords";
 
 export const RecentUpdates = ({ records, oldRecords, weekOldRecords, pickMacro, vars }) => {
   const [weekYear, setWeekYear] = useState('Week');
+  const stickyRef = useRef(null)
+  const [stickyHeight,setStickyHeight] = useState(0)
+  useLayoutEffect(() => {
+      if (stickyRef.current) {
+          setStickyHeight(stickyRef.current.offsetHeight)
+      }
+  }, []) // empty dependency ensures this runs once after first layout
   const lists = weekYear === 'Week'
     ? CompareRecords(records, weekOldRecords)
     : CompareRecords(records, oldRecords);
@@ -22,8 +29,8 @@ export const RecentUpdates = ({ records, oldRecords, weekOldRecords, pickMacro, 
 
   let out = [];
   const head1 = (
-    <div className="tableRow" key="hr0">
-      <div className="headerCell"><p className="txt">Record Title</p></div>
+    <div className="tableRow headerRow" style={{top:stickyHeight,zIndex:4}} key="hr0">
+      <div className="headerCell headerRow" style={{top:stickyRef,zIndex:4,left:0}}><p className="txt">Record Title</p></div>
       <div className="headerCell description"><p className="txt">Description</p></div>
       <div className="headerCell"><p className="txt">New Record</p></div>
       <div className="headerCell"><p className="txt">Previous Holder</p></div>
@@ -62,7 +69,7 @@ export const RecentUpdates = ({ records, oldRecords, weekOldRecords, pickMacro, 
 
       const row = (
         <div className="tableRow" key={`record-${i}-${item.title}`}>
-          <div className="headerCell"><p className="txt">{item.title}</p></div>
+          <div className="headerCell headerRow" style={{left:0,zIndex:3}} ><p className="txt">{item.title}</p></div>
           <div className="tableCell description"><p className="txt">{item.desc}</p></div>
           <div className="tableCell"><p className="txt">{newWin + '\n' + item.now.winner.join('\n')}</p></div>
           <div className="tableCell"><p className="txt">{newLoseLine.join('\n')}</p></div>
@@ -107,7 +114,7 @@ export const RecentUpdates = ({ records, oldRecords, weekOldRecords, pickMacro, 
   }
 
   const realOut = [
-    <div className="topContainer" key="topcontrecent">
+    <div className="topContainer" key="topcontrecent" ref={stickyRef}>
       <div className="buttonsContainer" key="butcont">
         {relevantChoices}
       </div>

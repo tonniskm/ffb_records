@@ -20,8 +20,8 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
         if(name=='t0'){continue}
         col1.push(<div className="headerCell" key={name}><p className="txt">{name}</p></div>)
     }
-    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight}} key={'headers'}>
-        <div className="headerCell" key={'head'}>name</div>
+    cols.push(<div className="tableRow headerRow" style={{top:stickyHeight,zIndex:3}} key={'headers'}>
+        <div className="headerCell headerRow" style={{top:stickyHeight,zIndex:3,left:0}} key={'head'}>name</div>
         {col1}
     </div>)
     for(const name1 in dict){
@@ -36,7 +36,7 @@ export const MatchupTable = ({pickMacro,dict,vars})=>{
             colbody.push(<div className="tableCell recordCell" key={name2+'n2'}><p className="txt">{val}</p></div>)
         }
             cols.push(<div className="tableRow" key={name1+'n1'}>
-                        <div className="headerCell"><p className="txt">{name1}</p></div>
+                        <div className="headerCell headerRow" style={{zIndex:2,left:0}}><p className="txt">{name1}</p></div>
                         {colbody}
                     </div>)
 

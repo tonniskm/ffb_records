@@ -48,8 +48,8 @@ export const YearlyReview = ({pickMacro,vars,records})=>{
         if(focusName!=='All'&&name!==focusName){continue}
         nameHeaders.push(<div className="headerCell" key={'head'+name}><p key={'head1'+name}>{name}</p></div>)
     }
-    const headerRow = <div className="tableRow headerRow" style={{top:stickyHeight}} key={'headrow'}>
-        <div className="headerCell" key={'headrow1'}><p key={'headrow2'}>Record</p></div>
+    const headerRow = <div className="tableRow headerRow" style={{top:stickyHeight,zIndex:4}} key={'headrow'}>
+        <div className="headerCell headerRow" style={{top:stickyHeight,left:0,zIndex:4}} key={'headrow1'}><p key={'headrow2'}>Record</p></div>
         {nameHeaders}
     </div>
     let rows = []
@@ -76,10 +76,11 @@ export const YearlyReview = ({pickMacro,vars,records})=>{
                     <p className="txt" key={'row1'+item.id+name}>{Round(mine,2)}</p>
                     <p className="txt" key={'row2'+item.id+name}>All: {SummaryLine(mine,vals,'max')}</p>
                     <p className="txt" key={'row3'+item.id+name}>Me: {SummaryLine(mine,myVals,'max')}</p>
-                    <p className="txt" key={'row3'+item.id+name}>Year: {SummaryLine(mine,yearVals,'max')}</p>
+                    <p className="txt" key={'row4'+item.id+name}>Year: {SummaryLine(mine,yearVals,'max')}</p>
                     </div>)
             }
-            rows.push(<div className="tableRow" key={'trow'+item.id}><div className="headerCell" key={'trow1'+item.id}><p className="txt" key={'trow2'+item.id}>{item.name}{(regIsComplete?"":' (pace)')}</p></div>{row}</div>)
+            rows.push(<div className="tableRow" key={'trow'+item.id}><div className="headerCell headerRow" style={{left:0,zIndex:3}} key={'trow1'+item.id}>
+                <p className="txt" key={'trow2'+item.id}>{item.name}{(regIsComplete?"":' (pace)')}</p></div>{row}</div>)
 
         }catch(e){console.log(item,vals,records.incompleteAwards,e)}
     }

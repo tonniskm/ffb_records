@@ -61,14 +61,14 @@ export const PlayerTable = ({pickMacro,vars,records})=>{
             bodyData.push(getAward(dataTable[name][key].values,key))
         }
         body.push(<div className="tableRow" key={name+'tr'}>
-            <div className="headerCell"><p className="txt">{name}</p></div>
+            <div className="headerCell headerRow" style={{zIndex:3,left:0}}><p className="txt">{name}</p></div>
             {bodyData}</div>)
     }
     for(const key in dataTable.Kevin){
         headers.push(<div className="headerCell" key={key+'hr'}><p className="txt" key={'key'+key}>{key}</p></div>)
     }
-    const headRow = <div className="tableRow headerRow" key={'tr0'} style={{top:stickyHeight}}>
-        <div className="headerCell"><p className="txt">Name</p></div>
+    const headRow = <div className="tableRow headerRow" key={'tr0'} style={{top:stickyHeight,zIndex:4}}>
+        <div className="headerCell headerRow" style={{top:stickyHeight,zIndex:3,left:0}}><p className="txt">Name</p></div>
         {headers}
     </div>
 

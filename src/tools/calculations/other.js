@@ -302,3 +302,15 @@ export function FixJrs(name){
     }
     return out
 }
+
+export function SummaryLine(mine,vals,minmax){
+        let sorted = [...vals].sort((a,b)=>a-b)
+        if(minmax!=='min'){sorted=sorted.reverse()}
+        const rank = sorted.findIndex(x=>x===mine) + 1
+        const total = vals.length
+        // if(total===5&&mine===1){console.log({mine,vals,minmax,rank})}
+        const perc =  Math.round(10000-10000*(rank-1)/Math.max(1,(total-1)))/100
+        return(
+            `${rank} of ${total} (${perc}%)`
+        )
+    }
