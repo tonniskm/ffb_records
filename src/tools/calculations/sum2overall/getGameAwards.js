@@ -13,7 +13,7 @@ export function getGameAwards(vars,raw){
         {'id': 'ga4', 'title': 'Big Game Hunter', 'description': 'The highest score ever defeated', 'keyID': 'sLose', 'minMax': null, 'agg':'winner', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga4.1', 'title': 'Big Game Hunter2', 'description': 'The highest score ever to be defeated', 'keyID': 'sLose', 'minMax': null, 'agg':'loser', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga5', 'title': "A Win's A Win", 'description': 'The lowest winning score', 'keyID': 'sWin', 'minMax': 'min', 'agg':'winner', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
-        {'id': 'ga5.1', 'title': "A Win's A Win2", 'description': 'The lowest score lost 2', 'keyID': 'sWin', 'minMax': 'min', 'agg':'loser', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga5.1', 'title': "A Win's A Win2", 'description': 'The lowest score lost to', 'keyID': 'sWin', 'minMax': 'min', 'agg':'loser', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
 
     ]
         //individual game awards
