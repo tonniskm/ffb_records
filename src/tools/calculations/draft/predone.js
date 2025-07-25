@@ -23,11 +23,11 @@ export const predone = [
     "NFLName": "Adrian Peterson",
     "pos": "RB",
     "reachWeight": 0,
-    "height": 5.833333333333333,
-    "weight": 212,
-    "dob": "1979-07-01T07:00Z",
-    "whratio": 36.34285714285714,
-    "age": 36.169690913114806
+    "height": 6.083333333333333,
+    "weight": 217,
+    "dob": "1985-03-21T08:00Z",
+    "whratio": 35.67123287671233,
+    "age": 30.4473511890502
   },
   {
     "year": "2015",
@@ -159,10 +159,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 5,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 37.49746173204561
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 27.142811511073692
   },
   {
     "year": "2015",
@@ -320,7 +320,7 @@ export const predone = [
     "pickNo": 15,
     "rank": "15",
     "NFLteam": "NYG",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "pos": "WR",
     "reachWeight": 0,
     "height": 5.916666666666667,
@@ -383,11 +383,11 @@ export const predone = [
     "NFLName": "Mark Ingram",
     "pos": "RB",
     "reachWeight": 0.6666666666666666,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 50.023500368476654
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 25.69434462491815
   },
   {
     "year": "2015",
@@ -473,11 +473,11 @@ export const predone = [
     "NFLName": "A.J. Green",
     "pos": "WR",
     "reachWeight": 4.666666666666667,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 27.085315463926936
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 17.228850238768306
   },
   {
     "year": "2015",
@@ -502,7 +502,12 @@ export const predone = [
     "NFLteam": "lac",
     "NFLName": "Melvin Gordon",
     "pos": "RB",
-    "reachWeight": -1
+    "reachWeight": -1,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 22.384329132927668
   },
   {
     "year": "2015",
@@ -528,10 +533,10 @@ export const predone = [
     "NFLName": "Jordan Matthews",
     "pos": "WR",
     "reachWeight": 1.6666666666666667,
-    "height": 6.25,
-    "weight": 236,
+    "height": 6.166666666666667,
+    "weight": 182,
     "dob": "1992-07-16T07:00Z",
-    "whratio": 37.76,
+    "whratio": 29.513513513513512,
     "age": 23.12630193182155
   },
   {
@@ -648,11 +653,11 @@ export const predone = [
     "NFLName": "Frank Gore",
     "pos": "RB",
     "reachWeight": -0.25,
-    "height": 5.75,
-    "weight": 212,
-    "dob": "1983-05-14T07:00Z",
-    "whratio": 36.869565217391305,
-    "age": 32.30102831224004
+    "height": 5.666666666666667,
+    "weight": 195,
+    "dob": "2002-03-13T08:00Z",
+    "whratio": 34.41176470588235,
+    "age": 13.46958983871446
   },
   {
     "year": "2015",
@@ -805,11 +810,11 @@ export const predone = [
     "NFLName": "Jonathan Stewart",
     "pos": "RB",
     "reachWeight": 3.2,
-    "height": 5.833333333333333,
-    "weight": 245,
-    "dob": "1987-03-21T08:00Z",
-    "whratio": 42,
-    "age": 28.448679073948586
+    "height": 6.25,
+    "weight": 254,
+    "dob": "1990-11-23T08:00Z",
+    "whratio": 40.64,
+    "age": 24.77166996356302
   },
   {
     "year": "2015",
@@ -1045,11 +1050,11 @@ export const predone = [
     "NFLName": "Brandon Marshall",
     "pos": "WR",
     "reachWeight": 0.5,
-    "height": 6.416666666666667,
-    "weight": 232,
-    "dob": "1984-03-23T08:00Z",
-    "whratio": 36.15584415584416,
-    "age": 31.441211432587025
+    "height": 6.083333333333333,
+    "weight": 245,
+    "dob": "1989-09-10T07:00Z",
+    "whratio": 40.273972602739725,
+    "age": 25.9737252190896
   },
   {
     "year": "2015",
@@ -1357,14 +1362,14 @@ export const predone = [
     "pickNo": 89,
     "rank": "99",
     "NFLteam": "Bal",
-    "NFLName": "Steve Smith Sr.",
+    "NFLName": "Steve Smith",
     "pos": "WR",
     "reachWeight": -1.25,
-    "height": 6.083333333333333,
-    "weight": 242,
-    "dob": "1964-08-30T07:00Z",
-    "whratio": 39.78082191780822,
-    "age": 51.003671076978534
+    "height": 5.916666666666667,
+    "weight": 195,
+    "dob": "1985-05-06T07:00Z",
+    "whratio": 32.95774647887324,
+    "age": 30.321521546187352
   },
   {
     "year": "2015",
@@ -1375,11 +1380,11 @@ export const predone = [
     "NFLName": "Charles Johnson",
     "pos": "WR",
     "reachWeight": 1.875,
-    "height": 6,
-    "weight": 205,
-    "dob": "1972-01-03T08:00Z",
-    "whratio": 34.166666666666664,
-    "age": 43.66049040477674
+    "height": 6.166666666666667,
+    "weight": 215,
+    "dob": "1989-02-27T08:00Z",
+    "whratio": 34.86486486486486,
+    "age": 26.507503005993733
   },
   {
     "year": "2015",
@@ -1901,10 +1906,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": -0.9090909090909091,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 43.1759949439984
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 25.472574157352078
   },
   {
     "year": "2015",
@@ -2090,11 +2095,11 @@ export const predone = [
     "NFLName": "David Johnson",
     "pos": "RB",
     "reachWeight": 1.1666666666666667,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 28.01620384630303
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 23.70936204485148
   },
   {
     "year": "2015",
@@ -2750,11 +2755,11 @@ export const predone = [
     "NFLName": "Matt Jones",
     "pos": "RB",
     "reachWeight": 1.0625,
-    "height": 6.5,
-    "weight": 232,
-    "dob": "1983-04-22T08:00Z",
-    "whratio": 35.69230769230769,
-    "age": 32.36114818693516
+    "height": 6.166666666666667,
+    "weight": 239,
+    "dob": "1993-03-07T08:00Z",
+    "whratio": 38.75675675675676,
+    "age": 22.485517612727616
   },
   {
     "year": "2015",
@@ -2807,7 +2812,7 @@ export const predone = [
     "pickNo": 1,
     "rank": "2",
     "NFLteam": "NYG",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "pos": "WR",
     "reachWeight": -1,
     "height": 5.916666666666667,
@@ -2825,11 +2830,11 @@ export const predone = [
     "NFLName": "Adrian Peterson",
     "pos": "RB",
     "reachWeight": -1,
-    "height": 5.833333333333333,
-    "weight": 212,
-    "dob": "1979-07-01T07:00Z",
-    "whratio": 36.34285714285714,
-    "age": 37.171764877672594
+    "height": 6.083333333333333,
+    "weight": 217,
+    "dob": "1985-03-21T08:00Z",
+    "whratio": 35.67123287671233,
+    "age": 31.44942515360799
   },
   {
     "year": "2016",
@@ -2841,10 +2846,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 2,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 38.499535696603395
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 28.144885475631487
   },
   {
     "year": "2016",
@@ -2885,11 +2890,11 @@ export const predone = [
     "NFLName": "David Johnson",
     "pos": "RB",
     "reachWeight": -2,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 29.01827781086082
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 24.711436009409272
   },
   {
     "year": "2016",
@@ -2945,11 +2950,11 @@ export const predone = [
     "NFLName": "A.J. Green",
     "pos": "WR",
     "reachWeight": -3,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 28.087389428484727
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 18.2309242033261
   },
   {
     "year": "2016",
@@ -3110,11 +3115,11 @@ export const predone = [
     "NFLName": "Brandon Marshall",
     "pos": "WR",
     "reachWeight": -1.5,
-    "height": 6.416666666666667,
-    "weight": 232,
-    "dob": "1984-03-23T08:00Z",
-    "whratio": 36.15584415584416,
-    "age": 32.44328539714482
+    "height": 6.083333333333333,
+    "weight": 245,
+    "dob": "1989-09-10T07:00Z",
+    "whratio": 40.273972602739725,
+    "age": 26.975799183647393
   },
   {
     "year": "2016",
@@ -3170,11 +3175,11 @@ export const predone = [
     "NFLName": "Mark Ingram",
     "pos": "RB",
     "reachWeight": 2.3333333333333335,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 51.02557433303445
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 26.696418589475943
   },
   {
     "year": "2016",
@@ -3320,11 +3325,11 @@ export const predone = [
     "NFLName": "Jonathan Stewart",
     "pos": "RB",
     "reachWeight": 1,
-    "height": 5.833333333333333,
-    "weight": 245,
-    "dob": "1987-03-21T08:00Z",
-    "whratio": 42,
-    "age": 29.45075303850638
+    "height": 6.25,
+    "weight": 254,
+    "dob": "1990-11-23T08:00Z",
+    "whratio": 40.64,
+    "age": 25.773743928120815
   },
   {
     "year": "2016",
@@ -3695,11 +3700,11 @@ export const predone = [
     "NFLName": "Frank Gore",
     "pos": "RB",
     "reachWeight": -1.4,
-    "height": 5.75,
-    "weight": 212,
-    "dob": "1983-05-14T07:00Z",
-    "whratio": 36.869565217391305,
-    "age": 33.30310227679784
+    "height": 5.666666666666667,
+    "weight": 195,
+    "dob": "2002-03-13T08:00Z",
+    "whratio": 34.41176470588235,
+    "age": 14.471663803272255
   },
   {
     "year": "2016",
@@ -3722,7 +3727,7 @@ export const predone = [
     "pickNo": 71,
     "rank": "65",
     "NFLteam": "Cle",
-    "NFLName": "Duke Johnson Jr.",
+    "NFLName": "Duke Johnson",
     "pos": "RB",
     "reachWeight": 1,
     "height": 5.75,
@@ -3739,7 +3744,12 @@ export const predone = [
     "NFLteam": "lac",
     "NFLName": "Melvin Gordon",
     "pos": "RB",
-    "reachWeight": 1
+    "reachWeight": 1,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 23.38640309748546
   },
   {
     "year": "2016",
@@ -3856,10 +3866,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": -3,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 44.178068908556185
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 26.474648121909873
   },
   {
     "year": "2016",
@@ -3870,11 +3880,11 @@ export const predone = [
     "NFLName": "Matt Jones",
     "pos": "RB",
     "reachWeight": -0.16666666666666666,
-    "height": 6.5,
-    "weight": 232,
-    "dob": "1983-04-22T08:00Z",
-    "whratio": 35.69230769230769,
-    "age": 33.363222151492955
+    "height": 6.166666666666667,
+    "weight": 239,
+    "dob": "1993-03-07T08:00Z",
+    "whratio": 38.75675675675676,
+    "age": 23.48759157728541
   },
   {
     "year": "2016",
@@ -4180,10 +4190,10 @@ export const predone = [
     "NFLName": "Jordan Matthews",
     "pos": "WR",
     "reachWeight": 2.125,
-    "height": 6.25,
-    "weight": 236,
+    "height": 6.166666666666667,
+    "weight": 182,
     "dob": "1992-07-16T07:00Z",
-    "whratio": 37.76,
+    "whratio": 29.513513513513512,
     "age": 24.128375896379346
   },
   {
@@ -4210,11 +4220,11 @@ export const predone = [
     "NFLName": "Michael Thomas",
     "pos": "WR",
     "reachWeight": -3.5,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 26.46095858687493
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 23.498543205313364
   },
   {
     "year": "2016",
@@ -4457,14 +4467,14 @@ export const predone = [
     "pickNo": 117,
     "rank": "115",
     "NFLteam": "Bal",
-    "NFLName": "Steve Smith Sr.",
+    "NFLName": "Steve Smith",
     "pos": "WR",
     "reachWeight": 0.2,
-    "height": 6.083333333333333,
-    "weight": 242,
-    "dob": "1964-08-30T07:00Z",
-    "whratio": 39.78082191780822,
-    "age": 52.00574504153633
+    "height": 5.916666666666667,
+    "weight": 195,
+    "dob": "1985-05-06T07:00Z",
+    "whratio": 32.95774647887324,
+    "age": 31.323595510745143
   },
   {
     "year": "2016",
@@ -5105,11 +5115,11 @@ export const predone = [
     "NFLName": "Charles Clay",
     "pos": "TE",
     "reachWeight": -2.0714285714285716,
-    "height": 6.25,
-    "weight": 246,
-    "dob": "1989-02-13T08:00Z",
-    "whratio": 39.36,
-    "age": 27.54790766864937
+    "height": 5.833333333333333,
+    "weight": 204,
+    "dob": "1991-05-15T07:00Z",
+    "whratio": 34.971428571428575,
+    "age": 25.30020009537043
   },
   {
     "year": "2016",
@@ -5212,7 +5222,7 @@ export const predone = [
     "pickNo": 159,
     "rank": "212",
     "NFLteam": "Car",
-    "NFLName": "Ted Ginn Jr.",
+    "NFLName": "Ted Ginn",
     "pos": "WR",
     "reachWeight": -3.7857142857142856,
     "height": 5.916666666666667,
@@ -5595,11 +5605,11 @@ export const predone = [
     "NFLName": "David Johnson",
     "pos": "RB",
     "reachWeight": 0,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 30.017613868411626
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 25.71077206696008
   },
   {
     "year": "2017",
@@ -5626,10 +5636,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 0,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 39.4988717541542
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 29.144221533182293
   },
   {
     "year": "2017",
@@ -5670,11 +5680,11 @@ export const predone = [
     "NFLName": "A.J. Green",
     "pos": "WR",
     "reachWeight": -3,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 29.086725486035533
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 19.230260260876907
   },
   {
     "year": "2017",
@@ -5727,7 +5737,7 @@ export const predone = [
     "pickNo": 10,
     "rank": "5",
     "NFLteam": "NYG",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "pos": "WR",
     "reachWeight": 5,
     "height": 5.916666666666667,
@@ -5744,7 +5754,12 @@ export const predone = [
     "NFLteam": "LAC",
     "NFLName": "Melvin Gordon",
     "pos": "RB",
-    "reachWeight": -1
+    "reachWeight": -1,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 24.385739155036266
   },
   {
     "year": "2017",
@@ -5905,11 +5920,11 @@ export const predone = [
     "NFLName": "Michael Thomas",
     "pos": "WR",
     "reachWeight": 2,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 27.460294644425737
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 24.49787926286417
   },
   {
     "year": "2017",
@@ -5962,7 +5977,7 @@ export const predone = [
     "pickNo": 26,
     "rank": "26",
     "NFLteam": "Wsh",
-    "NFLName": "Terrelle Pryor Sr.",
+    "NFLName": "Terrelle Pryor",
     "pos": "WR",
     "reachWeight": 0,
     "height": 6.333333333333333,
@@ -6205,11 +6220,11 @@ export const predone = [
     "NFLName": "Mark Ingram",
     "pos": "RB",
     "reachWeight": -4.25,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 52.02491039058525
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 27.695754647026746
   },
   {
     "year": "2017",
@@ -6460,11 +6475,11 @@ export const predone = [
     "NFLName": "Adrian Peterson",
     "pos": "RB",
     "reachWeight": -1.4,
-    "height": 5.833333333333333,
-    "weight": 212,
-    "dob": "1979-07-01T07:00Z",
-    "whratio": 36.34285714285714,
-    "age": 38.1711009352234
+    "height": 6.083333333333333,
+    "weight": 217,
+    "dob": "1985-03-21T08:00Z",
+    "whratio": 35.67123287671233,
+    "age": 32.448761211158796
   },
   {
     "year": "2017",
@@ -6475,11 +6490,11 @@ export const predone = [
     "NFLName": "Brandon Marshall",
     "pos": "WR",
     "reachWeight": -0.6,
-    "height": 6.416666666666667,
-    "weight": 232,
-    "dob": "1984-03-23T08:00Z",
-    "whratio": 36.15584415584416,
-    "age": 33.442621454695626
+    "height": 6.083333333333333,
+    "weight": 245,
+    "dob": "1989-09-10T07:00Z",
+    "whratio": 40.273972602739725,
+    "age": 27.9751352411982
   },
   {
     "year": "2017",
@@ -6550,11 +6565,11 @@ export const predone = [
     "NFLName": "Frank Gore",
     "pos": "RB",
     "reachWeight": 1,
-    "height": 5.75,
-    "weight": 212,
-    "dob": "1983-05-14T07:00Z",
-    "whratio": 36.869565217391305,
-    "age": 34.30243833434864
+    "height": 5.666666666666667,
+    "weight": 195,
+    "dob": "2002-03-13T08:00Z",
+    "whratio": 34.41176470588235,
+    "age": 15.47099986082306
   },
   {
     "year": "2017",
@@ -6872,10 +6887,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": -4.5,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 45.17740496610699
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 27.47398417946068
   },
   {
     "year": "2017",
@@ -7018,7 +7033,7 @@ export const predone = [
     "pickNo": 97,
     "rank": "78",
     "NFLteam": "Cle",
-    "NFLName": "Duke Johnson Jr.",
+    "NFLName": "Duke Johnson",
     "pos": "RB",
     "reachWeight": 2.111111111111111,
     "height": 5.75,
@@ -7051,11 +7066,11 @@ export const predone = [
     "NFLName": "Jonathan Stewart",
     "pos": "RB",
     "reachWeight": 0.1111111111111111,
-    "height": 5.833333333333333,
-    "weight": 245,
-    "dob": "1987-03-21T08:00Z",
-    "whratio": 42,
-    "age": 30.450089096057187
+    "height": 6.25,
+    "weight": 254,
+    "dob": "1990-11-23T08:00Z",
+    "whratio": 40.64,
+    "age": 26.77307998567162
   },
   {
     "year": "2017",
@@ -7293,7 +7308,7 @@ export const predone = [
     "pickNo": 113,
     "rank": "121",
     "NFLteam": "NO",
-    "NFLName": "Ted Ginn Jr.",
+    "NFLName": "Ted Ginn",
     "pos": "WR",
     "reachWeight": -0.8,
     "height": 5.916666666666667,
@@ -7366,10 +7381,10 @@ export const predone = [
     "NFLName": "Jordan Matthews",
     "pos": "WR",
     "reachWeight": 1.3636363636363635,
-    "height": 6.25,
-    "weight": 236,
+    "height": 6.166666666666667,
+    "weight": 182,
     "dob": "1992-07-16T07:00Z",
-    "whratio": 37.76,
+    "whratio": 29.513513513513512,
     "age": 25.127711953930152
   },
   {
@@ -7857,10 +7872,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": 2.6923076923076925,
     "height": 6,
-    "weight": 189,
-    "dob": "1982-05-19T07:00Z",
-    "whratio": 31.5,
-    "age": 35.2880848568645
+    "weight": 175,
+    "dob": "1994-05-09T07:00Z",
+    "whratio": 29.166666666666668,
+    "age": 23.31521751530376
   },
   {
     "year": "2017",
@@ -8254,7 +8269,7 @@ export const predone = [
     "pickNo": 189,
     "rank": "167",
     "NFLteam": "jac",
-    "NFLName": "Jacquarfs D/ST",
+    "NFLName": "Jaguars D/ST",
     "pos": "D/ST",
     "reachWeight": 1.375
   },
@@ -8384,7 +8399,7 @@ export const predone = [
     "pickNo": 1,
     "rank": "2",
     "NFLteam": "LAR",
-    "NFLName": "Todd Gurley II",
+    "NFLName": "Todd Gurley",
     "bye": "12",
     "pos": "RB",
     "reachWeight": -1,
@@ -8420,11 +8435,11 @@ export const predone = [
     "bye": "9",
     "pos": "RB",
     "reachWeight": 0,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 31.016949925962432
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 26.710108124510885
   },
   {
     "year": "2018",
@@ -8453,10 +8468,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 0,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 40.49820781170501
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 30.143557590733096
   },
   {
     "year": "2018",
@@ -8531,7 +8546,12 @@ export const predone = [
     "NFLName": "Melvin Gordon",
     "bye": "8",
     "pos": "RB",
-    "reachWeight": -4
+    "reachWeight": -4,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 25.385075212587072
   },
   {
     "year": "2018",
@@ -8671,11 +8691,11 @@ export const predone = [
     "bye": "6",
     "pos": "WR",
     "reachWeight": 1,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 28.45963070197654
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 25.497215320414977
   },
   {
     "year": "2018",
@@ -8703,11 +8723,11 @@ export const predone = [
     "bye": "9",
     "pos": "WR",
     "reachWeight": -1,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 30.08606154358634
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 20.22959631842771
   },
   {
     "year": "2018",
@@ -8747,7 +8767,7 @@ export const predone = [
     "pickNo": 13,
     "rank": "9",
     "NFLteam": "NYG",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "9",
     "pos": "WR",
     "reachWeight": 2,
@@ -8987,15 +9007,15 @@ export const predone = [
     "pickNo": 46,
     "rank": "50",
     "NFLteam": "NO",
-    "NFLName": "Mark Ingram II",
+    "NFLName": "Mark Ingram",
     "bye": "6",
     "pos": "RB",
     "reachWeight": -1,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 53.024246448136054
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 28.695090704577552
   },
   {
     "year": "2018",
@@ -9259,15 +9279,15 @@ export const predone = [
     "pickNo": 56,
     "rank": "39",
     "NFLteam": "DET",
-    "NFLName": "Marvin Jones Jr.",
+    "NFLName": "Marvin Jones",
     "bye": "6",
     "pos": "WR",
     "reachWeight": 3.4,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 46.1767410236578
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 28.47332023701148
   },
   {
     "year": "2018",
@@ -9391,11 +9411,11 @@ export const predone = [
     "bye": "4",
     "pos": "RB",
     "reachWeight": -4.333333333333333,
-    "height": 5.833333333333333,
-    "weight": 212,
-    "dob": "1979-07-01T07:00Z",
-    "whratio": 36.34285714285714,
-    "age": 39.170436992774206
+    "height": 6.083333333333333,
+    "weight": 217,
+    "dob": "1985-03-21T08:00Z",
+    "whratio": 35.67123287671233,
+    "age": 33.4480972687096
   },
   {
     "year": "2018",
@@ -9542,7 +9562,7 @@ export const predone = [
     "pickNo": 74,
     "rank": "94",
     "NFLteam": "CLE",
-    "NFLName": "Duke Johnson Jr.",
+    "NFLName": "Duke Johnson",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -2.857142857142857,
@@ -9563,10 +9583,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -3.2857142857142856,
     "height": 6,
-    "weight": 189,
-    "dob": "1982-05-19T07:00Z",
-    "whratio": 31.5,
-    "age": 36.28742091441531
+    "weight": 175,
+    "dob": "1994-05-09T07:00Z",
+    "whratio": 29.166666666666668,
+    "age": 24.314553572854564
   },
   {
     "year": "2018",
@@ -9617,7 +9637,7 @@ export const predone = [
     "pickNo": 79,
     "rank": "156",
     "NFLteam": "jac",
-    "NFLName": "Jacquarfs D/ST",
+    "NFLName": "Jaguars D/ST",
     "bye": "9",
     "pos": "D/ST",
     "reachWeight": -11
@@ -9856,11 +9876,11 @@ export const predone = [
     "bye": "7",
     "pos": "RB",
     "reachWeight": -7.5,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 51.70446119130897
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 23.74769274294932
   },
   {
     "year": "2018",
@@ -9868,7 +9888,7 @@ export const predone = [
     "pickNo": 86,
     "rank": "85",
     "NFLteam": "TB",
-    "NFLName": "Ronald Jones II",
+    "NFLName": "Ronald Jones",
     "bye": "5",
     "pos": "RB",
     "reachWeight": 0.125,
@@ -11022,11 +11042,11 @@ export const predone = [
     "bye": "11",
     "pos": "TE",
     "reachWeight": 2.466666666666667,
-    "height": 6.25,
-    "weight": 246,
-    "dob": "1989-02-13T08:00Z",
-    "whratio": 39.36,
-    "age": 29.54657978375098
+    "height": 5.833333333333333,
+    "weight": 204,
+    "dob": "1991-05-15T07:00Z",
+    "whratio": 34.971428571428575,
+    "age": 27.298872210472037
   },
   {
     "year": "2018",
@@ -11408,11 +11428,11 @@ export const predone = [
     "bye": "12",
     "pos": "RB",
     "reachWeight": -3,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 32.016285983513235
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 27.709444182061688
   },
   {
     "year": "2019",
@@ -11420,7 +11440,7 @@ export const predone = [
     "pickNo": 5,
     "rank": "14",
     "NFLteam": "LAR",
-    "NFLName": "Todd Gurley II",
+    "NFLName": "Todd Gurley",
     "bye": "9",
     "pos": "RB",
     "reachWeight": -9,
@@ -11504,11 +11524,11 @@ export const predone = [
     "bye": "9",
     "pos": "WR",
     "reachWeight": 1,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 29.458966759527346
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 26.49655137796578
   },
   {
     "year": "2019",
@@ -11553,10 +11573,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 2,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 41.497543869255814
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 31.142893648283902
   },
   {
     "year": "2019",
@@ -11644,7 +11664,7 @@ export const predone = [
     "pickNo": 18,
     "rank": "11",
     "NFLteam": "CLE",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 3.5,
@@ -11728,11 +11748,11 @@ export const predone = [
     "bye": "11",
     "pos": "RB",
     "reachWeight": -10.5,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 52.70379724885978
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 24.747028800500125
   },
   {
     "year": "2019",
@@ -11759,7 +11779,12 @@ export const predone = [
     "NFLName": "Melvin Gordon",
     "bye": "12",
     "pos": "RB",
-    "reachWeight": 0
+    "reachWeight": 0,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 26.384411270137875
   },
   {
     "year": "2019",
@@ -11879,15 +11904,15 @@ export const predone = [
     "pickNo": 34,
     "rank": "35",
     "NFLteam": "BAL",
-    "NFLName": "Mark Ingram II",
+    "NFLName": "Mark Ingram",
     "bye": "8",
     "pos": "RB",
     "reachWeight": -0.3333333333333333,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 54.02358250568686
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 29.69442676212836
   },
   {
     "year": "2019",
@@ -12119,7 +12144,7 @@ export const predone = [
     "pickNo": 49,
     "rank": "62",
     "NFLteam": "HOU",
-    "NFLName": "Duke Johnson Jr.",
+    "NFLName": "Duke Johnson",
     "bye": "10",
     "pos": "RB",
     "reachWeight": -2.6,
@@ -12219,11 +12244,11 @@ export const predone = [
     "bye": "12",
     "pos": "WR",
     "reachWeight": 1.2,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 39.63850501151062
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 24.90867939337107
   },
   {
     "year": "2019",
@@ -12438,11 +12463,11 @@ export const predone = [
     "bye": "9",
     "pos": "WR",
     "reachWeight": -1.3333333333333333,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 31.085397601137146
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 21.228932375978516
   },
   {
     "year": "2019",
@@ -12813,15 +12838,15 @@ export const predone = [
     "pickNo": 88,
     "rank": "75",
     "NFLteam": "DET",
-    "NFLName": "Marvin Jones Jr.",
+    "NFLName": "Marvin Jones",
     "bye": "5",
     "pos": "WR",
     "reachWeight": 1.625,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 47.176077081208604
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 29.472656294562288
   },
   {
     "year": "2019",
@@ -13027,9 +13052,9 @@ export const predone = [
     "reachWeight": 1,
     "height": 6.083333333333333,
     "weight": 209,
-    "dob": "1965-01-10T08:00Z",
+    "dob": "1996-04-02T08:00Z",
     "whratio": 34.35616438356165,
-    "age": 54.63949750280065
+    "age": 23.41366808809672
   },
   {
     "year": "2019",
@@ -13169,11 +13194,11 @@ export const predone = [
     "bye": "6",
     "pos": "RB",
     "reachWeight": -9.5,
-    "height": 5.75,
-    "weight": 212,
-    "dob": "1983-05-14T07:00Z",
-    "whratio": 36.869565217391305,
-    "age": 36.30111044945025
+    "height": 5.666666666666667,
+    "weight": 195,
+    "dob": "2002-03-13T08:00Z",
+    "whratio": 34.41176470588235,
+    "age": 17.469671975924673
   },
   {
     "year": "2019",
@@ -13281,11 +13306,11 @@ export const predone = [
     "bye": "12",
     "pos": "RB",
     "reachWeight": -5.636363636363637,
-    "height": 6.083333333333333,
-    "weight": 230,
-    "dob": "1991-08-24T07:00Z",
-    "whratio": 37.80821917808219,
-    "age": 28.021679660317005
+    "height": 6,
+    "weight": 199,
+    "dob": "1996-04-22T07:00Z",
+    "whratio": 33.166666666666664,
+    "age": 23.359024027415575
   },
   {
     "year": "2019",
@@ -13501,9 +13526,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 1.5833333333333333,
     "height": 5.916666666666667,
-    "dob": "1965-04-15T08:00Z",
-    "whratio": null,
-    "age": 54.37939633713674
+    "weight": 190,
+    "dob": "1994-10-09T07:00Z",
+    "whratio": 32.112676056338024,
+    "age": 24.894989858336128
   },
   {
     "year": "2019",
@@ -13611,11 +13637,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": -5.666666666666667,
-    "height": 5.833333333333333,
-    "weight": 212,
-    "dob": "1979-07-01T07:00Z",
-    "whratio": 36.34285714285714,
-    "age": 40.16977305032501
+    "height": 6.083333333333333,
+    "weight": 217,
+    "dob": "1985-03-21T08:00Z",
+    "whratio": 35.67123287671233,
+    "age": 34.44743332626041
   },
   {
     "year": "2019",
@@ -13724,10 +13750,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -1.7692307692307692,
     "height": 6,
-    "weight": 189,
-    "dob": "1982-05-19T07:00Z",
-    "whratio": 31.5,
-    "age": 37.28675697196611
+    "weight": 175,
+    "dob": "1994-05-09T07:00Z",
+    "whratio": 29.166666666666668,
+    "age": 25.31388963040537
   },
   {
     "year": "2019",
@@ -13783,10 +13809,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": 2.3076923076923075,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 22.64705412613994
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 21.384993075376862
   },
   {
     "year": "2019",
@@ -13805,7 +13831,7 @@ export const predone = [
     "pickNo": 156,
     "rank": "142",
     "NFLteam": "JAC",
-    "NFLName": "Jacquarfs D/ST",
+    "NFLName": "Jaguars D/ST",
     "bye": "10",
     "pos": "D/ST",
     "reachWeight": 1.0769230769230769
@@ -14506,11 +14532,11 @@ export const predone = [
     "bye": "6",
     "pos": "WR",
     "reachWeight": 5,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 30.46104072408514
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 27.498625342523574
   },
   {
     "year": "2020",
@@ -14539,10 +14565,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": -5,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 23.649128090697733
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 22.387067039934657
   },
   {
     "year": "2020",
@@ -14570,11 +14596,11 @@ export const predone = [
     "bye": "8",
     "pos": "RB",
     "reachWeight": -9,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 33.01835994807103
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 28.711518146619483
   },
   {
     "year": "2020",
@@ -14714,11 +14740,11 @@ export const predone = [
     "bye": "5",
     "pos": "RB",
     "reachWeight": 0,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 53.705871213417566
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 25.74910276505792
   },
   {
     "year": "2020",
@@ -14774,7 +14800,7 @@ export const predone = [
     "pickNo": 28,
     "rank": "26",
     "NFLteam": "CHI",
-    "NFLName": "Allen Robinson II",
+    "NFLName": "Allen Robinson",
     "bye": "11",
     "pos": "WR",
     "reachWeight": 0.6666666666666666,
@@ -15065,7 +15091,12 @@ export const predone = [
     "NFLName": "Melvin Gordon",
     "bye": "8",
     "pos": "RB",
-    "reachWeight": -1.25
+    "reachWeight": -1.25,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 27.38648523469567
   },
   {
     "year": "2020",
@@ -15073,7 +15104,7 @@ export const predone = [
     "pickNo": 38,
     "rank": "43",
     "NFLteam": "ATL",
-    "NFLName": "Todd Gurley II",
+    "NFLName": "Todd Gurley",
     "bye": "10",
     "pos": "RB",
     "reachWeight": -1.25,
@@ -15089,7 +15120,7 @@ export const predone = [
     "pickNo": 37,
     "rank": "31",
     "NFLteam": "CLE",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "9",
     "pos": "WR",
     "reachWeight": 1.5,
@@ -15201,15 +15232,15 @@ export const predone = [
     "pickNo": 55,
     "rank": "59",
     "NFLteam": "BAL",
-    "NFLName": "Mark Ingram II",
+    "NFLName": "Mark Ingram",
     "bye": "8",
     "pos": "RB",
     "reachWeight": -0.8,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 55.025656470244655
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 30.69650072668615
   },
   {
     "year": "2020",
@@ -15217,7 +15248,7 @@ export const predone = [
     "pickNo": 56,
     "rank": "55",
     "NFLteam": "JAC",
-    "NFLName": "DJ Chark Jr.",
+    "NFLName": "DJ Chark",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 0.2,
@@ -15472,11 +15503,11 @@ export const predone = [
     "bye": "9",
     "pos": "WR",
     "reachWeight": -0.3333333333333333,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 32.08747156569494
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 22.23100634053631
   },
   {
     "year": "2020",
@@ -15564,7 +15595,7 @@ export const predone = [
     "pickNo": 78,
     "rank": "67",
     "NFLteam": "BAL",
-    "NFLName": "Marquise Brown",
+    "NFLName": "Hollywood Brown",
     "bye": "8",
     "pos": "WR",
     "reachWeight": 1.5714285714285714,
@@ -15676,7 +15707,7 @@ export const predone = [
     "pickNo": 96,
     "rank": "85",
     "NFLteam": "TB",
-    "NFLName": "Ronald Jones II",
+    "NFLName": "Ronald Jones",
     "bye": "12",
     "pos": "RB",
     "reachWeight": 1.375,
@@ -15772,15 +15803,15 @@ export const predone = [
     "pickNo": 90,
     "rank": "77",
     "NFLteam": "DET",
-    "NFLName": "Marvin Jones Jr.",
+    "NFLName": "Marvin Jones",
     "bye": "5",
     "pos": "WR",
     "reachWeight": 1.625,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 48.1781510457664
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 30.474730259120083
   },
   {
     "year": "2020",
@@ -16059,11 +16090,11 @@ export const predone = [
     "bye": "10",
     "pos": "WR",
     "reachWeight": 1.1,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 40.64057897606841
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 25.910753357928865
   },
   {
     "year": "2020",
@@ -16071,7 +16102,7 @@ export const predone = [
     "pickNo": 119,
     "rank": "102",
     "NFLteam": "LV",
-    "NFLName": "Henry Ruggs III",
+    "NFLName": "Henry Ruggs",
     "bye": "6",
     "pos": "WR",
     "reachWeight": 1.7,
@@ -16258,7 +16289,7 @@ export const predone = [
     "pickNo": 122,
     "rank": "104",
     "NFLteam": "LAR",
-    "NFLName": "Darrell Henderson Jr.",
+    "NFLName": "Darrell Henderson",
     "bye": "9",
     "pos": "RB",
     "reachWeight": 1.6363636363636365,
@@ -16359,10 +16390,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -1.1818181818181819,
     "height": 6,
-    "weight": 189,
-    "dob": "1982-05-19T07:00Z",
-    "whratio": 31.5,
-    "age": 38.28883093652391
+    "weight": 175,
+    "dob": "1994-05-09T07:00Z",
+    "whratio": 29.166666666666668,
+    "age": 26.315963594963165
   },
   {
     "year": "2020",
@@ -16390,11 +16421,11 @@ export const predone = [
     "bye": "11",
     "pos": "QB",
     "reachWeight": 1,
-    "height": 6.25,
-    "weight": 315,
-    "dob": "1991-12-30T08:00Z",
-    "whratio": 50.4,
-    "age": 28.673187448521645
+    "height": 6.416666666666667,
+    "weight": 237,
+    "dob": "1996-05-21T07:00Z",
+    "whratio": 36.935064935064936,
+    "age": 24.281698688770703
   },
   {
     "year": "2020",
@@ -16445,9 +16476,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": 1.4166666666666667,
     "height": 5.916666666666667,
-    "dob": "1965-04-15T08:00Z",
-    "whratio": null,
-    "age": 55.381470301694534
+    "weight": 190,
+    "dob": "1994-10-09T07:00Z",
+    "whratio": 32.112676056338024,
+    "age": 25.897063822893923
   },
   {
     "year": "2020",
@@ -16914,11 +16946,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": 1.2142857142857142,
-    "height": 6.083333333333333,
-    "weight": 230,
-    "dob": "1991-08-24T07:00Z",
-    "whratio": 37.80821917808219,
-    "age": 29.023753624874796
+    "height": 6,
+    "weight": 199,
+    "dob": "1996-04-22T07:00Z",
+    "whratio": 33.166666666666664,
+    "age": 24.36109799197337
   },
   {
     "year": "2020",
@@ -17119,7 +17151,7 @@ export const predone = [
     "pickNo": 179,
     "rank": 301,
     "NFLteam": "unk",
-    "NFLName": "Jacquarfs D/ST",
+    "NFLName": "Jaguars D/ST",
     "bye": "unk",
     "pos": "NA",
     "reachWeight": -8.133333333333333
@@ -17232,15 +17264,15 @@ export const predone = [
     "pickNo": 186,
     "rank": "150",
     "NFLteam": "IND",
-    "NFLName": "Michael Pittman Jr.",
+    "NFLName": "Michael Pittman",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 2.25,
-    "height": 6,
-    "weight": 225,
-    "dob": "1975-08-14T07:00Z",
-    "whratio": 37.5,
-    "age": 45.051461243785525
+    "height": 6.333333333333333,
+    "weight": 223,
+    "dob": "1997-10-05T07:00Z",
+    "whratio": 35.21052631578947,
+    "age": 22.907269371262473
   },
   {
     "year": "2020",
@@ -17460,11 +17492,11 @@ export const predone = [
     "bye": "5",
     "pos": "RB",
     "reachWeight": -2,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 54.70520727096837
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 26.748438822608723
   },
   {
     "year": "2021",
@@ -17701,10 +17733,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -0.5,
     "height": 6.083333333333333,
-    "weight": 220,
-    "dob": "1994-03-09T08:00Z",
-    "whratio": 36.16438356164384,
-    "age": 27.482197900481644
+    "weight": 242,
+    "dob": "1998-03-09T08:00Z",
+    "whratio": 39.78082191780822,
+    "age": 23.482115763271434
   },
   {
     "year": "2021",
@@ -17732,11 +17764,11 @@ export const predone = [
     "bye": "11",
     "pos": "QB",
     "reachWeight": -8,
-    "height": 6.25,
-    "weight": 315,
-    "dob": "1991-12-30T08:00Z",
-    "whratio": 50.4,
-    "age": 29.672523506072448
+    "height": 6.416666666666667,
+    "weight": 237,
+    "dob": "1996-05-21T07:00Z",
+    "whratio": 36.935064935064936,
+    "age": 25.28103474632151
   },
   {
     "year": "2021",
@@ -17872,7 +17904,7 @@ export const predone = [
     "pickNo": 35,
     "rank": "28",
     "NFLteam": "CHI",
-    "NFLName": "Allen Robinson II",
+    "NFLName": "Allen Robinson",
     "bye": "11",
     "pos": "WR",
     "reachWeight": 2.3333333333333335,
@@ -18128,7 +18160,7 @@ export const predone = [
     "pickNo": 51,
     "rank": "44",
     "NFLteam": "CLE",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "9",
     "pos": "WR",
     "reachWeight": 1.4,
@@ -18165,10 +18197,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": -3,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 24.64846414824854
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 23.38640309748546
   },
   {
     "year": "2021",
@@ -18260,11 +18292,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": -2.2,
-    "height": 6.083333333333333,
-    "weight": 195,
-    "dob": "1972-01-14T08:00Z",
-    "whratio": 32.054794520547944,
-    "age": 49.63186558701867
+    "height": 5.75,
+    "weight": 220,
+    "dob": "1993-02-19T08:00Z",
+    "whratio": 38.26086956521739,
+    "age": 28.53081628415824
   },
   {
     "year": "2021",
@@ -18350,7 +18382,12 @@ export const predone = [
     "NFLName": "Melvin Gordon",
     "bye": "8",
     "pos": "RB",
-    "reachWeight": -5
+    "reachWeight": -5,
+    "height": 6.083333333333333,
+    "weight": 215,
+    "dob": "1993-04-13T07:00Z",
+    "whratio": 35.34246575342466,
+    "age": 28.385821292246476
   },
   {
     "year": "2021",
@@ -18406,7 +18443,7 @@ export const predone = [
     "pickNo": 64,
     "rank": "54",
     "NFLteam": "LAR",
-    "NFLName": "Darrell Henderson Jr.",
+    "NFLName": "Darrell Henderson",
     "bye": "9",
     "pos": "RB",
     "reachWeight": 1.6666666666666667,
@@ -18534,7 +18571,7 @@ export const predone = [
     "pickNo": 77,
     "rank": "102",
     "NFLteam": "TB",
-    "NFLName": "Ronald Jones II",
+    "NFLName": "Ronald Jones",
     "bye": "12",
     "pos": "RB",
     "reachWeight": -3.5714285714285716,
@@ -18666,11 +18703,11 @@ export const predone = [
     "bye": "6",
     "pos": "WR",
     "reachWeight": 1,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 31.460376781635944
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 28.49796140007438
   },
   {
     "year": "2021",
@@ -18678,7 +18715,7 @@ export const predone = [
     "pickNo": 95,
     "rank": "78",
     "NFLteam": "BAL",
-    "NFLName": "Marquise Brown",
+    "NFLName": "Hollywood Brown",
     "bye": "8",
     "pos": "WR",
     "reachWeight": 2.125,
@@ -18694,7 +18731,7 @@ export const predone = [
     "pickNo": 94,
     "rank": "83",
     "NFLteam": "JAC",
-    "NFLName": "DJ Chark Jr.",
+    "NFLName": "DJ Chark",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 1.375,
@@ -18822,10 +18859,10 @@ export const predone = [
     "pos": "WR",
     "reachWeight": -0.625,
     "height": 5.833333333333333,
-    "weight": 172,
-    "dob": "1978-03-03T08:00Z",
-    "whratio": 29.485714285714288,
-    "age": 43.498953891364415
+    "weight": 185,
+    "dob": "1988-07-10T07:00Z",
+    "whratio": 31.714285714285715,
+    "age": 33.1443036703925
   },
   {
     "year": "2021",
@@ -18933,11 +18970,11 @@ export const predone = [
     "bye": "11",
     "pos": "RB",
     "reachWeight": -1,
-    "height": 5.916666666666667,
-    "weight": 189,
-    "dob": "1991-04-22T07:00Z",
-    "whratio": 31.943661971830984,
-    "age": 30.362590151292178
+    "height": 5.666666666666667,
+    "weight": 201,
+    "dob": "1999-05-07T07:00Z",
+    "whratio": 35.470588235294116,
+    "age": 22.32135727176693
   },
   {
     "year": "2021",
@@ -18961,15 +18998,15 @@ export const predone = [
     "pickNo": 104,
     "rank": "75",
     "NFLteam": "JAC",
-    "NFLName": "Marvin Jones Jr.",
+    "NFLName": "Marvin Jones",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 3.2222222222222223,
     "height": 6.166666666666667,
-    "weight": 244,
-    "dob": "1972-06-28T07:00Z",
-    "whratio": 39.567567567567565,
-    "age": 49.177487103317205
+    "weight": 199,
+    "dob": "1990-03-12T08:00Z",
+    "whratio": 32.27027027027027,
+    "age": 31.47406631667089
   },
   {
     "year": "2021",
@@ -18993,7 +19030,7 @@ export const predone = [
     "pickNo": 106,
     "rank": "77",
     "NFLteam": "JAC",
-    "NFLName": "Laviska Shenault Jr.",
+    "NFLName": "Laviska Shenault",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 3.2222222222222223,
@@ -19025,7 +19062,7 @@ export const predone = [
     "pickNo": 108,
     "rank": "95",
     "NFLteam": "LV",
-    "NFLName": "Henry Ruggs III",
+    "NFLName": "Henry Ruggs",
     "bye": "6",
     "pos": "WR",
     "reachWeight": 1.4444444444444444,
@@ -19072,11 +19109,11 @@ export const predone = [
     "bye": "10",
     "pos": "WR",
     "reachWeight": 3.1,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 41.63991503361922
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 26.91008941547967
   },
   {
     "year": "2021",
@@ -19152,11 +19189,11 @@ export const predone = [
     "bye": "8",
     "pos": "RB",
     "reachWeight": -0.9,
-    "height": 6.166666666666667,
-    "weight": 260,
-    "dob": "1987-08-26T07:00Z",
-    "whratio": 42.16216216216216,
-    "age": 34.017696005621836
+    "height": 6.083333333333333,
+    "weight": 224,
+    "dob": "1991-12-16T08:00Z",
+    "whratio": 36.82191780821918,
+    "age": 29.71085420417029
   },
   {
     "year": "2021",
@@ -19586,15 +19623,15 @@ export const predone = [
     "pickNo": 133,
     "rank": "116",
     "NFLteam": "IND",
-    "NFLName": "Michael Pittman Jr.",
+    "NFLName": "Michael Pittman",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 1.4166666666666667,
-    "height": 6,
-    "weight": 225,
-    "dob": "1975-08-14T07:00Z",
-    "whratio": 37.5,
-    "age": 46.050797301336324
+    "height": 6.333333333333333,
+    "weight": 223,
+    "dob": "1997-10-05T07:00Z",
+    "whratio": 35.21052631578947,
+    "age": 23.906605428813275
   },
   {
     "year": "2021",
@@ -19638,11 +19675,11 @@ export const predone = [
     "bye": "8",
     "pos": "WR",
     "reachWeight": -1,
-    "height": 6.333333333333333,
-    "weight": 207,
-    "dob": "1988-07-31T07:00Z",
-    "whratio": 32.68421052631579,
-    "age": 33.08680762324574
+    "height": 6.166666666666667,
+    "weight": 198,
+    "dob": "1998-06-09T07:00Z",
+    "whratio": 32.108108108108105,
+    "age": 23.230342398087117
   },
   {
     "year": "2021",
@@ -19650,7 +19687,7 @@ export const predone = [
     "pickNo": 148,
     "rank": "155",
     "NFLteam": "CAR",
-    "NFLName": "Terrace Marshall Jr.",
+    "NFLName": "Terrace Marshall",
     "bye": "12",
     "pos": "WR",
     "reachWeight": -0.5384615384615384,
@@ -19869,11 +19906,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": -2.5714285714285716,
-    "height": 6.083333333333333,
-    "weight": 230,
-    "dob": "1991-08-24T07:00Z",
-    "whratio": 37.80821917808219,
-    "age": 30.023089682425603
+    "height": 6,
+    "weight": 199,
+    "dob": "1996-04-22T07:00Z",
+    "whratio": 33.166666666666664,
+    "age": 25.360434049524173
   },
   {
     "year": "2021",
@@ -20095,15 +20132,15 @@ export const predone = [
     "pickNo": 178,
     "rank": "194",
     "NFLteam": "HOU",
-    "NFLName": "Mark Ingram II",
+    "NFLName": "Mark Ingram",
     "bye": "8",
     "pos": "RB",
     "reachWeight": -1.0666666666666667,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 56.02499252779546
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 31.695836784236956
   },
   {
     "year": "2021",
@@ -20180,11 +20217,11 @@ export const predone = [
     "bye": "9",
     "pos": "K",
     "reachWeight": 0.0625,
-    "height": 5.916666666666667,
-    "weight": 180,
-    "dob": "1970-04-03T08:00Z",
-    "whratio": 30.422535211267604,
-    "age": 51.41424304856819
+    "height": 6,
+    "weight": 232,
+    "dob": "1994-03-15T08:00Z",
+    "whratio": 38.666666666666664,
+    "age": 27.465770458439714
   },
   {
     "year": "2021",
@@ -20401,7 +20438,7 @@ export const predone = [
     "pickNo": 7,
     "rank": "6",
     "NFLteam": "CIN",
-    "NFLName": "Chase Lay",
+    "NFLName": "Ja'Marr Chase",
     "bye": "10",
     "pos": "WR",
     "reachWeight": 1,
@@ -20438,10 +20475,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": 1,
     "height": 6.083333333333333,
-    "weight": 220,
-    "dob": "1994-03-09T08:00Z",
-    "whratio": 36.16438356164384,
-    "age": 28.48153395803245
+    "weight": 242,
+    "dob": "1998-03-09T08:00Z",
+    "whratio": 39.78082191780822,
+    "age": 24.48145182082224
   },
   {
     "year": "2022",
@@ -20549,11 +20586,11 @@ export const predone = [
     "bye": "14",
     "pos": "RB",
     "reachWeight": -4,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 55.70454332851918
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 27.74777488015953
   },
   {
     "year": "2022",
@@ -20757,11 +20794,11 @@ export const predone = [
     "bye": "7",
     "pos": "QB",
     "reachWeight": -4.666666666666667,
-    "height": 6.25,
-    "weight": 315,
-    "dob": "1991-12-30T08:00Z",
-    "whratio": 50.4,
-    "age": 30.671859563623254
+    "height": 6.416666666666667,
+    "weight": 237,
+    "dob": "1996-05-21T07:00Z",
+    "whratio": 36.935064935064936,
+    "age": 26.280370803872312
   },
   {
     "year": "2022",
@@ -20837,11 +20874,11 @@ export const predone = [
     "bye": "8",
     "pos": "WR",
     "reachWeight": 1,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 42.639251091170024
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 27.909425473030474
   },
   {
     "year": "2022",
@@ -20901,11 +20938,11 @@ export const predone = [
     "bye": "9",
     "pos": "RB",
     "reachWeight": -2,
-    "height": 5.666666666666667,
-    "weight": 180,
-    "dob": "1995-03-31T08:00Z",
-    "whratio": 31.76470588235294,
-    "age": 27.421963946327896
+    "height": 5.833333333333333,
+    "weight": 200,
+    "dob": "1998-05-02T07:00Z",
+    "whratio": 34.285714285714285,
+    "age": 24.333718921903483
   },
   {
     "year": "2022",
@@ -20977,7 +21014,7 @@ export const predone = [
     "pickNo": 42,
     "rank": "56",
     "NFLteam": "JAC",
-    "NFLName": "Travis Etienne Jr.",
+    "NFLName": "Travis Etienne",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -3.5,
@@ -21025,15 +21062,15 @@ export const predone = [
     "pickNo": 39,
     "rank": "32",
     "NFLteam": "IND",
-    "NFLName": "Michael Pittman Jr.",
+    "NFLName": "Michael Pittman",
     "bye": "14",
     "pos": "WR",
     "reachWeight": 1.75,
-    "height": 6,
-    "weight": 225,
-    "dob": "1975-08-14T07:00Z",
-    "whratio": 37.5,
-    "age": 47.05013335888713
+    "height": 6.333333333333333,
+    "weight": 223,
+    "dob": "1997-10-05T07:00Z",
+    "whratio": 35.21052631578947,
+    "age": 24.905941486364082
   },
   {
     "year": "2022",
@@ -21089,7 +21126,7 @@ export const predone = [
     "pickNo": 50,
     "rank": "36",
     "NFLteam": "ARI",
-    "NFLName": "Marquise Brown",
+    "NFLName": "Hollywood Brown",
     "bye": "13",
     "pos": "WR",
     "reachWeight": 2.8,
@@ -21292,7 +21329,7 @@ export const predone = [
     "pickNo": 70,
     "rank": "64",
     "NFLteam": "LAR",
-    "NFLName": "Allen Robinson II",
+    "NFLName": "Allen Robinson",
     "bye": "7",
     "pos": "WR",
     "reachWeight": 1,
@@ -21425,10 +21462,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": 0,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 25.647800205799342
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 24.385739155036266
   },
   {
     "year": "2022",
@@ -21616,11 +21653,11 @@ export const predone = [
     "bye": "14",
     "pos": "WR",
     "reachWeight": 2.4285714285714284,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 32.45971283918675
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 29.497297457625184
   },
   {
     "year": "2022",
@@ -21660,7 +21697,7 @@ export const predone = [
     "pickNo": 95,
     "rank": "163",
     "NFLteam": "LAR",
-    "NFLName": "Darrell Henderson Jr.",
+    "NFLName": "Darrell Henderson",
     "bye": "7",
     "pos": "RB",
     "reachWeight": -8.5,
@@ -21692,7 +21729,7 @@ export const predone = [
     "pickNo": 93,
     "rank": "118",
     "NFLteam": "DEN",
-    "NFLName": "Melvin Gordon III",
+    "NFLName": "Melvin Gordon",
     "bye": "9",
     "pos": "RB",
     "reachWeight": -3.125,
@@ -21836,7 +21873,7 @@ export const predone = [
     "pickNo": 97,
     "rank": "107",
     "NFLteam": "SEA",
-    "NFLName": "Ken Walker III",
+    "NFLName": "Ken Walker",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -1.1111111111111112
@@ -22091,11 +22128,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": -0.4,
-    "height": 5.916666666666667,
-    "weight": 189,
-    "dob": "1991-04-22T07:00Z",
-    "whratio": 31.943661971830984,
-    "age": 31.361926208842984
+    "height": 5.666666666666667,
+    "weight": 201,
+    "dob": "1999-05-07T07:00Z",
+    "whratio": 35.470588235294116,
+    "age": 23.320693329317738
   },
   {
     "year": "2022",
@@ -22103,7 +22140,7 @@ export const predone = [
     "pickNo": 115,
     "rank": "119",
     "NFLteam": "wsh",
-    "NFLName": "Brian Robinson Jr.",
+    "NFLName": "Brian Robinson",
     "bye": "14",
     "pos": "RB",
     "reachWeight": -0.4,
@@ -22338,15 +22375,15 @@ export const predone = [
     "pickNo": 129,
     "rank": "201",
     "NFLteam": "NO",
-    "NFLName": "Mark Ingram II",
+    "NFLName": "Mark Ingram",
     "bye": "14",
     "pos": "RB",
     "reachWeight": -6.545454545454546,
-    "height": 5.833333333333333,
-    "weight": 194,
-    "dob": "1965-08-23T07:00Z",
-    "whratio": 33.25714285714286,
-    "age": 57.02432858534627
+    "height": 5.75,
+    "weight": 215,
+    "dob": "1989-12-21T08:00Z",
+    "whratio": 37.391304347826086,
+    "age": 32.69517284178776
   },
   {
     "year": "2022",
@@ -22524,11 +22561,11 @@ export const predone = [
     "bye": "7",
     "pos": "K",
     "reachWeight": -1.4166666666666667,
-    "height": 5.916666666666667,
-    "weight": 180,
-    "dob": "1970-04-03T08:00Z",
-    "whratio": 30.422535211267604,
-    "age": 52.413579106118995
+    "height": 6,
+    "weight": 232,
+    "dob": "1994-03-15T08:00Z",
+    "whratio": 38.666666666666664,
+    "age": 28.465106515990517
   },
   {
     "year": "2022",
@@ -22568,7 +22605,7 @@ export const predone = [
     "pickNo": 133,
     "rank": "130",
     "NFLteam": "DET",
-    "NFLName": "DJ Chark Jr.",
+    "NFLName": "DJ Chark",
     "bye": "6",
     "pos": "WR",
     "reachWeight": 0.25,
@@ -23049,7 +23086,7 @@ export const predone = [
     "pickNo": 175,
     "rank": "228",
     "NFLteam": "FA",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "N/A",
     "pos": "WR",
     "reachWeight": -3.533333333333333,
@@ -23279,11 +23316,11 @@ export const predone = [
     "bye": "10",
     "pos": "RB",
     "reachWeight": -0.875,
-    "height": 6.083333333333333,
-    "weight": 195,
-    "dob": "1972-01-14T08:00Z",
-    "whratio": 32.054794520547944,
-    "age": 50.63120164456947
+    "height": 5.75,
+    "weight": 220,
+    "dob": "1993-02-19T08:00Z",
+    "whratio": 38.26086956521739,
+    "age": 29.530152341709048
   },
   {
     "year": "2022",
@@ -23307,7 +23344,7 @@ export const predone = [
     "pickNo": 1,
     "rank": "2",
     "NFLteam": "CIN",
-    "NFLName": "Chase Lay",
+    "NFLName": "Ja'Marr Chase",
     "bye": "10",
     "pos": "WR",
     "reachWeight": -1,
@@ -23627,7 +23664,7 @@ export const predone = [
     "pickNo": 16,
     "rank": "20",
     "NFLteam": "JAC",
-    "NFLName": "Travis Etienne Jr.",
+    "NFLName": "Travis Etienne",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -2,
@@ -23728,10 +23765,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -1,
     "height": 6.083333333333333,
-    "weight": 220,
-    "dob": "1994-03-09T08:00Z",
-    "whratio": 36.16438356164384,
-    "age": 29.480870015583253
+    "weight": 242,
+    "dob": "1998-03-09T08:00Z",
+    "whratio": 39.78082191780822,
+    "age": 25.480787878373043
   },
   {
     "year": "2023",
@@ -23775,11 +23812,11 @@ export const predone = [
     "bye": "14",
     "pos": "RB",
     "reachWeight": -0.6666666666666666,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 56.703879386069985
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 28.747110937710335
   },
   {
     "year": "2023",
@@ -23807,11 +23844,11 @@ export const predone = [
     "bye": "7",
     "pos": "QB",
     "reachWeight": 1.6666666666666667,
-    "height": 6.25,
-    "weight": 315,
-    "dob": "1991-12-30T08:00Z",
-    "whratio": 50.4,
-    "age": 31.67119562117406
+    "height": 6.416666666666667,
+    "weight": 237,
+    "dob": "1996-05-21T07:00Z",
+    "whratio": 36.935064935064936,
+    "age": 27.27970686142312
   },
   {
     "year": "2023",
@@ -23867,7 +23904,7 @@ export const predone = [
     "pickNo": 36,
     "rank": "46",
     "NFLteam": "SEA",
-    "NFLName": "Ken Walker III",
+    "NFLName": "Ken Walker",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -3.3333333333333335
@@ -24043,10 +24080,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": -0.25,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 26.64713626335015
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 25.385075212587072
   },
   {
     "year": "2023",
@@ -24374,7 +24411,7 @@ export const predone = [
     "pickNo": 65,
     "rank": "90",
     "NFLteam": "wsh",
-    "NFLName": "Brian Robinson Jr.",
+    "NFLName": "Brian Robinson",
     "bye": "14",
     "pos": "RB",
     "reachWeight": -4.166666666666667,
@@ -24442,11 +24479,11 @@ export const predone = [
     "bye": "8",
     "pos": "WR",
     "reachWeight": 2.8333333333333335,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 43.63858714872083
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 28.90876153058128
   },
   {
     "year": "2023",
@@ -24582,7 +24619,7 @@ export const predone = [
     "pickNo": 81,
     "rank": "66",
     "NFLteam": "ARI",
-    "NFLName": "Marquise Brown",
+    "NFLName": "Hollywood Brown",
     "bye": "13",
     "pos": "WR",
     "reachWeight": 2.142857142857143,
@@ -24730,11 +24767,11 @@ export const predone = [
     "bye": "14",
     "pos": "WR",
     "reachWeight": -1.25,
-    "height": 5.916666666666667,
-    "weight": 192,
-    "dob": "1990-03-17T08:00Z",
-    "whratio": 32.45070422535211,
-    "age": 33.459048896737556
+    "height": 6.25,
+    "weight": 212,
+    "dob": "1993-03-03T08:00Z",
+    "whratio": 33.92,
+    "age": 30.49663351517599
   },
   {
     "year": "2023",
@@ -24758,15 +24795,15 @@ export const predone = [
     "pickNo": 89,
     "rank": "83",
     "NFLteam": "IND",
-    "NFLName": "Michael Pittman Jr.",
+    "NFLName": "Michael Pittman",
     "bye": "14",
     "pos": "WR",
     "reachWeight": 0.75,
-    "height": 6,
-    "weight": 225,
-    "dob": "1975-08-14T07:00Z",
-    "whratio": 37.5,
-    "age": 48.04946941643794
+    "height": 6.333333333333333,
+    "weight": 223,
+    "dob": "1997-10-05T07:00Z",
+    "whratio": 35.21052631578947,
+    "age": 25.905277543914888
   },
   {
     "year": "2023",
@@ -24922,11 +24959,11 @@ export const predone = [
     "bye": "9",
     "pos": "RB",
     "reachWeight": -1.3333333333333333,
-    "height": 5.666666666666667,
-    "weight": 180,
-    "dob": "1995-03-31T08:00Z",
-    "whratio": 31.76470588235294,
-    "age": 28.421300003878702
+    "height": 5.833333333333333,
+    "weight": 200,
+    "dob": "1998-05-02T07:00Z",
+    "whratio": 34.285714285714285,
+    "age": 25.33305497945429
   },
   {
     "year": "2023",
@@ -25014,7 +25051,7 @@ export const predone = [
     "pickNo": 108,
     "rank": "100",
     "NFLteam": "BAL",
-    "NFLName": "Odell Beckham Jr.",
+    "NFLName": "Odell Beckham",
     "bye": "10",
     "pos": "WR",
     "reachWeight": 0.8888888888888888,
@@ -25345,7 +25382,7 @@ export const predone = [
     "pickNo": 129,
     "rank": "109",
     "NFLteam": "CAR",
-    "NFLName": "DJ Chark Jr.",
+    "NFLName": "DJ Chark",
     "bye": "13",
     "pos": "WR",
     "reachWeight": 1.8181818181818181,
@@ -25697,7 +25734,7 @@ export const predone = [
     "pickNo": 151,
     "rank": "202",
     "NFLteam": "MIA",
-    "NFLName": "Jeff Wilson Jr.",
+    "NFLName": "Jeff Wilson",
     "bye": "11",
     "pos": "RB",
     "reachWeight": -3.923076923076923,
@@ -25713,15 +25750,15 @@ export const predone = [
     "pickNo": 152,
     "rank": "247",
     "NFLteam": "CIN",
-    "NFLName": "Irv Smith Jr.",
+    "NFLName": "Irv Smith",
     "bye": "10",
     "pos": "TE",
     "reachWeight": -7.3076923076923075,
-    "height": 6.25,
-    "weight": 262,
-    "dob": "1971-10-13T07:00Z",
-    "whratio": 41.92,
-    "age": 51.88527713322884
+    "height": 6.166666666666667,
+    "weight": 242,
+    "dob": "1998-08-09T07:00Z",
+    "whratio": 39.24324324324324,
+    "age": 25.062002185762427
   },
   {
     "year": "2023",
@@ -25729,7 +25766,7 @@ export const predone = [
     "pickNo": 153,
     "rank": "116",
     "NFLteam": "TEN",
-    "NFLName": "Chigoziem Okonkwo",
+    "NFLName": "Chig Okonkwo",
     "bye": "6",
     "pos": "TE",
     "reachWeight": 2.8461538461538463,
@@ -26362,7 +26399,7 @@ export const predone = [
     "pickNo": 4,
     "rank": "6",
     "NFLteam": "CIN",
-    "NFLName": "Chase Lay",
+    "NFLName": "Ja'Marr Chase",
     "bye": "7",
     "pos": "WR",
     "reachWeight": -2,
@@ -26522,7 +26559,7 @@ export const predone = [
     "pickNo": 23,
     "rank": "19",
     "NFLteam": "SF",
-    "NFLName": "Deebo Samuel Sr.",
+    "NFLName": "Deebo Samuel",
     "bye": "9",
     "pos": "WR",
     "reachWeight": 2,
@@ -26542,11 +26579,11 @@ export const predone = [
     "bye": "13",
     "pos": "QB",
     "reachWeight": -6.5,
-    "height": 6.25,
-    "weight": 315,
-    "dob": "1991-12-30T08:00Z",
-    "whratio": 50.4,
-    "age": 32.67326958573185
+    "height": 6.416666666666667,
+    "weight": 237,
+    "dob": "1996-05-21T07:00Z",
+    "whratio": 36.935064935064936,
+    "age": 28.281780825980913
   },
   {
     "year": "2024",
@@ -26570,15 +26607,15 @@ export const predone = [
     "pickNo": 20,
     "rank": "22",
     "NFLteam": "ARI",
-    "NFLName": "Marvin Harrison Jr.",
+    "NFLName": "Marvin Harrison",
     "bye": "14",
     "pos": "WR",
     "reachWeight": -1,
-    "height": 6,
-    "weight": 185,
-    "dob": "1972-08-25T07:00Z",
-    "whratio": 30.833333333333332,
-    "age": 52.01943457657127
+    "height": 6.25,
+    "weight": 209,
+    "dob": "2002-08-11T07:00Z",
+    "whratio": 33.44,
+    "age": 22.058518199096035
   },
   {
     "year": "2024",
@@ -26666,7 +26703,7 @@ export const predone = [
     "pickNo": 14,
     "rank": "17",
     "NFLteam": "JAC",
-    "NFLName": "Travis Etienne Jr.",
+    "NFLName": "Travis Etienne",
     "bye": "9",
     "pos": "RB",
     "reachWeight": -1.5,
@@ -26698,7 +26735,7 @@ export const predone = [
     "pickNo": 25,
     "rank": "25",
     "NFLteam": "SEA",
-    "NFLName": "Kenneth Walker III",
+    "NFLName": "Kenneth Walker",
     "bye": "5",
     "pos": "RB",
     "reachWeight": 0,
@@ -26959,10 +26996,10 @@ export const predone = [
     "pos": "QB",
     "reachWeight": -1.25,
     "height": 6.166666666666667,
-    "weight": 205,
-    "dob": "1997-01-07T08:00Z",
-    "whratio": 33.24324324324324,
-    "age": 27.649210227907943
+    "weight": 208,
+    "dob": "1998-04-13T07:00Z",
+    "whratio": 33.729729729729726,
+    "age": 26.387149177144863
   },
   {
     "year": "2024",
@@ -26974,11 +27011,11 @@ export const predone = [
     "bye": "13",
     "pos": "RB",
     "reachWeight": -8.25,
-    "height": 6.416666666666667,
-    "weight": 267,
-    "dob": "1966-12-18T08:00Z",
-    "whratio": 41.61038961038961,
-    "age": 57.70595335062778
+    "height": 5.833333333333333,
+    "weight": 208,
+    "dob": "1994-12-02T08:00Z",
+    "whratio": 35.65714285714286,
+    "age": 29.749184902268127
   },
   {
     "year": "2024",
@@ -27183,10 +27220,10 @@ export const predone = [
     "pos": "RB",
     "reachWeight": -1.6,
     "height": 6.083333333333333,
-    "weight": 220,
-    "dob": "1994-03-09T08:00Z",
-    "whratio": 36.16438356164384,
-    "age": 30.482943980141048
+    "weight": 242,
+    "dob": "1998-03-09T08:00Z",
+    "whratio": 39.78082191780822,
+    "age": 26.482861842930838
   },
   {
     "year": "2024",
@@ -27194,15 +27231,15 @@ export const predone = [
     "pickNo": 56,
     "rank": "42",
     "NFLteam": "IND",
-    "NFLName": "Michael Pittman Jr.",
+    "NFLName": "Michael Pittman",
     "bye": "11",
     "pos": "WR",
     "reachWeight": 2.8,
-    "height": 6,
-    "weight": 225,
-    "dob": "1975-08-14T07:00Z",
-    "whratio": 37.5,
-    "age": 49.05154338099573
+    "height": 6.333333333333333,
+    "weight": 223,
+    "dob": "1997-10-05T07:00Z",
+    "whratio": 35.21052631578947,
+    "age": 26.907351508472683
   },
   {
     "year": "2024",
@@ -27322,7 +27359,7 @@ export const predone = [
     "pickNo": 69,
     "rank": "78",
     "NFLteam": "wsh",
-    "NFLName": "Brian Robinson Jr.",
+    "NFLName": "Brian Robinson",
     "bye": "14",
     "pos": "RB",
     "reachWeight": -1.5,
@@ -27994,7 +28031,7 @@ export const predone = [
     "pickNo": 106,
     "rank": "97",
     "NFLteam": "JAC",
-    "NFLName": "Brian Thomas Jr.",
+    "NFLName": "Brian Thomas",
     "bye": "9",
     "pos": "WR",
     "reachWeight": 1,
@@ -28046,11 +28083,11 @@ export const predone = [
     "bye": "7",
     "pos": "WR",
     "reachWeight": 2.4,
-    "height": 6.583333333333333,
-    "weight": 337,
-    "dob": "1980-01-11T08:00Z",
-    "whratio": 51.18987341772152,
-    "age": 44.64066111327862
+    "height": 6.333333333333333,
+    "weight": 218,
+    "dob": "1994-10-04T07:00Z",
+    "whratio": 34.42105263157895,
+    "age": 29.910835495139075
   },
   {
     "year": "2024",
@@ -28133,7 +28170,7 @@ export const predone = [
     "pickNo": 114,
     "rank": "107",
     "NFLteam": "KC",
-    "NFLName": "Marquise Brown",
+    "NFLName": "Hollywood Brown",
     "bye": "10",
     "pos": "WR",
     "reachWeight": 0.7,
@@ -29132,137 +29169,5 @@ export const predone = [
     "dob": "1995-10-03T07:00Z",
     "whratio": 37.69230769230769,
     "age": 28.914237344595257
-  },
-  {
-    "year": "2024",
-    "name": "Brenna",
-    "pickNo": 192,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -6.8125
-  },
-  {
-    "year": "2024",
-    "name": "Andrew",
-    "pickNo": 191,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -6.875
-  },
-  {
-    "year": "2024",
-    "name": "Lance",
-    "pickNo": 190,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -6.9375
-  },
-  {
-    "year": "2024",
-    "name": "Adam",
-    "pickNo": 189,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7
-  },
-  {
-    "year": "2024",
-    "name": "Joey",
-    "pickNo": 188,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.0625
-  },
-  {
-    "year": "2024",
-    "name": "Nate",
-    "pickNo": 187,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.125
-  },
-  {
-    "year": "2024",
-    "name": "RJ",
-    "pickNo": 186,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.1875
-  },
-  {
-    "year": "2024",
-    "name": "Claire",
-    "pickNo": 185,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.25
-  },
-  {
-    "year": "2024",
-    "name": "Kevin",
-    "pickNo": 184,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.3125
-  },
-  {
-    "year": "2024",
-    "name": "Eric",
-    "pickNo": 183,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.375
-  },
-  {
-    "year": "2024",
-    "name": "Stephen",
-    "pickNo": 182,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.4375
-  },
-  {
-    "year": "2024",
-    "name": "Nick",
-    "pickNo": 181,
-    "rank": 301,
-    "NFLteam": "unk",
-    "NFLName": "",
-    "bye": "unk",
-    "pos": "NA",
-    "reachWeight": -7.5
   }
 ]

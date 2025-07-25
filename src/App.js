@@ -24,9 +24,13 @@ import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
 
 
   
-// import { styleSheet } from './tools/styles/styles';   
-const UPDATE_DRAFT_INFO = false
-//update proj by copying from chrome calling api
+// steps for caching:   
+const UPDATE_DRAFT_INFO = false  //now node prerun_draft.js to download
+  //update proj by copying from chrome calling api
+  // /test/lastSavedYear/lastSavedWeek
+  // then append to saved list 
+
+  
 function App() {
   const [raw,setRaw] = useState([{'Week':'init'}])
   const [proj,setProj] = useState([{'Week':'init'}])

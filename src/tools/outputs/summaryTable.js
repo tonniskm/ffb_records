@@ -54,7 +54,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
             else{value =Math.round(100*dict[key][name])/100;myVal = dict[key][name]}
             vals.push(<div className="tableCell" key={name+'1'}>
                 <p className="txt" key={name+'txt1'}>{value}</p>
-                {showComp&&<p className="txt">{!vars.activeNames.includes(name)?'    N/A    ':SummaryLine(myVal,allVals,'max')}</p>}
+                {showComp&&<p className="txt" key={name+'txt2'}>{!vars.activeNames.includes(name)?'    N/A    ':SummaryLine(myVal,allVals,'max')}</p>}
                 </div>)
         }
         cols.push(
@@ -76,7 +76,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
                 {relevantChoices}
             </div>  
         </div>,
-        <div><div className="tableContainer" key={'2nd'}>
+        <div key={'bot2nd'}><div className="tableContainer" key={'2nd'}>
             {cols}
         </div></div>]
     {/* </div> */}

@@ -55,7 +55,7 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
                     for(let i=0;i<keys.length;i++){
                         const name = keys[i]
                         const NFLName = CleanName(line[name])
-                        if (name===''){continue}
+                        if (name===''||NFLName===''){continue}
                         const rankLines = ranks.filter(x=>x.Name===CleanName(NFLName))
                         let pos,rank,NFLteam,bye
                         if(rankLines.length>0){
@@ -75,10 +75,21 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
                         const reachWeight = reach/round
                         
                         let height, weight, dob, age
-                        // const statsLines = vars.NFLstats.filter(x=>x.name===CleanName(NFLName))
+                        const statsLines1 = playerInfo.filter(x=>x.name===CleanName(NFLName))
                         const statsLines = playerInfo.find(x=>x.name===CleanName(NFLName))
-                        if(statsLines!==undefined){
-                            const statLine = statsLines
+                        // if(statsLines!==undefined){
+                        if(statsLines1.length>0){
+                            // const statLine = statsLines
+                        const statLine = statsLines1.sort((a, b) => {
+                            const da = new Date(a.dob);
+                            const db = new Date(b.dob);
+
+                            if (isNaN(da)) return 1;
+                            if (isNaN(db)) return -1;
+                            return db - da;
+                            })[0]
+
+
                             height = statLine.height/12 //in to ft
                             weight = statLine.weight
                             dob = statLine.dob

@@ -294,7 +294,7 @@ export function DirtyName(name){
     }
     return out
 }
-const JRS = [' Jr.',' Sr.',' II',' III',' IV']
+const JRS = [' Jr.',' Sr.',' III',' II',' IV']
 export function FixJrs(name){
     let out = name
     for(const jr of JRS){
