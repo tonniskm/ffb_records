@@ -139,7 +139,8 @@ export const Chart = (props) =>{
                 }
             const minMax = getMinMax(data)
             const isIntegers = Number.isInteger(minMax[0])&&Number.isInteger(minMax[1])
-            const domainMinMax = [(minMax[0]>0?Math.max(0,Math.min(minMax[0]*0.95)):1.05*minMax[0]), (1.05*minMax[1])]
+            const domainMinMax = isIntegers?[(Math.floor(minMax[0]>0?Math.max(0,Math.min(minMax[0]*0.95)):1.05*minMax[0])), Math.ceil((1.05*minMax[1]))]
+            :[(minMax[0]>0?Math.max(0,Math.min(minMax[0]*0.95)):1.05*minMax[0]), (1.05*minMax[1])]
             // const yticks = generateTicks(minMax[0],minMax[1],domainMinMax)
             // console.log(data,yticks,minMax[0],minMax[1])
             // console.log(uniqueX,data,xAxis,meta,sortBy)
@@ -158,23 +159,7 @@ export const Chart = (props) =>{
             <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                 dataKey={xAxis==='name'||xAxis==='year'||xAxis==='week'?'xNum':xAxis}
-                // {...((xAxis !== 'name'&&xAxis!=='year') && {
-                //     domain:([min,max])=>xAxis==='name'?['auto','auto']:[min-1,max+1],
-                //     type:'number',
-                //     ticks:uniqueX
-                // })}
-                // {...(xAxis==='name'&&{
-                //     domain:([min,max])=>[min-1,max+1],
-                //     type:'number',
-                //     ticks:uniqueX.map((_, i) => i),// e.g. [0, 1, 2]
-                //     tickFormatter:(i) => uniqueX[i]
-                // })}
-                // {...(xAxis==='year'&&{
-                //     domain:([min,max])=>[min-1,max+1],
-                //     type:'number',
-                //     ticks:uniqueX.map((_, i) => i),// e.g. [0, 1, 2]
-                //     tickFormatter:(i) => uniqueX[i]
-                // })}
+ 
                     domain={([min,max])=>[min-1,max+1]}
                     type={'number'}
                     ticks={uniqueX.map((_, i) => i)}// e.g. [0, 1, 2]
