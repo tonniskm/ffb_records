@@ -4,6 +4,7 @@ import { getPlayerStats } from "./player/getPlayerStats"
 import { GetTeamAwards } from "./player/getTeamAwards"
 import GetYearStats from "./raw2year/getYearStats"
 import { getYearStatsProj } from "./raw2year/getYearStatsProj"
+import { getFiddleAwards } from "./sum2overall/fiddleRosterAwards"
 import { getAwardsProj } from "./sum2overall/getAwardsProj"
 import { getGameAwards } from "./sum2overall/getGameAwards"
 import { getNameAwards } from "./sum2overall/getNameAwards"
@@ -18,7 +19,8 @@ import { GetYearAwards } from "./year2sum/yearAwards"
 export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
  let out = {'year':{},'yearSum':{},'overall':{},'misc':{},'nameAwards':{},'nyAwards':{},'gameAwards':{},'weekAwards':{},
 'yearAwards':{},'yearProj':{},'overallProj':{},'projAwards':{},'playerStats':{},'fantasyTeams':{},'matchupTable':{},
-'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[],'tables':{},'allProj':[],'incompleteAwards':[]
+'isComplete':{},'bestPlayers':{},'playerTracker':{},'draftAwards':[],'teamAwards':[],'tables':{},'allProj':[],'incompleteAwards':[],
+'fiddleAwards':[]
 } 
    let regComplete = false
    let yearComplete = false 
@@ -68,6 +70,7 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       out['bestPlayers'] = playerStats.bestPlayers
       out['playerTracker'] = playerStats.playerTracker 
       GetTeamAwards(vars,tables,out)  
+      out['fiddleAwards'] = getFiddleAwards(vars,tables,out)
       // try{await AnalyzeDraft(out,yearMax)}catch(e){console.log(e)}
       await AnalyzeDraft(out,yearMax,vars)
      //  console.log(out) 

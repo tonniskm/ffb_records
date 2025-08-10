@@ -113,7 +113,9 @@ document.addEventListener('gestureend', e => e.preventDefault());
   let shownRecords = []
   let allAwards = []
   if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
-    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards).concat(records.teamAwards)}
+    .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards).concat(records.teamAwards)
+    .concat(records.fiddleAwards)
+  }
       
 
   if(records.nameAwards!=undefined){
