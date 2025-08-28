@@ -25,7 +25,9 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
                 });
                 return row;
                         })
-                if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawDrafts[year] = data}
+                if(data[0]){
+                    if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawDrafts[year] = data}
+                }
                 }))
     promises.push(fetch(`/drafts/rankings/${year.toString()}rank.csv`).then(res=>
         res.text()).then(text=>{
@@ -40,7 +42,9 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
             });
             return row;
                     })
-            if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawRanks[year] = data}
+            if(data[0]){
+                if(!Object.keys(data[0]).includes('<!DOCTYPE html>')){rawRanks[year] = data}
+            }
             }))
     }
     await Promise.all(promises).then(()=>{
