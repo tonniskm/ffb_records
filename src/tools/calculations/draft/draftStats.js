@@ -9,10 +9,11 @@ export async function AnalyzeDraft(records,yearMax,vars,updateSaved=false,player
     // let draftInfo = []
     const draftInfo = updateSaved?[]:predone
     const yearsDone = [...new Set(draftInfo.flatMap(obj => Object.values(obj)))].map(x=>parseInt(x))
-    for(let year=2015;year<=yearMax;year++){
+    for(let year=2015;year<=yearMax+1;year++){
         if(yearsDone.includes(year)&&!updateSaved){continue}
         promises.push(fetch(`/drafts/${year.toString()}.csv`).then(res=>
             res.text()).then(text=>{
+                // if(year>2024){console.log(year,text)}
                 const lines = text.trim().split('\n');
                 const headers = lines[0].split(',');
 

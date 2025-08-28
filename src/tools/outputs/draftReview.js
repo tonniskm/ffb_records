@@ -5,14 +5,17 @@ import { NamePicker } from './misc/misc';
 import { maxPtsinYear, midPtsinYear } from '../constants/constants';
 
 export const DraftReview = ({pickMacro,records,vars}) =>{
+    const lastActive = vars.activeYears[vars.activeYears.length-1]
+    const activeYears = vars.currentYear === lastActive?vars.activeYears:vars.activeYears.concat(vars.currentYear)
+    const defaultYear = vars.currentYear === lastActive?lastActive:vars.currentYear
     const [draftCSV,setDraftCSV] = useState([])
     const [ranks,setRanks] = useState([])
     const [colorType,setColorType] = useState('Position')
-    const [selectedYear,setSelectedYear] = useState(vars.activeYears[vars.activeYears.length-1])
+    const [selectedYear,setSelectedYear] = useState(defaultYear)
     const year = selectedYear
     const choices = ['Position','Reach Heat Map','Score Heat Map']
     const colorScheme = <NamePicker title={'Color Scheme: '} selecting={setColorType} curval={colorType} options={choices} key={'draft picker'}></NamePicker>
-    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={vars.activeYears} key={'yearp'}></NamePicker>
+    const pickYear = <NamePicker title={'Year: '} showAll={false} selecting={setSelectedYear} curval={selectedYear} options={activeYears} key={'yearp'}></NamePicker>
     const relevantChoices=[pickMacro,pickYear,colorScheme]
     let scores = records.playerStats.filter(x=>x.id==='pa42')[0].values.filter(x=>x.year==year)
 
