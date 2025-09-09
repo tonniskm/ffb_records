@@ -9,8 +9,8 @@ import { poses } from "../constants/constants"
 export const  WeeklyReview = ({pickMacro,raw,proj,records,vars,awards})=>{
     // pickMacro={pickMacro} raw={raw} proj={proj} records={records} vars={vars} awards={allAwards}></WeeklyReview>
     
-    const [week,setWeek] = useState(vars.activeWeeks[vars.activeWeeks.length-1])
     const [year,setYear] = useState(vars.activeYears[vars.activeYears.length-1])
+    const [week,setWeek] = useState(raw[year][raw[year].length-1].Week)
     const [compType,setCompType] = useState('All Time')
     const [focusName,setFocusName] = useState('All')
 
@@ -85,7 +85,7 @@ try{
             <p className="titleText" key={'tl2'+name}>Score</p>,
             <div className="smallText" key={'tl3'+name}>vs all: {SummaryLine(score,highScores,'max','value')[0].props.children.join("")}</div>,
             <div className="smallText" key={'tl4'+name}>vs self: {SummaryLine(score,highScores.filter(x=>x.name===name),'max','value')[0].props.children.join("")}</div>,
-            <div className="smallText" key={'tl5'+name}>oppo vs self: {SummaryLine(oppoScore,highScores.filter(x=>x.name===oppo),'max')[0].props.children.join("")}</div>
+            // <div className="smallText" key={'tl5'+name}>oppo vs self: {SummaryLine(oppoScore,highScores.filter(x=>x.name===oppo),'max')[0].props.children.join("")}</div>
             ]
             if(winner!=='TIE'){
                 const winnerStats = [
@@ -110,17 +110,20 @@ try{
                 const allPosVsOppo = allPos.filter(x=>x.oppo===oppo)
                 const myStart = allMyPos.filter(x=>x.week===week&&x.year==year).sort((a,b)=>a.actual > b.actual)
                 winStats.push(<div className="titleText" key={pos}>{pos}</div>)
-                for(const line of myStart){
+                for(let l=0;l<myStart.length;l++){
+                    const line = myStart[l]
                     if(line.slot==='FLEX'){
-                        flexStats.push(<div className="midText" key={'flex1'}>{line.NFLName}, {line.actual}</div>)
-                        flexStats.push(<div className="smallText" key={'flex2'}>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
-                        flexStats.push(<div className="smallText" key={'flex3'}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
-                        flexStats.push(<div className="smallText" key={'flex4'}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)        
+                        flexStats.push(<div className="midText" key={line.NFLName+1}>{line.NFLName}, {line.actual}</div>)
+                        flexStats.push(<div className="smallText" key={line.NFLName+2}>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
+                        flexStats.push(<div className="smallText" key={line.NFLName+3}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
+                        flexStats.push(<div className="smallText" key={line.NFLName+4}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
+                        flexStats.push(<div className="smallText" key={line.NFLName+5}>vs {line.NFLName}: {SummaryLine(line.actual,all.filter(x=>x.NFLName===line.NFLName),'max','actual')[0].props.children.join("")}</div>)
                     }else{
                         winStats.push(<div className="midText" key={line.NFLName+1}>{line.NFLName}, {line.actual}</div>)
                         winStats.push(<div className="smallText" key={line.NFLName+2}><p></p>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
                         winStats.push(<div className="smallText" key={line.NFLName+3}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
                         winStats.push(<div className="smallText" key={line.NFLName+4}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
+                        winStats.push(<div className="smallText" key={line.NFLName+5}>vs {line.NFLName}: {SummaryLine(line.actual,all.filter(x=>x.NFLName===line.NFLName),'max','actual')[0].props.children.join("")}</div>) 
                     }
                 }
             }
