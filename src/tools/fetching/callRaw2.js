@@ -33,12 +33,12 @@ export async function callRaw(vars,setRaw){
             const nflState = await nflStateRes.json();
             for (let year=lastSavedYear;year<=yearMax;year++){
                 if(year<2025){continue}
+                out[year] = []
                 for(let week=1;week<nflState.week;week++){
-                const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/1`);
+                const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/${week}`);
                 const matchups = await matchupsRes.json();
                 const used_mids = []
                 const mid_inds = {}
-                out[year] = []
                 for(const matchup of matchups){
                     const mid = matchup.matchup_id
                     const rid = matchup.roster_id
@@ -55,12 +55,12 @@ export async function callRaw(vars,setRaw){
 
                     }else{
                         used_mids.push(mid)
-                        mid_inds[mid] = used_mids.length - 1
                         out[year].push({
                             Week:week,
                             Team1:sleeperNames[uid]?.ind,
                             Score1:matchup.points
                         })
+                        mid_inds[mid] = out[year].length - 1
                     }
                 }
             }//week

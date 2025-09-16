@@ -148,7 +148,7 @@ function FixJrs(name){
             // const rosters = await rosterRes.json();
             const projRes = await fetch(`https://api.sleeper.com/projections/nfl/${year}/${week}?season_type=regular&position[]=DEF&position[]=K&position[]=QB&position[]=RB&position[]=TE&position[]=WR&order_by=pts_dynasty_std`);
             const projections = await projRes.json();
-            const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/1`);
+            const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/${week}`);
             const matchups = await matchupsRes.json();
             for(const matchup of matchups){
                 const mid = matchup.matchup_id
