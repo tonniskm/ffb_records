@@ -21,7 +21,7 @@ export const RecentUpdates = ({ records, oldRecords, weekOldRecords, pickMacro, 
       showAll={false}
       selecting={setWeekYear}
       curval={weekYear}
-      options={['Week', 'Year']}
+      options={vars.currentYear===vars.yearMin?['Week']:['Week', 'Year']}
       key="wy"
     />
   );

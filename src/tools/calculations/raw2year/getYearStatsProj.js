@@ -1,10 +1,11 @@
-import { ChooseNames, UnpackProjLine, UnpackRawLine } from "../other"
+import { getNames } from "../getNames"
+import { UnpackProjLine, UnpackRawLine } from "../other"
 
 
 export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     let scores = {}
     if(year<2018){return scores}
-    const names = ChooseNames(vars,year)
+    const names = getNames(vars.leagueID,year)
     const raw = rawIn[year]
     const proj = projIn[year]
     const WLTw = ['Proj W W','Proj W L','Proj W T']

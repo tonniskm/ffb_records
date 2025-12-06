@@ -2,7 +2,8 @@
 
 export function getAwardsProj(vars,input){
     const projStatsRaw = input['yearProj']
-    const meta = projStatsRaw[2018]['meta']
+    const eligibleYearKey = Object.keys(projStatsRaw)[0]
+    const meta = projStatsRaw[eligibleYearKey]['meta']
     const comparedKeys = meta['comparedKeys']
     let awards = []
     const names = vars.allNames
@@ -17,7 +18,7 @@ export function getAwardsProj(vars,input){
         {'id': 'ap7', 'title': 'Feeling Confident', 'description': 'The biggest projected difference', 'keyID': 'Best Proj Dif', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap8', 'title': 'Life is Easy', 'description': 'The person whose worst enemy projection ever is the lowest', 'keyID': 'Best Proj Faced', 'MinMax': 'min', 'meta': ['name', 'year', 'week'], 'agg': 'person','sort':'high'},
         {'id': 'ap9', 'title': 'Uphill Both Ways', 'description': 'The person whose easiest enemy projection ever is the highest', 'keyID': 'Worst Proj Faced', 'MinMax': 'max','sort':'low', 'meta': ['name', 'year', 'week'], 'agg': 'person'},
-        {'id': 'ap10', 'title': 'Trophy Hunter', 'description': 'The highest projection to ever be defeated', 'keyID': 'Best Proj Beaten', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
+        {'id': 'ap10', 'title': 'Trophy Hunter', 'description': 'The person who took down the highest projection', 'keyID': 'Best Proj Beaten', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap11', 'title': 'The Mouse that Roared', 'description': 'The lowest projection to ever win a game', 'keyID': 'Worst Proj Lost To', 'MinMax': 'min', 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap12', 'title': 'David and Goliath', 'description': 'The biggest projected deficit ever overcome', 'keyID': 'Biggest Overcome', 'MinMax': null, 'meta': ['name', 'year', 'week'], 'agg': 'total'},
         {'id': 'ap13', 'title': 'Always Cocky', 'description': 'The person projected to win the most often', 'keyID': 'Proj to Win %', 'MinMax': null, 'meta': ['name'], 'agg': 'person'},

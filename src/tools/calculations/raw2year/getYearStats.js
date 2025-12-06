@@ -1,10 +1,10 @@
+import { getNames } from "../getNames"
 import { StandardDeviation } from "../other"
 
 
 export default function GetYearStats(vars,raw,proj,fa,year,tables){
-    let names = vars.names
-    if(year==2012){names=vars.names2012}
-    if(year>=2022){names=vars.names2022}
+
+    let names = getNames(vars.leagueID,year)
     const teams = names.length
     let highScores = []
     let lowScores = []

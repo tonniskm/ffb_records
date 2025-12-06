@@ -6,21 +6,24 @@ const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching
 export async function callRaw(vars,setRaw){
     const yearMax = vars.currentYear
     const lastSavedYear = Math.max(...Object.keys(savedRaw).map(x=>parseInt(x)))
-    let out = {...savedRaw}
-    if(yearMax<=lastSavedYear){
+    let out = {}
+    if (vars.leagueID === 'rajan') {
+        out = {...savedRaw}
+    }
+    if(yearMax<=lastSavedYear && vars.leagueID === 'rajan'){
         setRaw(out)
     }else{
-        if(false){
+        if(vars.leagueID !== 'rajan'){
 
             // const url = 'http://localhost:5432/rawrajan/'+yearMax.toString()
-            const url = 'https://mocktion-site.vercel.app/rawrajan/'+yearMax.toString()
+            const url = 'https://mocktion-site.vercel.app/rawrajan/'+yearMax.toString()+'/'+vars.yearMin.toString() +'/'+vars.leagueNo.toString()
             fetch(url,{
                 // method:'GET',
                 // mode:'cors'
             }).then(res=>res.json()).then(json=>{
         
                 for(const year in json){
-                    if(year<=lastSavedYear){continue}
+                    // if(year<=lastSavedYear){continue}
                     json[year] = json[year].sort((a,b)=>a.Week-b.Week)
                     if(json[year][0].Score1==0){continue;delete json[year]}
                     out[year] = json[year]

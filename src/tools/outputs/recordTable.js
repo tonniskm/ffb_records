@@ -181,6 +181,7 @@ export const RecordTable = (props)=>{
         const sorted = award.values.sort((a,b)=>a.rank-b.rank)
         const winFilter = sorted.filter(x=>x.rank==1)
         winners = GenerateOutputList(winFilter,'w',award.meta,count,award.desc)
+        if(sorted.length ===0){continue}
         const r1 = Math.round(100*sorted[0].value)/100
         let myRank = []
         let filtered = sorted

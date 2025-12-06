@@ -21,6 +21,7 @@ import PinchZoomDiv from './tools/outputs/misc/zoom copy';
 import { callProj2 } from './tools/fetching/callProj3';
 import { YearlyReview } from './tools/outputs/yearlyReview';
 import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
+import { getAllNames, getLameDucks } from './tools/calculations/getNames';
 
 
   
@@ -30,8 +31,14 @@ const UPDATE_DRAFT_INFO = false  //now node prerun_draft.js to download
   // /test/lastSavedYear/lastSavedWeek
   // then append to saved list 
 
-  
+  // to change names or lame ducks in a league update getNames.js
+  // other league info goes below
+  //cookies are stored in the router
 function App() {
+
+  let leagueID = new URLSearchParams(window.location.search).get('league') || 'rajan'
+  const yearMins = {'rajan':2012,'schulte':2023,'sfc':2025}
+  const leagueNos = {'rajan':'596787','schulte':'2077814555','sfc':'1524625178'}
   const [raw,setRaw] = useState([{'Week':'init'}])
   const [proj,setProj] = useState([{'Week':'init'}])
   const [fa,setFa] = useState([{'Week':'init'}])
@@ -54,19 +61,14 @@ function App() {
 document.addEventListener('gestureend', e => e.preventDefault());
 
 
-  const yearMin = 2012     
+  const yearMin = yearMins[leagueID] || 2012   
   const currentYear = new Date().getFullYear();
   const weekMax =18 
-  const names2012 = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Kevin', 'Eric',
-    'Nick', 'Jake Knapke', 'Brenna', 'Uncle Steve', 'Regan Crone', 'RJ', 'Claire', 'Lance', 'Adam', 'Nate']
-  const names = ['t0', 'Andrew', 'Brian', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Uncle Steve', 'Eric',
-    'Regan Crone', 'Jake Knapke', 'Brenna', 'RJ', 'Nick', 'Kevin', 'Claire', 'Lance', 'Adam', 'Nate']
-  const names2022 = ['t0', 'Andrew', 'Joey', 'Rick Melgard', 'Stephen', 'Andre Simonson', 'Uncle Steve', 'Eric',
-    'Regan Crone', 'Jake Knapke', 'Brenna', 'RJ', 'Nick', 'Kevin', 'Claire', 'Lance', 'Adam', 'Nate']
-  const lameDucks = ['t0','Rick Melgard','Andre Simonson','Uncle Steve','Regan Crone','Jake Knapke']
-  const teamnos = [1, 2, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17]
-  const defunct = [0, 3, 5, 6, 8, 9] 
-  const allNames = [...new Set([...names,...names2012,...names2022])]
+
+  // const teamnos = [1, 2, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17]
+  // const defunct = [0, 3, 5, 6, 8, 9] 
+  const allNames = getAllNames(leagueID)
+  const lameDucks = getLameDucks(leagueID)
   const activeNames = allNames.filter(x=>!lameDucks.includes(x))
   const activeWeeks = []
   const activeYears = [] 
@@ -80,7 +82,8 @@ document.addEventListener('gestureend', e => e.preventDefault());
   }  
   let allNFLNames = []
   if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Yearly Review','Draft']
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Yearly Review']
+  if(leagueID==='rajan'){macroTypes.push('Draft')}
  
   let nameSelectMessage
   if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
@@ -91,12 +94,12 @@ document.addEventListener('gestureend', e => e.preventDefault());
 //  console.log(raw) 
 
   const vars = {'currentYear':currentYear,
-    'names':names, 
-    'names2012':names2012,
-    'names2022':names2022,
+    // 'names':names, 
+    // 'names2012':names2012,
+    // 'names2022':names2022,
     'lameDucks':lameDucks,
-    'teamNos':teamnos,
-    'defunct':defunct,
+    // 'teamNos':teamnos,
+    // 'defunct':defunct,
     'yearMin':yearMin,
     'weekMax':weekMax,
     'allNames':allNames,
@@ -104,6 +107,8 @@ document.addEventListener('gestureend', e => e.preventDefault());
     'activeYears':activeYears,
     'allNFLNames':allNFLNames,
     'activeNames':activeNames,
+    'leagueID':leagueID,
+    'leagueNo':leagueNos[leagueID] 
     // NFLstats:NFLstats,setNFLstats
   }
 
@@ -170,13 +175,15 @@ document.addEventListener('gestureend', e => e.preventDefault());
   },[])        
  
   useEffect(()=>{    
-      if(Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString())&&!didMount){
+      if(((Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString()))||(currentYear === yearMin&&raw[currentYear]&&proj[currentYear]))&&!didMount){
         const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
         const lastYear = Math.max(...lastYear1)
         if(raw[lastYear].length > 2 && proj[lastYear].length > 2){
           setDidMount(true)
           GetRecords(vars,lastYear,setRecords,raw,proj,fa)
-          GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
+          if(lastYear>yearMin){
+            GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
+          }
           let truncRaw = {...raw}
           let truncProj = {...proj}
           const lastWeek = raw[lastYear][raw[lastYear].length-1].Week

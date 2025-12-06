@@ -1,3 +1,4 @@
+import { getNames } from "./getNames"
 
 
 export function GetOtherTables(vars,raw,proj){
@@ -14,7 +15,7 @@ export function GetOtherTables(vars,raw,proj){
         types[year] = {}
         oppoScore[year] = {}
         outcome[year] = {}
-        let names = ChooseNames(vars,year)
+        let names = getNames(vars.leagueID,year)
         for (let n=0;n<names.length;n++){
             oppos[year][names[n]] = {} 
             scores[year][names[n]] = {}
@@ -66,7 +67,7 @@ let myTeam = {}
 for(let year=Math.max(vars.yearMin,2018);year<=vars.currentYear;year++){
     if(!Object.keys(raw).includes(year.toString())){continue}
     myTeam[year] = {}
-    let names = ChooseNames(vars,year)
+    let names = getNames(vars.leagueID,year)
     for (const name of names){
         myTeam[year][name] = {} 
     }
@@ -82,12 +83,12 @@ for(let year=Math.max(vars.yearMin,2018);year<=vars.currentYear;year++){
 return {'oppos':oppos,'scores':scores,'types':types,'oppoScores':oppoScore,'outcomes':outcome,myTeam}
 }
 
-export function ChooseNames(vars,year){
-    let names = vars.names
-    if(year==2012){names=vars.names2012}
-    if(year>=2022){names=vars.names2022}
-    return names
-}
+// export function ChooseNames(vars,year){
+//     let names = vars.names
+//     if(year==2012){names=vars.names2012}
+//     if(year>=2022){names=vars.names2022}
+//     return names
+// }
 
 
 // Javascript program to calculate the 
@@ -261,7 +262,7 @@ export function expandProj(proj,tables,vars){
       let filtered = []
       for (const line of combinedArray){
           const year = line.year
-          const names = ChooseNames(vars,year)
+          const names = getNames(vars.leagueID,year)
           const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
           const type = tables.types[year][team][week]
           if(type==='lame'||type==='BYE'){continue}

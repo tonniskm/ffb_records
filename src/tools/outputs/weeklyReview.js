@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { ChooseNames, Round, UnpackRawLine } from "../calculations/other"
+import { Round, UnpackRawLine } from "../calculations/other"
 import { expandProj, NamePicker } from "./misc/misc"
 import '../../styles/weeklyReview.css'
 import { poses } from "../constants/constants"
+import { getNames } from "../calculations/getNames"
 
 
 
@@ -32,7 +33,7 @@ try{
     const pickName = <NamePicker title={'Filter Name: '} showAll={true} selecting={setFocusName} curval={focusName} options={vars.activeNames} key={'1name'}></NamePicker>
     const pickComp = <NamePicker title={'Compare vs: '} showAll={false} selecting={setCompType} curval={compType} options={['All Time','This Year']} key={'1comp'}></NamePicker>
     
-    const names = ChooseNames(vars,year)
+    const names = getNames(vars.leagueID,year)
     // console.log(raw[2020].filter(x=>x.Week===10))
     const rawGames = raw[year].filter(x=>x.Week==week)
     let gamesOut = []

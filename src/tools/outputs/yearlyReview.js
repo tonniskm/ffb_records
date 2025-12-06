@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
-import { ChooseNames, Round, UnpackRawLine } from "../calculations/other"
+import { Round, UnpackRawLine } from "../calculations/other"
+import { getNames } from "../calculations/getNames"
 
 
 export const YearlyReview = ({pickMacro,vars,records})=>{
@@ -41,7 +42,7 @@ export const YearlyReview = ({pickMacro,vars,records})=>{
         </div>
     let checkAward = nyAwards[0].values.concat(records.incompleteAwards[0].values)
     const eligibleNames = [...new Set(checkAward.filter(x=>x.year==selectedYear).map(x=>x.name))]
-    const names = ChooseNames(vars,selectedYear).filter(x=>eligibleNames.includes(x))
+    const names = getNames(vars.leagueID,selectedYear).filter(x=>eligibleNames.includes(x))
     let nameHeaders = []
     for (const name of names){
         if (!vars.activeNames.includes(name)){continue}

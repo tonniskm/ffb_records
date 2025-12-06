@@ -1,4 +1,5 @@
-import { ChooseNames, DictKeysWithValue, DictMax, DictMin, RecordToFrac, SortNRank, UnpackProjLine } from "../other"
+import { getNames } from "../getNames"
+import { DictKeysWithValue, DictMax, DictMin, RecordToFrac, SortNRank, UnpackProjLine } from "../other"
 
 
 export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
@@ -33,7 +34,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         const oppoScores = tables.oppoScores[year]
 
         for (const line of rawProjIn[year]){
-            const yearNames = ChooseNames(vars,year)
+            const yearNames = getNames(vars.leagueID,year)
             const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             if(week>lastWeek){continue}
             const gameType = types[team][week]
@@ -309,10 +310,14 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             fantasyTeams[team][pos +'1'] = [sortedPlayers[0].value,sortedPlayers[0]]
             if(['RB','WR'].includes(pos)){
                 fantasyTeams[team][pos+'2'] = [sortedPlayers[1].value,sortedPlayers[1]]
+                if (sortedPlayers.length>2){
                 possibleFlexes.push([sortedPlayers[2].value,sortedPlayers[2]])
+                }
             }
             if(pos=='TE'){
+                if(sortedPlayers.length>1){
                 possibleFlexes.push([sortedPlayers[1].value,sortedPlayers[1]])
+            }
             }
         }
         const sortedFlex = possibleFlexes.sort((a,b)=>b[0]-a[0])
@@ -559,7 +564,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         const scores = tables.scores[year]
         const opponent = tables.oppos[year]
         const oppoScores = tables.oppoScores[year]
-        const yearNames = ChooseNames(vars,year)
+        const yearNames = getNames(vars.leagueID,year)
         for(const line of rawProjIn[year]){
             const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             if(slot!='FLEX'){continue}
@@ -614,7 +619,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         const scores = tables.scores[year]
         const opponent = tables.oppos[year]
         const oppoScores = tables.oppoScores[year]
-        const yearNames = ChooseNames(vars,year)
+        const yearNames = getNames(vars.leagueID,year)
         for(const name of names){
             ownedInYears[name]['owned'][year] = 0
             ownedInYears[name]['started'][year] = 0

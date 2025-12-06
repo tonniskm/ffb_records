@@ -1,4 +1,5 @@
-import { ChooseNames } from "../other"
+import { getNames } from "../getNames"
+
 
 
 export function getGameAwards(vars,raw){
@@ -24,7 +25,7 @@ export function getGameAwards(vars,raw){
     let vals = {}
     let onlyVals = {}
     for(let year in raw){ 
-        const names = ChooseNames(vars,year)
+        const names = getNames(vars.leagueID,year)
         for(let game of raw[year]){
             let week = parseInt(game['Week'])
             let t1 = names[parseInt(game['Team1'])]

@@ -72,7 +72,9 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       GetTeamAwards(vars,tables,out)  
       out['fiddleAwards'] = getFiddleAwards(vars,tables,out)
       // try{await AnalyzeDraft(out,yearMax)}catch(e){console.log(e)}
+      if(vars.leagueID==='rajan'){
       await AnalyzeDraft(out,yearMax,vars)
+      }
      //  console.log(out) 
      out.tables = tables
      out.allProj = expandProj(proj,tables,vars)       

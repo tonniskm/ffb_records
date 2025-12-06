@@ -7,25 +7,30 @@ const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching
 
 export async function callProj2(vars,setProj){
     const yearMax = vars.currentYear
-    let out = {...savedProj}
+    let out = {}
+    if (vars.leagueID === 'rajan') {
+        out = {...savedProj}
+    }
     // console.log(out[2023].filter(x=>x.Week==1))
     let dataCopy = [...missingData]
     // console.log(out[2023].filter(x=>x.Week).length>0,out[2023].filter(x=>x.Week).length)
-    if(!out[2023].filter(x=>x.Week==1).length>0){
-        for(const line of dataCopy){
-            line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
-            line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
-            out[2023].push(line)
+    if(vars.leagueID === 'rajan'){
+        if(!out[2023].filter(x=>x.Week==1).length>0){
+            for(const line of dataCopy){
+                line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
+                line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
+                out[2023].push(line)
+            }
         }
     }
         // console.log(out[2023].filter(x=>x.Week==1))
-    const lastSavedYear = Math.max(...Object.keys(savedProj).map(x=>parseInt(x)))
-    const lastSavedWeek = Math.max(...savedProj[lastSavedYear].map(x=>x.Week))
-    if(lastSavedYear==yearMax&&lastSavedWeek>=18){
+    const lastSavedYear = vars.leagueID==='rajan'?Math.max(...Object.keys(savedProj).map(x=>parseInt(x))):vars.yearMin
+    const lastSavedWeek = vars.leagueID==='rajan'?Math.max(...savedProj[lastSavedYear].map(x=>x.Week)):0
+    if(lastSavedYear==yearMax&&lastSavedWeek>=18 && vars.leagueID === 'rajan'){
         setProj(out)
     }
     else{
-        if(false){
+        if(vars.leagueID !== 'rajan'){
 
             // setProj(out)
             // for(let year=2018;year<=yearMax;year++){
@@ -36,7 +41,7 @@ export async function callProj2(vars,setProj){
                     // const url = 'http://localhost:5432/projrajan/'+year.toString()+'/'+week.toString()
                     // const url = 'https://mocktion-site.vercel.app/projrajan/'+year.toString()+'/'+week.toString()
             // const url = 'http://localhost:5432/test/'+lastSavedYear.toString()+'/'+lastSavedWeek.toString()
-            const url = 'https://mocktion-site.vercel.app/test/'+lastSavedYear.toString()+'/'+lastSavedWeek.toString()
+            const url = 'https://mocktion-site.vercel.app/test/'+lastSavedYear.toString()+'/'+lastSavedWeek.toString() + '/'+vars.leagueNo.toString()
                     
             fetch(url).then(res=>res.json()).then(json=>{
                 for (const year in json){

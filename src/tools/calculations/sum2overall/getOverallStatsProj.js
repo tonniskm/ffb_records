@@ -4,8 +4,9 @@ export function getOverallStatsProj(vars,input){
     const projStatsRaw = input['yearProj']
     let awards = []
     let overall = {}
-    const allKeys = Object.keys(projStatsRaw[2018]['scores'])
-    const meta = projStatsRaw[2018]['meta']
+    const eligibleYearKey = Object.keys(projStatsRaw)[0]
+    const allKeys = Object.keys(projStatsRaw[eligibleYearKey]['scores'])
+    const meta = projStatsRaw[eligibleYearKey]['meta']
     const comparedKeys = meta['comparedKeys']
     const minKeys = meta['minKeys']
     const names = vars.allNames
