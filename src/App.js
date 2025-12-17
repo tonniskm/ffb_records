@@ -36,7 +36,7 @@ const UPDATE_DRAFT_INFO = false  //now node prerun_draft.js to download
   //cookies are stored in the router
 function App() {
 
-  let leagueID = new URLSearchParams(window.location.search).get('league') || 'rajan'
+  let leagueID = new URLSearchParams(window.location.search).get('league')?.toLowerCase() || 'rajan'
   const yearMins = {'rajan':2012,'schulte':2023,'sfc':2025}
   const leagueNos = {'rajan':'596787','schulte':'2077814555','sfc':'1524625178'}
   const [raw,setRaw] = useState([{'Week':'init'}])
@@ -47,7 +47,7 @@ function App() {
   const [oldRecords,setOldRecords] = useState({})
   const [weekOldRecords,setWeekOldRecords] = useState({})
 
-  const [macroType,setMacroType] = useState('Records')
+  const [macroType,setMacroType] = useState('Yearly Awards')
   
 
   const [didMount,setDidMount] = useState(false) 

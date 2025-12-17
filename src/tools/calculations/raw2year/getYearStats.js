@@ -10,7 +10,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     let lowScores = []
     //list of calculated values in this record type
     const calculated = ['games played','reg total','reg games played','reg STD','high scores','low scores','seed','last until','KO by',
-        'oppo reg total','W','L','T','pct','high','oppo high','low','oppo low',
+        'oppo reg total','W','L','T','pct','high','oppo high','low','oppo low','high W','oppo high W','low W','oppo low W',
         'biggest W','biggest L','closest W','closest L','low W','high L','oppo high L','oppo low W','close W','close L',
         'L over 100','W under 80','ind records','Beat Low Score','Lost to High Score','Record vs Mid',
         'Beat 2nd','Lost to 2nd Last','reg pt diff','Lost as 2nd','Won as 2nd Last']
@@ -131,10 +131,10 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                     let score, otherScore, player
                     if(p==0){score=score1;otherScore=score2;player=t1}else{score=score2;otherScore=score1;player=t2}
                     scores['games played'][player] += 1
-                    if (scores['high'][player] < score){scores['high'][player] = score}
-                    if (scores['low'][player] > score){scores['low'][player] = score}
-                    if (scores['oppo high'][player] < otherScore){scores['oppo high'][player] = otherScore}
-                    if (scores['oppo low'][player] > otherScore){scores['oppo low'][player] = otherScore}
+                    if (scores['high'][player] < score){scores['high'][player] = score;scores['high W'][player] = week}
+                    if (scores['low'][player] > score){scores['low'][player] = score;scores['low W'][player] = week}
+                    if (scores['oppo high'][player] < otherScore){scores['oppo high'][player] = otherScore;scores['oppo high W'][player] = week}
+                    if (scores['oppo low'][player] > otherScore){scores['oppo low'][player] = otherScore;scores['oppo low W'][player] = week}
                 }
             }
 
@@ -181,10 +181,10 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                 scores['ind records'][winner][loser][0] += 1
                 scores['ind records'][loser][winner][1] += 1
         
-                if (lowW[0] == winScore){lowW[1].push(winner)}
-                        else if (lowW[0] > winScore){lowW = [winScore,[winner]]}
-                        if (highL[0] == loseScore){highL[1].push(loser)}
-                        else if (highL[0] < loseScore){highL = [loseScore,[loser]]}
+                if (lowW[0] == winScore){lowW[1].push(winner);lowW[2].push(week);lowW[3].push(loser);lowW[4].push(loseScore);}
+                    else if (lowW[0] > winScore){lowW = [winScore,[winner],[week],[loser],[loseScore]];}
+                if (highL[0] == loseScore){highL[1].push(loser);highL[2].push(week);highL[3].push(winner);highL[4].push(winScore);}
+                    else if (highL[0] < loseScore){highL = [loseScore,[loser],[week],[winner],[winScore]];}
                 //left off here line 217
                 if(type.includes('P')){
                     scores['last until'][loser] = type

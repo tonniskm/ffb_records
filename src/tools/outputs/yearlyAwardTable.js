@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { NamePicker } from "./misc/misc"
 
-
+const needWeekNo = ['high score','low score','low high','high low','shootout','defensive','high L','low W']
+const needOppo = ['high L','low W']
 export const YearlyAwardTable = ({records,pickMacro,vars})=>{
     let out = []
     let rows = []
@@ -14,11 +15,15 @@ export const YearlyAwardTable = ({records,pickMacro,vars})=>{
         const value = Math.round(100*dict[key][0])/100
         let owner = dict[key][1]
         if(Array.isArray(owner)){owner=owner.join(', ')}
+        // if(needWeekNo.includes(key)){console.log(key,dict[key])}
         rows.push(
             <div className="tableRow" key={key}>
                 <div className="headerCell"><p className="txt">{key}</p></div>
                 <div className="tableCell"><p className="txt">{value}</p></div>
-                <div className="tableCell"><p className="txt">{owner}</p></div>
+                <div className="tableCell"><p className="txt">{owner==='t0'?'None':owner
+                +(needWeekNo.includes(key)?` (Week ${dict[key][2].join(', ')})`:'')
+                +(needOppo.includes(key)?` vs. ${dict[key][3].join(', ')}: ${dict[key][4].join(', ')}`:'')
+                }</p></div>
             </div>
 
         )

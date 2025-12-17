@@ -42,19 +42,31 @@ export async function callRaw(vars,setRaw){
                 const matchups = await matchupsRes.json();
                 const used_mids = []
                 const mid_inds = {}
+                let wBracket = []
+                let lBracket = []
                 for(const matchup of matchups){
                     const mid = matchup.matchup_id
                     const rid = matchup.roster_id
                     const uid = Object.entries(sleeperNames).find(([k, v]) => v.roster_id === rid)?.[0];
+                    let type = 'REG'
+                    if(week==15){
+                        if(!mid){
+                            if(wBracket.length<2){type='P1';wBracket.push(sleeperNames[uid]?.ind)}
+                            else{type='L1';lBracket.push(sleeperNames[uid]?.ind)}
+                        }
+                        else if(mid==1 || mid==2){type='P1';wBracket.push(sleeperNames[uid]?.ind)}
+                        else if(mid==4 || mid==5){type='L1';lBracket.push(sleeperNames[uid]?.ind)}
+                    }
+
                     if(used_mids.includes(mid)){
                         const s1 = out[year][mid_inds[mid]]['Score1']
                         const s2 = matchup.points
                         out[year][mid_inds[mid]]['Team2'] = sleeperNames[uid]?.ind
                         out[year][mid_inds[mid]]['Score2'] = s2
                         out[year][mid_inds[mid]]['winner'] = s1>s2?out[year][mid_inds[mid]]['Team1']:s1<s2?sleeperNames[uid]?.ind:'TIE'
-                        out[year][mid_inds[mid]]['type'] = 'REG'//TODO
-                        out[year][mid_inds[mid]]['winBracket'] = []//TODO
-                        out[year][mid_inds[mid]]['loseBracket'] = []//TODO
+                        out[year][mid_inds[mid]]['type'] = type //TODO
+                        out[year][mid_inds[mid]]['winBracket'] = wBracket//TODO
+                        out[year][mid_inds[mid]]['loseBracket'] = lBracket//TODO
 
                     }else{
                         used_mids.push(mid)
