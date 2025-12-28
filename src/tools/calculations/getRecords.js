@@ -1,5 +1,6 @@
 import { AnalyzeDraft } from "./draft/draftStats"
 import { expandProj, GetOtherTables } from "./other"
+import { getNewAwards } from "./player/getNewAwards"
 import { getPlayerStats } from "./player/getPlayerStats"
 import { GetTeamAwards } from "./player/getTeamAwards"
 import GetYearStats from "./raw2year/getYearStats"
@@ -78,6 +79,8 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
      //  console.log(out) 
      out.tables = tables
      out.allProj = expandProj(proj,tables,vars)       
+     const newAwards = getNewAwards(vars,out)
+     out['playerStats'] = [...out['playerStats'],...newAwards]
       setRecords(out)          
    }catch(e){console.log(e)}   
   

@@ -223,12 +223,23 @@ export function UnpackProjLine(line,names){
 }
 
 export function SortNRank(onlyVals,vals,type){
-    let sorted = [...onlyVals].sort((a,b)=>a-b)
+    // let sorted = [...onlyVals].sort((a,b)=>a-b)
+    // if(type!='min'){sorted = sorted.reverse()}
+    // for(const line of vals){
+    //     line['rank'] = sorted.indexOf(line.value) + 1
+    // }
+    let sorted = structuredClone(vals).sort((a,b)=>a.value-b.value)
     if(type!='min'){sorted = sorted.reverse()}
-    for(const line of vals){
-        line['rank'] = sorted.indexOf(line.value) + 1
+    let lastValue = null
+    for (let i=0; i<sorted.length; i++){
+        if(sorted[i].value!==lastValue){
+            sorted[i].rank = i+1
+            lastValue = sorted[i].value
+        }else{
+            sorted[i].rank = sorted[i-1].rank
+        }
     }
-    return vals
+    return sorted
 }
 
 export function Round(val,digs=2){
