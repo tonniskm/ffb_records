@@ -7,19 +7,19 @@ export function getNewAwards(vars,input){
     const poses = ['QB','RB','WR','TE','D/ST','K']
     const na1 = (line,item) =>{
         if(!line.didStart){return null}
-        return {'value':line[item.keyID],'actual':line.actual,'NFLName':line.NFLName,'team':line.team,'week':line.week,'year':line.year}
+        return {'value':line[item.keyID],'actual':line.actual,'NFLName':line.NFLName,'name':line.team,'week':line.week,'year':line.year}
     }
     const na2 = (line,item) =>{
-        if((!line.didStart)||line.outcome!=='L'){return null}
-        return {'value':line[item.keyID],'NFLName':line.NFLName,'team':line.team,'week':line.week,'year':line.year}
+        if((!line.didStart)||(line.outcome!=='L')||(line.type==='lame')){return null}
+        return {'value':line[item.keyID],'NFLName':line.NFLName,'name':line.team,'week':line.week,'year':line.year}
     }
     const list = [
         {'id': 'na1', 'title': 'A Bold Move', 
             'description': 'The lowest projection to be started', 'func':na1,
-            'keyID': 'projected','pos':'Each','MinMax': 'min', 'meta': ['NFLName','actual','team','week','year'], 'agg': null},
+            'keyID': 'projected','pos':'Each','MinMax': 'min', 'meta': ['NFLName','actual','name','week','year'], 'agg': null},
         {'id': 'na2', 'title': 'I Did My Part', 
             'description': 'The highest individual score to be defeated', 'func':na2,
-            'keyID': 'projected','pos':'Each','MinMax': 'max', 'meta': ['NFLName','team','week','year'], 'agg': null},
+            'keyID': 'actual','pos':'Each','MinMax': 'max', 'meta': ['NFLName','name','week','year'], 'agg': null},
         ]
 
         for (const item of list){
