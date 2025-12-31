@@ -15363,5 +15363,2132 @@ export const savedRaw = {'2012':[
         10
       ]
     }
-  ]
+  ],
+  '2025':[
+  {
+    "Week": 1,
+    "Team1": 1,
+    "Score1": 93.62,
+    "Team2": 10,
+    "Score2": 112.56,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 1,
+    "Team1": 16,
+    "Score1": 78.96,
+    "Team2": 4,
+    "Score2": 120.52,
+    "winner": 4,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 1,
+    "Team1": 7,
+    "Score1": 77.48,
+    "Team2": 15,
+    "Score2": 93.92,
+    "winner": 15,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 1,
+    "Team1": 13,
+    "Score1": 122.28,
+    "Team2": 14,
+    "Score2": 62.14,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 1,
+    "Team1": 11,
+    "Score1": 95.98,
+    "Team2": 17,
+    "Score2": 73.52,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 1,
+    "Team1": 2,
+    "Score1": 99.12,
+    "Team2": 12,
+    "Score2": 88.12,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 1,
+    "Score1": 95.34,
+    "Team2": 15,
+    "Score2": 98.8,
+    "winner": 15,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 16,
+    "Score1": 111,
+    "Team2": 12,
+    "Score2": 113.6,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 7,
+    "Score1": 99.04,
+    "Team2": 10,
+    "Score2": 95.12,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 13,
+    "Score1": 94.38,
+    "Team2": 11,
+    "Score2": 59.2,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 2,
+    "Score1": 105.08,
+    "Team2": 4,
+    "Score2": 72.38,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 2,
+    "Team1": 14,
+    "Score1": 134.44,
+    "Team2": 17,
+    "Score2": 92.98,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 1,
+    "Score1": 109.9,
+    "Team2": 7,
+    "Score2": 116.34,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 16,
+    "Score1": 113.92,
+    "Team2": 2,
+    "Score2": 86.66,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 13,
+    "Score1": 86.32,
+    "Team2": 17,
+    "Score2": 61.82,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 11,
+    "Score1": 109.52,
+    "Team2": 14,
+    "Score2": 102.88,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 10,
+    "Score1": 110.12,
+    "Team2": 15,
+    "Score2": 100.36,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 3,
+    "Team1": 12,
+    "Score1": 61.46,
+    "Team2": 4,
+    "Score2": 78.5,
+    "winner": 4,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 1,
+    "Score1": 123.48,
+    "Team2": 11,
+    "Score2": 125.76,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 16,
+    "Score1": 99.58,
+    "Team2": 15,
+    "Score2": 139.24,
+    "winner": 15,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 7,
+    "Score1": 104.3,
+    "Team2": 4,
+    "Score2": 80.42,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 13,
+    "Score1": 110.24,
+    "Team2": 12,
+    "Score2": 87,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 10,
+    "Score1": 125.96,
+    "Team2": 17,
+    "Score2": 119.28,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 4,
+    "Team1": 2,
+    "Score1": 69.7,
+    "Team2": 14,
+    "Score2": 63.02,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 1,
+    "Score1": 74.48,
+    "Team2": 17,
+    "Score2": 73.74,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 16,
+    "Score1": 86.84,
+    "Team2": 7,
+    "Score2": 103.8,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 13,
+    "Score1": 118.12,
+    "Team2": 2,
+    "Score2": 129.64,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 11,
+    "Score1": 89.76,
+    "Team2": 10,
+    "Score2": 104.02,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 12,
+    "Score1": 93.6,
+    "Team2": 14,
+    "Score2": 147.72,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 5,
+    "Team1": 15,
+    "Score1": 79.34,
+    "Team2": 4,
+    "Score2": 91.84,
+    "winner": 4,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 1,
+    "Score1": 91.12,
+    "Team2": 16,
+    "Score2": 99.32,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 7,
+    "Score1": 136.72,
+    "Team2": 14,
+    "Score2": 101.12,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 13,
+    "Score1": 85.24,
+    "Team2": 15,
+    "Score2": 82.94,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 11,
+    "Score1": 63.84,
+    "Team2": 12,
+    "Score2": 70.76,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 10,
+    "Score1": 115.9,
+    "Team2": 4,
+    "Score2": 88.96,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 6,
+    "Team1": 2,
+    "Score1": 132.48,
+    "Team2": 17,
+    "Score2": 98.26,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 1,
+    "Score1": 97.84,
+    "Team2": 4,
+    "Score2": 112.6,
+    "winner": 4,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 16,
+    "Score1": 95.74,
+    "Team2": 10,
+    "Score2": 112.32,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 7,
+    "Score1": 127.04,
+    "Team2": 13,
+    "Score2": 101.88,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 11,
+    "Score1": 87.22,
+    "Team2": 2,
+    "Score2": 98.34,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 12,
+    "Score1": 96.18,
+    "Team2": 17,
+    "Score2": 79.76,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 7,
+    "Team1": 14,
+    "Score1": 143.04,
+    "Team2": 15,
+    "Score2": 60.14,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 1,
+    "Score1": 69.92,
+    "Team2": 13,
+    "Score2": 77.72,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 16,
+    "Score1": 66.02,
+    "Team2": 11,
+    "Score2": 70.38,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 7,
+    "Score1": 121.96,
+    "Team2": 2,
+    "Score2": 95.66,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 10,
+    "Score1": 103.52,
+    "Team2": 14,
+    "Score2": 129.58,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 12,
+    "Score1": 132.58,
+    "Team2": 15,
+    "Score2": 80.52,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 8,
+    "Team1": 4,
+    "Score1": 95.38,
+    "Team2": 17,
+    "Score2": 137.4,
+    "winner": 17,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 1,
+    "Score1": 110.34,
+    "Team2": 14,
+    "Score2": 66.16,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 16,
+    "Score1": 99.66,
+    "Team2": 17,
+    "Score2": 81.22,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 7,
+    "Score1": 94.38,
+    "Team2": 12,
+    "Score2": 128.9,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 13,
+    "Score1": 104.96,
+    "Team2": 10,
+    "Score2": 78,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 11,
+    "Score1": 102.84,
+    "Team2": 4,
+    "Score2": 102.5,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 9,
+    "Team1": 2,
+    "Score1": 95.2,
+    "Team2": 15,
+    "Score2": 73.82,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 1,
+    "Score1": 125.58,
+    "Team2": 12,
+    "Score2": 106.62,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 16,
+    "Score1": 91.74,
+    "Team2": 13,
+    "Score2": 126,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 7,
+    "Score1": 118.92,
+    "Team2": 17,
+    "Score2": 114.54,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 11,
+    "Score1": 91.42,
+    "Team2": 15,
+    "Score2": 86.52,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 10,
+    "Score1": 100.04,
+    "Team2": 2,
+    "Score2": 75.26,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 10,
+    "Team1": 14,
+    "Score1": 94.4,
+    "Team2": 4,
+    "Score2": 109.3,
+    "winner": 4,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 1,
+    "Score1": 108.72,
+    "Team2": 2,
+    "Score2": 73.84,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 16,
+    "Score1": 84.22,
+    "Team2": 14,
+    "Score2": 73,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 7,
+    "Score1": 99.3,
+    "Team2": 11,
+    "Score2": 74.02,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 13,
+    "Score1": 128.54,
+    "Team2": 4,
+    "Score2": 104.54,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 10,
+    "Score1": 145.48,
+    "Team2": 12,
+    "Score2": 77.06,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 11,
+    "Team1": 15,
+    "Score1": 114.22,
+    "Team2": 17,
+    "Score2": 83.76,
+    "winner": 15,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 1,
+    "Score1": 95.14,
+    "Team2": 10,
+    "Score2": 113.12,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 16,
+    "Score1": 85.32,
+    "Team2": 4,
+    "Score2": 79.16,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 7,
+    "Score1": 142.46,
+    "Team2": 15,
+    "Score2": 91.24,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 13,
+    "Score1": 72.26,
+    "Team2": 14,
+    "Score2": 103.46,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 11,
+    "Score1": 107.92,
+    "Team2": 17,
+    "Score2": 75.46,
+    "winner": 11,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 12,
+    "Team1": 2,
+    "Score1": 78.88,
+    "Team2": 12,
+    "Score2": 99.88,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 1,
+    "Score1": 105.14,
+    "Team2": 15,
+    "Score2": 82.46,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 16,
+    "Score1": 64.34,
+    "Team2": 12,
+    "Score2": 73.44,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 7,
+    "Score1": 139.8,
+    "Team2": 10,
+    "Score2": 87.22,
+    "winner": 7,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 13,
+    "Score1": 116.58,
+    "Team2": 11,
+    "Score2": 90.92,
+    "winner": 13,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 2,
+    "Score1": 127.84,
+    "Team2": 4,
+    "Score2": 77.54,
+    "winner": 2,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 13,
+    "Team1": 14,
+    "Score1": 109.14,
+    "Team2": 17,
+    "Score2": 83.86,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 1,
+    "Score1": 118.66,
+    "Team2": 7,
+    "Score2": 52.6,
+    "winner": 1,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 16,
+    "Score1": 91.76,
+    "Team2": 2,
+    "Score2": 73.9,
+    "winner": 16,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 13,
+    "Score1": 100.74,
+    "Team2": 17,
+    "Score2": 134.16,
+    "winner": 17,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 11,
+    "Score1": 90.74,
+    "Team2": 14,
+    "Score2": 106.78,
+    "winner": 14,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 10,
+    "Score1": 140.54,
+    "Team2": 15,
+    "Score2": 69.62,
+    "winner": 10,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 14,
+    "Team1": 12,
+    "Score1": 120.04,
+    "Team2": 4,
+    "Score2": 82.16,
+    "winner": 12,
+    "type": "REG",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 1,
+    "Score1": 98.4,
+    "Team2": 16,
+    "Score2": 80,
+    "winner": 1,
+    "type": "L1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 7,
+    "Score1": 57.68,
+    "Team2": "BYE",
+    "Score2": 0,
+    "winner": "BYE",
+    "type": "P1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 13,
+    "Score1": 101.16,
+    "Team2": "BYE",
+    "Score2": 0,
+    "winner": "BYE",
+    "type": "P1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 11,
+    "Score1": 130.02,
+    "Team2": 4,
+    "Score2": 84.6,
+    "winner": 11,
+    "type": "L1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 10,
+    "Score1": 133.92,
+    "Team2": 2,
+    "Score2": 98.26,
+    "winner": 10,
+    "type": "P1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 12,
+    "Score1": 142.76,
+    "Team2": 14,
+    "Score2": 89.28,
+    "winner": 12,
+    "type": "P1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 15,
+    "Score1": 88.54,
+    "Team2": "BYE",
+    "Score2": 0,
+    "winner": "BYE",
+    "type": "L1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 15,
+    "Team1": 17,
+    "Score1": 135.64,
+    "Team2": "BYE",
+    "Score2": 0,
+    "winner": "BYE",
+    "type": "L1",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 1,
+    "Score1": 126.06,
+    "Team2": 11,
+    "Score2": 123.98,
+    "winner": 1,
+    "type": "lame",
+    "winBracket": [
+      7,
+      13,
+      10,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 16,
+    "Score1": 91.04,
+    "Team2": 17,
+    "Score2": 82.78,
+    "winner": 16,
+    "type": "L2",
+    "winBracket": [
+      7,
+      13
+    ],
+    "loseBracket": [
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 7,
+    "Score1": 113.1,
+    "Team2": 10,
+    "Score2": 100.5,
+    "winner": 7,
+    "type": "P2",
+    "winBracket": [
+      7,
+      13,
+      12
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 13,
+    "Score1": 112.9,
+    "Team2": 12,
+    "Score2": 94.62,
+    "winner": 13,
+    "type": "P2",
+    "winBracket": [
+      7,
+      13
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 2,
+    "Score1": 122,
+    "Team2": 14,
+    "Score2": 78.28,
+    "winner": 2,
+    "type": "lame",
+    "winBracket": [
+      7,
+      13
+    ],
+    "loseBracket": [
+      16,
+      15,
+      4,
+      17
+    ]
+  },
+  {
+    "Week": 16,
+    "Team1": 15,
+    "Score1": 79.8,
+    "Team2": 4,
+    "Score2": 102.6,
+    "winner": 4,
+    "type": "L2",
+    "winBracket": [
+      7,
+      13
+    ],
+    "loseBracket": [
+      16,
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 17,
+    "Team1": 1,
+    "Score1": 84.4,
+    "Team2": 14,
+    "Score2": 90.08,
+    "winner": 14,
+    "type": "lame",
+    "winBracket": [
+      13
+    ],
+    "loseBracket": [
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 17,
+    "Team1": 16,
+    "Score1": 77.6,
+    "Team2": 4,
+    "Score2": 73.84,
+    "winner": 16,
+    "type": "lame",
+    "winBracket": [
+      13
+    ],
+    "loseBracket": [
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 17,
+    "Team1": 7,
+    "Score1": 98.6,
+    "Team2": 13,
+    "Score2": 107.24,
+    "winner": 13,
+    "type": "P3",
+    "winBracket": [
+      13
+    ],
+    "loseBracket": [
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 17,
+    "Team1": 10,
+    "Score1": 99.98,
+    "Team2": 12,
+    "Score2": 92.28,
+    "winner": 10,
+    "type": "lame",
+    "winBracket": [
+      13
+    ],
+    "loseBracket": [
+      15,
+      17
+    ]
+  },
+  {
+    "Week": 17,
+    "Team1": 15,
+    "Score1": 85.04,
+    "Team2": 17,
+    "Score2": 48.82,
+    "winner": 15,
+    "type": "L3",
+    "winBracket": [
+      13
+    ],
+    "loseBracket": [
+      17
+    ]
+  }
+]
 }

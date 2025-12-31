@@ -1,6 +1,7 @@
 import { sleeperNames } from "../constants/sleeper_names";
 import { sleeperSettings } from "../constants/sleeper_settings";
 import { missingData } from "./missing2023w1";
+import { saved_jsons_proj_2025 } from "./saved_jsons/proj/2025";
 import { savedProj } from "./saved_jsons/proj/saved";
 
 const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching settings
@@ -10,6 +11,7 @@ export async function callProj2(vars,setProj){
     let out = {}
     if (vars.leagueID === 'rajan') {
         out = {...savedProj}
+        out[2025] = saved_jsons_proj_2025
     }
     // console.log(out[2023].filter(x=>x.Week==1))
     let dataCopy = [...missingData]
@@ -24,9 +26,9 @@ export async function callProj2(vars,setProj){
         }
     }
         // console.log(out[2023].filter(x=>x.Week==1))
-    const lastSavedYear = vars.leagueID==='rajan'?Math.max(...Object.keys(savedProj).map(x=>parseInt(x))):vars.yearMin
-    const lastSavedWeek = vars.leagueID==='rajan'?Math.max(...savedProj[lastSavedYear].map(x=>x.Week)):0
-    if(lastSavedYear==yearMax&&lastSavedWeek>=18 && vars.leagueID === 'rajan'){
+    const lastSavedYear = vars.leagueID==='rajan'?Math.max(...Object.keys(out).map(x=>parseInt(x))):vars.yearMin
+    const lastSavedWeek = vars.leagueID==='rajan'?Math.max(...out[lastSavedYear].map(x=>x.Week)):0
+    if(lastSavedYear==yearMax&&lastSavedWeek>=17 && vars.leagueID === 'rajan'){
         setProj(out)
     }
     else{

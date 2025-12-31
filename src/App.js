@@ -27,6 +27,9 @@ import { getAllNames, getLameDucks } from './tools/calculations/getNames';
   
 // steps for caching:   
 const UPDATE_DRAFT_INFO = false  //now node prerun_draft.js to download
+const SHOW_RAW_FOR_CACHE = false //for sleeper do this then copy to saved jsons
+const SHOW_PROJ_FOR_CACHE = false  // copy to new json and add to callProj3
+const YEAR_FOR_CACHE = 2025
   //update proj by copying from chrome calling api
   // /test/lastSavedYear/lastSavedWeek
   // then append to saved list 
@@ -174,7 +177,8 @@ document.addEventListener('gestureend', e => e.preventDefault());
     if(proj['Week']!='init'){callProj2(vars,setProj)}
   },[])        
  
-  useEffect(()=>{    
+  useEffect(()=>{
+    if(!SHOW_RAW_FOR_CACHE&&!SHOW_PROJ_FOR_CACHE){    
       if(((Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString()))||(currentYear === yearMin&&raw[currentYear]&&proj[currentYear]))&&!didMount){
         const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
         const lastYear = Math.max(...lastYear1)
@@ -198,6 +202,7 @@ document.addEventListener('gestureend', e => e.preventDefault());
         // console.log('cll') 
         // CallESPNProj(vars,setProj,loading,setLoading)  
     }  
+  }
   },[raw,proj])
 
 
@@ -234,6 +239,8 @@ document.addEventListener('gestureend', e => e.preventDefault());
 //   console.log(proj)   
 //  console.log(raw)  
   // console.log(predone.filter(x=>x.height))
+  if(SHOW_RAW_FOR_CACHE){return <pre style={{overflow: 'auto',maxHeight: '100vh'}}>{JSON.stringify(raw[YEAR_FOR_CACHE],null,2)}</pre>}
+  if(SHOW_PROJ_FOR_CACHE){return <pre style={{overflow: 'auto',maxHeight: '100vh'}}>{JSON.stringify(proj[YEAR_FOR_CACHE],null,2)}</pre>}
   return (                               
     <div className="App" key={'app'}  style={{
     paddingTop: 'env(safe-area-inset-top)',

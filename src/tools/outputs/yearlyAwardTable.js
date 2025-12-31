@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { NamePicker } from "./misc/misc"
 
-const needWeekNo = ['high score','low score','low high','high low','shootout','defensive','high L','low W']
+const needWeekNo = ['high score','low score','low high','high low','blowout','close game','shootout','defensive','high L','low W']
 const needOppo = ['high L','low W']
+const needScores = ['close game','shootout','defensive','blowout']
 export const YearlyAwardTable = ({records,pickMacro,vars})=>{
     let out = []
     let rows = []
@@ -23,6 +24,7 @@ export const YearlyAwardTable = ({records,pickMacro,vars})=>{
                 <div className="tableCell"><p className="txt">{owner==='t0'?'None':owner
                 +(needWeekNo.includes(key)?` (Week ${dict[key][2].join(', ')})`:'')
                 +(needOppo.includes(key)?` vs. ${dict[key][3].join(', ')}: ${dict[key][4].join(', ')}`:'')
+                +(needScores.includes(key)?` [${dict[key][dict[key].length-1].join(' - ')}]`:'')
                 }</p></div>
             </div>
 

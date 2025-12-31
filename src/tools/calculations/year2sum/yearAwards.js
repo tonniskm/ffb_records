@@ -41,7 +41,9 @@ const needsWeek = ['high score','low score','low high','high low']
         }
     } 
     awards['shootout'] = otherVars.shootOut 
-    awards['defensive'] = otherVars.badShootOut 
+    awards['defensive'] = otherVars.badShootOut
+    awards['close game'] = otherVars.closeGame
+    awards['blowout'] = otherVars.blowoutGame
     awards['high L'] = otherVars.highL
     awards['low W'] = otherVars.lowW
 

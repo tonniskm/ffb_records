@@ -11,6 +11,7 @@ export function getGameAwards(vars,raw){
         {'id': 'ga2', 'title': 'Defensive Struggle', 'description': 'The lowest total score in a game', 'keyID': 'total', 'minMax': 'min', 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga3', 'title': 'Beatdown', 'description': 'The biggest blowout', 'keyID': 'dif', 'minMax': null,'agg':'winner', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga3.1', 'title': 'Beatdown2', 'description': 'The biggest blowout loss', 'keyID': 'dif', 'minMax': null,'agg':'loser', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
+        {'id': 'ga3.2', 'title': 'Close Call', 'description': 'The closest game', 'keyID': 'dif', 'minMax': 'min','agg':null, 'meta': ['year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga4', 'title': 'Big Game Hunter', 'description': 'The highest score ever defeated', 'keyID': 'sLose', 'minMax': null, 'agg':'winner', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga4.1', 'title': 'Big Game Hunter2', 'description': 'The highest score ever to be defeated', 'keyID': 'sLose', 'minMax': null, 'agg':'loser', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},
         {'id': 'ga5', 'title': "A Win's A Win", 'description': 'The lowest winning score', 'keyID': 'sWin', 'minMax': 'min', 'agg':'winner', 'meta': ['name','year', 'week', 't1', 't2', 's1', 's2']},

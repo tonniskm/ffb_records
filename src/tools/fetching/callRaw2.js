@@ -69,6 +69,22 @@ export async function callRaw(vars,setRaw){
                             lBracket.push(s2>s1?out[year][mid_inds[mid]]['Team1']:sleeperNames[uid]?.ind)}
                         }
                     }
+                    if(week===15 && !mid){
+                        out[year].push({
+                            Week:week,
+                            Team1:sleeperNames[uid]?.ind,
+                            Score1:matchup.points,
+                            Team2:'BYE',
+                            Week:week,
+                            Score2:0,
+                            winner:sleeperNames[uid]?.ind,
+                            type:type,
+                            winBracket:wBracket,
+                            loseBracket:lBracket,
+                            winner:'BYE'
+                        })
+                        continue
+                    }
                     if(week==16){
                         let s1,s2
                         if(used_mids.includes(mid)){
@@ -87,7 +103,7 @@ export async function callRaw(vars,setRaw){
                             s1 = out[year][mid_inds[mid]]['Score1']
                             s2 = matchup.points
                             if(mid==1){type='P3';s2>s1?wBracket=wBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):wBracket=wBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
-                            if([2,3,5,6].includes(mid)){type='lame'}
+                            if([2,3,5,6].includes(mid)||!mid){type='lame'}
                             if(mid==4){type='L3';s1>s2?lBracket=lBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):lBracket=lBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
                         }
                     }

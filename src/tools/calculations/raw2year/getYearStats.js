@@ -39,8 +39,10 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     let deweyDoes = 'none'
     let champ = 'none'
     let regPoints = []
-    let shootOut = [0,[],[]]
-    let badShootOut = [999,[],[]]
+    let shootOut = [0,[],[],[]]
+    let badShootOut = [999,[],[],[]]
+    let closeGame = [999,[],[],[]]
+    let blowoutGame = [0,[],[],[]]
     let highL = [0,[]]
     let lowW = [999,[]]
     let weekTots = []
@@ -197,10 +199,14 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
                 }
                 if (leagueSize == 10&&type=='L2'){deweyDoes = loser}else if(leagueSize == 12&&type=='L3'){deweyDoes = loser}
                 }//end if not a tie
-                if (shootOut[0] == score1 + score2){shootOut[1].push([t1,t2]);shootOut[2].push(week)}
-                else if (shootOut[0] < score1 + score2){shootOut = [score1 + score2,[t1,t2],[week]]}
-                if (badShootOut[0] == score1 + score2){badShootOut[1].push([t1,t2]);badShootOut[2].push(week)}
-                else if (badShootOut[0] > score1 + score2){badShootOut = [score1 + score2, [t1,t2],[week]]}
+                if (shootOut[0] == score1 + score2){shootOut[1].push([t1,t2]);shootOut[2].push(week);shootOut[3].push([score1,score2])}
+                else if (shootOut[0] < score1 + score2){shootOut = [score1 + score2,[t1,t2],[week],[score1,score2]]}
+                if (badShootOut[0] == score1 + score2){badShootOut[1].push([t1,t2]);badShootOut[2].push(week);badShootOut[3].push([score1,score2])}
+                else if (badShootOut[0] > score1 + score2){badShootOut = [score1 + score2, [t1,t2],[week],[score1,score2]]}
+                if( closeGame[0] == Math.abs(score1 - score2)){closeGame[1].push([t1,t2]);closeGame[2].push(week);closeGame[3].push([score1,score2])}
+                else if (closeGame[0] > Math.abs(score1 - score2)){closeGame = [Math.abs(score1 - score2), [t1,t2],[week],[score1,score2]]}
+                if( blowoutGame[0] == Math.abs(score1 - score2)){blowoutGame[1].push([t1,t2]);blowoutGame[2].push(week);blowoutGame[3].push([score1,score2])}
+                else if (blowoutGame[0] < Math.abs(score1 - score2)){blowoutGame = [Math.abs(score1 - score2), [t1,t2],[week],[score1,score2]]}
             }//end if not a bye
 
         }//end if type is lame
@@ -314,6 +320,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
 // console.log(scores) 
 return {'scores':scores,
     'other':{'champ':champ,'deweyDoes':deweyDoes,'shootOut':shootOut,'badShootOut':badShootOut,
+        'closeGame':closeGame,'blowoutGame':blowoutGame,
         'highL':highL,'lowW':lowW,'regPoints':regPoints,'weekTots':weekTots,'leagueSize':leagueSize
     }
 }
