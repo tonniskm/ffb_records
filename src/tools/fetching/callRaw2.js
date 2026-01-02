@@ -25,7 +25,7 @@ export async function callRaw(vars,setRaw){
                 for(const year in json){
                     // if(year<=lastSavedYear){continue}
                     json[year] = json[year].sort((a,b)=>a.Week-b.Week)
-                    if(json[year][0].Score1==0){continue;delete json[year]}
+                    if(json[year][0].Score1===0){continue}//;delete json[year]}
                     out[year] = json[year]
                 }
                 setRaw(out) 
@@ -49,19 +49,19 @@ export async function callRaw(vars,setRaw){
                     const rid = matchup.roster_id
                     const uid = Object.entries(sleeperNames).find(([k, v]) => v.roster_id === rid)?.[0];
                     let type = 'REG'
-                    if(week==15){
+                    if(week===15){
                         if(!mid){
                             if(wBracket.length<2){type='P1';wBracket.push(sleeperNames[uid]?.ind)}
                             else{type='L1';lBracket.push(sleeperNames[uid]?.ind)}
                         }
-                        else if(mid==1 || mid==2){type='P1';
+                        else if(mid===1 || mid===2){type='P1';
                             let s1,s2
                             if(used_mids.includes(mid)){
                             s1 = out[year][mid_inds[mid]]['Score1']
                             s2 = matchup.points
                             wBracket.push(s1>s2?out[year][mid_inds[mid]]['Team1']:sleeperNames[uid]?.ind)}
                         }
-                        else if(mid==4 || mid==5){type='L1';
+                        else if(mid===4 || mid===5){type='L1';
                             let s1,s2
                             if(used_mids.includes(mid)){
                             s1 = out[year][mid_inds[mid]]['Score1']
@@ -75,9 +75,7 @@ export async function callRaw(vars,setRaw){
                             Team1:sleeperNames[uid]?.ind,
                             Score1:matchup.points,
                             Team2:'BYE',
-                            Week:week,
                             Score2:0,
-                            winner:sleeperNames[uid]?.ind,
                             type:type,
                             winBracket:wBracket,
                             loseBracket:lBracket,
@@ -85,26 +83,26 @@ export async function callRaw(vars,setRaw){
                         })
                         continue
                     }
-                    if(week==16){
+                    if(week===16){
                         let s1,s2
                         if(used_mids.includes(mid)){
                             s1 = out[year][mid_inds[mid]]['Score1']
                             s2 = matchup.points
-                            if(mid==1||mid==2){type='P2';
+                            if(mid===1||mid===2){type='P2';
                                 s2>s1?wBracket=wBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):wBracket=wBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
-                            if(mid==3||mid==6){type='lame'}
-                            if(mid==4||mid==5){type='L2';
+                            if(mid===3||mid===6){type='lame'}
+                            if(mid===4||mid===5){type='L2';
                                 s1>s2?lBracket=lBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):lBracket=lBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
                         }
                     }
-                    if(week==17){
+                    if(week===17){
                         let s1,s2
                         if(used_mids.includes(mid)){
                             s1 = out[year][mid_inds[mid]]['Score1']
                             s2 = matchup.points
-                            if(mid==1){type='P3';s2>s1?wBracket=wBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):wBracket=wBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
+                            if(mid===1){type='P3';s2>s1?wBracket=wBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):wBracket=wBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
                             if([2,3,5,6].includes(mid)||!mid){type='lame'}
-                            if(mid==4){type='L3';s1>s2?lBracket=lBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):lBracket=lBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
+                            if(mid===4){type='L3';s1>s2?lBracket=lBracket.filter(x=>x!==out[year][mid_inds[mid]]['Team1']):lBracket=lBracket.filter(x=>x!==sleeperNames[uid]?.ind)}
                         }
                     }
 

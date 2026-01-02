@@ -2,7 +2,7 @@
 import trophy from './tools/assets/trophy.png'
 import './App.css';
 import { useEffect, useRef, useState } from 'react';
-import CallESPNFa from './tools/fetching/callESPNFa';
+// import CallESPNFa from './tools/fetching/callESPNFa';
 import GetRecords from './tools/calculations/getRecords';
 import { NamePicker } from './tools/outputs/misc/misc';
 
@@ -88,9 +88,9 @@ document.addEventListener('gestureend', e => e.preventDefault());
   const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Players by Team','Recent Updates','Weekly Review','Yearly Review']
   if(leagueID==='rajan'){macroTypes.push('Draft')}
  
-  let nameSelectMessage
-  if(macroType=='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
-  else{nameSelectMessage='Filter by Name: '}
+  // let nameSelectMessage
+  // if(macroType==='Records'){nameSelectMessage='Filter Selected Comparison Column Name: '}
+  // else{nameSelectMessage='Filter by Name: '}
     
   const pickMacro = <NamePicker title={'What to Show: '} selecting={setMacroType} curval={macroType} options={macroTypes} key={'m'}></NamePicker>
   
@@ -118,36 +118,36 @@ document.addEventListener('gestureend', e => e.preventDefault());
   let outTest = [] 
   
   let output = []
-  let shownRecords = []
+  // let shownRecords = []
   let allAwards = []
-  if(records.nameAwards!=undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
+  if(records.nameAwards!==undefined){allAwards=records.nameAwards.concat(records.gameAwards).concat(records.weekAwards).concat(records.yearAwards)
     .concat(records.projAwards).concat(records.playerStats).concat(records.nyAwards).concat(records.draftAwards).concat(records.teamAwards)
     .concat(records.fiddleAwards)
   }
       
 
-  if(records.nameAwards!=undefined){
-    if(macroType=='Records'){ 
+  if(records.nameAwards!==undefined){
+    if(macroType==='Records'){ 
 
         outTest = <RecordTable allAwards={allAwards} vars={vars} scale={scale}
           scrollRef={scrollRef}  pickMacro={pickMacro}></RecordTable>
       output =outTest
     }    
-    else if (macroType=='Summary'){
+    else if (macroType==='Summary'){
           outTest=<SummaryTable records={records} pickMacro={pickMacro} vars={vars}></SummaryTable>
       output=outTest  
     }       
-    else if(macroType=='Yearly Awards'){
+    else if(macroType==='Yearly Awards'){
       outTest=<YearlyAwardTable pickMacro={pickMacro} vars={vars} records={records}></YearlyAwardTable>
       output = outTest
     }
-    else if(macroType=='Matchups'){
+    else if(macroType==='Matchups'){
       output = <MatchupTable dict={records.matchupTable} pickMacro={pickMacro} vars={vars}></MatchupTable>
     }
-    else if(macroType=='Fantasy Teams'){
+    else if(macroType==='Fantasy Teams'){
       output = <FantasyTeams dict={records.fantasyTeams} pickMacro={pickMacro} vars={vars}></FantasyTeams>
     }
-    else if(macroType=='Recent Updates'){
+    else if(macroType==='Recent Updates'){
       // GetRecords(vars,currentYear,setRecords,raw,proj,fa)
       try{
         output = <RecentUpdates records={records} oldRecords={oldRecords} weekOldRecords={weekOldRecords} pickMacro={pickMacro} vars={vars}></RecentUpdates>  
@@ -168,13 +168,13 @@ document.addEventListener('gestureend', e => e.preventDefault());
   else{output=loadingScreen()}    
     // output = loadingScreen()    testing 
   useEffect(()=>{   
-    if(raw['Week']!='init'){callRaw(vars,setRaw)}
+    if(raw['Week']!=='init'){callRaw(vars,setRaw)}
     if(UPDATE_DRAFT_INFO){getPlayerIDInfo(vars)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
   },[])    
   useEffect(()=>{     
     // CallESPNRaw(vars,setRaw,loading,setLoading)
-    if(proj['Week']!='init'){callProj2(vars,setProj)}
+    if(proj['Week']!=='init'){callProj2(vars,setProj)}
   },[])        
  
   useEffect(()=>{
@@ -191,11 +191,11 @@ document.addEventListener('gestureend', e => e.preventDefault());
           let truncRaw = {...raw}
           let truncProj = {...proj}
           const lastWeek = raw[lastYear][raw[lastYear].length-1].Week
-          truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!=lastWeek)
+          truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!==lastWeek)
           truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
           // console.log({truncRaw,truncProj})
           // truncRaw.append(0)
-          if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
+          if(lastWeek===1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
           else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
         }
       }else{     
@@ -212,30 +212,30 @@ document.addEventListener('gestureend', e => e.preventDefault());
   // console.log(proj)
   
  
-  function Test1(){
-    // CallESPNFa(vars,setRaw)  
-    // CallESPNRaw(vars,setRaw,loading,setLoading)
-    // callRaw(vars,setRaw)
-    callRaw(vars,setRaw)
-    // callProj(vars,setProj)
-  }    
+  // function Test1(){
+  //   // CallESPNFa(vars,setRaw)  
+  //   // CallESPNRaw(vars,setRaw,loading,setLoading)
+  //   // callRaw(vars,setRaw)
+  //   callRaw(vars,setRaw)
+  //   // callProj(vars,setProj)
+  // }    
 
-  function Test4(){
-    const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
-    const lastYear = Math.max(...lastYear1)
+  // function Test4(){
+  //   const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
+  //   const lastYear = Math.max(...lastYear1)
 
-    GetRecords(vars,lastYear,setRecords,raw,proj,fa)
-    GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
-    let truncRaw = {...raw}
-    let truncProj = {...proj}
-    const lastWeek = raw[lastYear][raw[lastYear].length-1].Week
-    truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!=lastWeek)
-    truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
-    // console.log({truncRaw,truncProj})
-    // truncRaw.append(0)
-    if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
-    else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
-  }                                 
+  //   GetRecords(vars,lastYear,setRecords,raw,proj,fa)
+  //   GetRecords(vars,lastYear-1,setOldRecords,raw,proj,fa)
+  //   let truncRaw = {...raw}
+  //   let truncProj = {...proj}
+  //   const lastWeek = raw[lastYear][raw[lastYear].length-1].Week
+  //   truncRaw[lastYear] = truncRaw[lastYear].filter(x=>x.Week!=lastWeek)
+  //   truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
+  //   // console.log({truncRaw,truncProj})
+  //   // truncRaw.append(0)
+  //   if(lastWeek==1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
+  //   else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
+  // }                                 
 //   console.log(proj)   
 //  console.log(raw)  
   // console.log(predone.filter(x=>x.height))

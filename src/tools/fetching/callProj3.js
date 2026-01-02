@@ -17,7 +17,7 @@ export async function callProj2(vars,setProj){
     let dataCopy = [...missingData]
     // console.log(out[2023].filter(x=>x.Week).length>0,out[2023].filter(x=>x.Week).length)
     if(vars.leagueID === 'rajan'){
-        if(!out[2023].filter(x=>x.Week==1).length>0){
+        if(!out[2023].filter(x=>x.Week===1).length>0){
             for(const line of dataCopy){
                 line.PlayerScoreActual = parseFloat(line.PlayerScoreActual)
                 line['PlayerScoreProj'] = parseFloat(line.PlayerScoreProjected)
@@ -28,7 +28,7 @@ export async function callProj2(vars,setProj){
         // console.log(out[2023].filter(x=>x.Week==1))
     const lastSavedYear = vars.leagueID==='rajan'?Math.max(...Object.keys(out).map(x=>parseInt(x))):vars.yearMin
     const lastSavedWeek = vars.leagueID==='rajan'?Math.max(...out[lastSavedYear].map(x=>x.Week)):0
-    if(lastSavedYear==yearMax&&lastSavedWeek>=17 && vars.leagueID === 'rajan'){
+    if(lastSavedYear===yearMax&&lastSavedWeek>=17 && vars.leagueID === 'rajan'){
         setProj(out)
     }
     else{
@@ -108,15 +108,15 @@ function partlyCleanName(name) {
   }
   return clean;
 }
-function DirtyName(name){
-    let out = name
-    for (const replacement of replacements){
-        if (replacement[0]!==''){
-            out = out.replace(replacement[0],replacement[1])
-        }
-    }
-    return out
-}
+// function DirtyName(name){
+//     let out = name
+//     for (const replacement of replacements){
+//         if (replacement[0]!==''){
+//             out = out.replace(replacement[0],replacement[1])
+//         }
+//     }
+//     return out
+// }
 const JRS = [' Jr', ' Sr', ' III', ' II', ' IV', '.']
 function FixJrs(name){
     let out = name
@@ -159,7 +159,7 @@ function FixJrs(name){
             const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/${week}`);
             const matchups = await matchupsRes.json();
             for(const matchup of matchups){
-                const mid = matchup.matchup_id
+                // const mid = matchup.matchup_id
                 const rid = matchup.roster_id
                 const uid = Object.entries(sleeperNames).find(([k, v]) => v.roster_id === rid)?.[0];
                 for(const pid of matchup.players){
