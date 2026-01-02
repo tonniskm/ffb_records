@@ -35,7 +35,7 @@ export async function callRaw(vars,setRaw){
             const nflStateRes = await fetch(`https://api.sleeper.app/v1/state/nfl`);
             const nflState = await nflStateRes.json();
             for (let year=lastSavedYear;year<=yearMax;year++){
-                if(year<2025){continue}
+                if(year<2025||nflState.season < year){continue}
                 out[year] = []
                 let wBracket = []
                 let lBracket = []

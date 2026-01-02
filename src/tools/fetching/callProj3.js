@@ -65,6 +65,7 @@ export async function callProj2(vars,setProj){
                 }
             const nflStateRes = await fetch(`https://api.sleeper.app/v1/state/nfl`);
             const nflState = await nflStateRes.json();
+            if(nflState.season < yearMax){setProj(out); return;}
             const playersRes = await fetch(`https://api.sleeper.app/v1/players/nfl`);
             const players = await playersRes.json();
 
