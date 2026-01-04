@@ -13,7 +13,7 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     const WLT = ['W','L','TIE']
     const keys = ['Projected to Win','Projected to Lose','Beat Proj Times','Oppo Beat Proj Times',
             'Proj W W','Proj W L','Proj W T','Proj L W','Proj L L','Proj L T',
-            'Best Proj','Worst Proj',
+            'Best Proj','Worst Proj','Total Score - Proj',
             'Best Beat Proj','Worst Lose Proj','Best Proj Dif','Worst Proj Dif',
             'Best Proj Faced', 'Worst Proj Faced','Best Proj Beaten','Worst Proj Lost To','Biggest Overcome','Biggest Blown'
             ]
@@ -40,6 +40,7 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     if (key == 'Worst Proj Lost To'){ return proj2}
     if (key == 'Biggest Overcome'){ return proj2 - proj1}
     if (key == 'Biggest Blown'){ return proj1 - proj2}
+    if (key == 'Total Score - Proj'){ return score1 - proj1}
     }
     function getEligible(key,result){
         if (winKeys.includes(key)){
@@ -125,6 +126,7 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
                 }
             }
             const gamesPlayed = scores['Projected to Win'][i] + scores['Projected to Lose'][i]
+            scores['Total Score - Proj'][i] += (score1 - proj1)
             if (score1 > proj1){scores['Beat Proj Times'][i] += 1}
             if (score2 > proj2){scores['Oppo Beat Proj Times'][i] += 1}
             for (const item of comparedKeys){

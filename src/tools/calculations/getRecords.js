@@ -3,6 +3,7 @@ import { expandProj, GetOtherTables } from "./other"
 import { getNewAwards } from "./player/getNewAwards"
 import { getPlayerStats } from "./player/getPlayerStats"
 import { GetTeamAwards } from "./player/getTeamAwards"
+import { updateNewYearlyAwards } from "./player/updateNewYearlyAwards"
 import GetYearStats from "./raw2year/getYearStats"
 import { getYearStatsProj } from "./raw2year/getYearStatsProj"
 import { getFiddleAwards } from "./sum2overall/fiddleRosterAwards"
@@ -43,6 +44,11 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
          if(year>=2018){   
             const yearStatsProj = getYearStatsProj(vars,raw,proj,fa,year,tables)
             out['yearProj'][year] = yearStatsProj
+            out['year'][year]['Total Score - Proj'] = yearStatsProj['scores']['Total Score - Proj']
+            out['year'][year]['Total Score - Proj Per Game'] = yearStatsProj['scores']['Total Score - Proj']
+            for(const key of Object.keys(yearStatsProj['scores']['Total Score - Proj'])){
+                  out['year'][year]['Total Score - Proj Per Game'][key] = yearStatsProj['scores']['Total Score - Proj'][key]/yearStats['scores']['games played'][key]
+            }
          }
          out['yearSum'][year] = GetYearAwards(vars,out['year'][year],yearStats['other']) 
       }         
@@ -81,6 +87,7 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
      out.allProj = expandProj(proj,tables,vars)       
      const newAwards = getNewAwards(vars,out)
      out['playerStats'] = [...out['playerStats'],...newAwards]
+     updateNewYearlyAwards(vars,out)
       setRecords(out)          
    }catch(e){console.log(e)}   
   

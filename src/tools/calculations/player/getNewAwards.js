@@ -46,5 +46,8 @@ export function getNewAwards(vars,input){
                 }
             }
         }
+
+
+        
     return awards
     }

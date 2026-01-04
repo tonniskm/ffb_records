@@ -17,6 +17,8 @@ export function getNameYearAwards(vars,input){
         {'id': 'nya8', 'title': 'True Season Low', 'description': 'The lowest ever reg season point/game', 'keyID': 'reg total', 'MinMax': 'min', 'agg': 'game','req':'reg'},
         {'id': 'nya9', 'title': 'True Season High Defense', 'description': 'The highest ever reg season points allowed/game', 'keyID': 'oppo reg total', 'MinMax': null, 'agg': 'game','req':'reg'},
         {'id': 'nya10', 'title': 'True Season Low Defense', 'description': 'The Lowest ever reg season points allowed/game', 'keyID': 'oppo reg total', 'MinMax': 'min', 'agg': 'game','req':'reg'},
+        {'id': 'nya11', 'title': 'Best Score vs Proj Per Game', 'description': 'The highest ever average score vs projection per game in a year', 'keyID': 'Total Score - Proj Per Game', 'MinMax': 'max', 'agg': 'total','req':'year'},
+        {'id': 'nya12', 'title': 'Worst Score vs Proj Per Game', 'description': 'The lowest ever average score vs projection per game in a year', 'keyID': 'Total Score - Proj Per Game', 'MinMax': 'min', 'agg': 'total','req':'year'},
     ]
     
     
@@ -26,6 +28,7 @@ export function getNameYearAwards(vars,input){
         let onlyVals = []
         let incompleteVals = []
         for(const year in stats){
+            if(!stats[year][item.keyID]){continue}
             for(const name of vars.allNames){
                 const ind = name
                 if(vars.lameDucks.includes(name)){continue}
@@ -36,6 +39,9 @@ export function getNameYearAwards(vars,input){
                 }else{value = stats[year][item.keyID][name]}
                 if(value=='null'||value=='NA'||value==undefined){continue}
                 if(!input.isComplete.reg&&item.req=='reg'&&year==input.isComplete.lastYear){
+                    incompleteVals.push({'name':name,'year':year,'value':value,'rank':999999})
+                    continue}
+                if(!input.isComplete.year&&item.req=='year'&&year==input.isComplete.lastYear){
                     incompleteVals.push({'name':name,'year':year,'value':value,'rank':999999})
                     continue}
                 vals.push({'name':name,'year':year,'value':value})

@@ -75,7 +75,7 @@ export function getNameAwards(vars,input){
             onlyVals.push(onlyValue)
             vals.push({'value':onlyValue,'name':name})
         }
-        awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name']})
+        awards.push({'id':item.id,'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':['name']})
     }
      
     return awards

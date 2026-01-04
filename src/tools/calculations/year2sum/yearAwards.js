@@ -22,12 +22,14 @@ export function GetYearAwards(vars,scores,otherVars){
     ['low pts against','min','oppo reg total'],['best dif','max','reg pt diff'],['worst dif','min','reg pt diff'],
     ['consistent','min','reg STD'],['boom bust','max','reg STD'],['best record','max','pct'],['worst record','min','pct'],
     ['most W by < 6','max','close W'],['most L by < 6','max','close L'],['most losses with over 100','max','L over 100'],
-    ['most wins with under 80','max','W under 80']
+    ['most wins with under 80','max','W under 80'],['best score vs proj per game','max','Total Score - Proj Per Game'],
+    ['worst score vs proj per game','min','Total Score - Proj Per Game']
 ]
 const needsWeek = ['high score','low score','low high','high low']
     for(let i=0;i<minMaxAwards.length;i++){
         let val
         // console.log({1:minMaxAwards[i],2:scores,3:scores[minMaxAwards[2]],4:minMaxAwards[2]})
+        if(!scores[minMaxAwards[i][2]]){continue}
         if(minMaxAwards[i][1]=='min'){val=DictMin(scores[minMaxAwards[i][2]],eligible)}
         else if(minMaxAwards[i][1]=='max'){val=DictMax(scores[minMaxAwards[i][2]],eligible)}
         else{console.log('error!!!!!!!!!! in year awards minmax')} 

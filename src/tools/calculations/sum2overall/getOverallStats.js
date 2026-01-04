@@ -16,8 +16,11 @@ export function getOverallStats(vars,input){
         'Most Pts Awards','Fewest Pts Awards','Most Pts Allowed Awards','Fewest Pts Allowed Awards',
         'Best Record Awards','Worst Record Awards',
         'Biggest W','Biggest L','pts STD','Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last',
-        'Record vs Mid','Pct vs Mid','Lost as 2nd','Won as 2nd Last']
-    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','games played','Lost as 2nd','Won as 2nd Last']
+        'Record vs Mid','Pct vs Mid','Lost as 2nd','Won as 2nd Last','Total Score - Proj','Score - Proj Per Game'
+    ]
+    const additiveKeys = ['Beat Low Score','Lost to High Score','Beat 2nd','Lost to 2nd Last','games played','Lost as 2nd','Won as 2nd Last',
+        'Total Score - Proj'
+    ]
     const setHigh = ['Low Score','Low W','Lowest Lost To']
     // initialize
     for(const key of statKeys){
@@ -91,7 +94,10 @@ export function getOverallStats(vars,input){
             overallStats['Highest Win Against'][ind] = Math.max(OhighL,overallStats['Highest Win Against'][ind])
             overallStats['L Over 100'][ind] += stats[year]['L over 100'][ind]
             overallStats['W Under 80'][ind] += stats[year]['W under 80'][ind]
-            for (const key of additiveKeys){overallStats[key][ind] += stats[year][key][ind]}
+            for (const key of additiveKeys){
+                if(stats[year][key]==undefined||isNaN(stats[year][key][ind])){overallStats[key][ind] += 0}
+                else{overallStats[key][ind] += stats[year][key][ind]}
+            }
             if(ind in stats[year]['Record vs Mid']){
                 for (const item of [0,1,2]){overallStats['Record vs Mid'][ind][item] +=stats[year]['Record vs Mid'][ind][item]}
             }
@@ -131,6 +137,7 @@ export function getOverallStats(vars,input){
         overallStats['Reg Season Pts Allowed/Gm'][ind] = ptsAllowed[ind]/Math.max(1,games[ind])
         if (std[ind].length>0){overallStats['pts STD'][ind] = std[ind].reduce((a,b)=>a+b)/std[ind].length}
         else{overallStats['pts STD'][ind] = 0}
+        overallStats['Score - Proj Per Game'][ind] = overallStats['Total Score - Proj'][ind]/Math.max(1,overallStats['games played'][ind])
     }
     //matchup table
     let matchupTable = {}
