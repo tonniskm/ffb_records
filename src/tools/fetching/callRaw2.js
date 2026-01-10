@@ -25,6 +25,7 @@ export async function callRaw(vars,setRaw){
                 for(const year in json){
                     // if(year<=lastSavedYear){continue}
                     json[year] = json[year].sort((a,b)=>a.Week-b.Week)
+                    if(!json[year] || json[year].length === 0) {continue}
                     if(json[year][0].Score1===0){continue}//;delete json[year]}
                     out[year] = json[year]
                 }
@@ -35,7 +36,7 @@ export async function callRaw(vars,setRaw){
             const nflStateRes = await fetch(`https://api.sleeper.app/v1/state/nfl`);
             const nflState = await nflStateRes.json();
             for (let year=lastSavedYear;year<=yearMax;year++){
-                if(year<2025||nflState.season < year){continue}
+                if(year<2025||nflState.season < year || (out[year] && out[year].length > 1)){continue}
                 out[year] = []
                 let wBracket = []
                 let lBracket = []
