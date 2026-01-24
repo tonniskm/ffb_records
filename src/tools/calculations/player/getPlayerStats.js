@@ -15,11 +15,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
       'best lose score':[0,[]],'worst win score':[9999,[]],'timesNegative':0,'times on IR':0}
     }
     function PlayerTrackerInit(name,year,team,rawScore,rawProject,score,proj,isStart,isFlex,isBench,isIR,
-        beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war){
+        beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war,week){
        return  {'name': name, 'years':[year],'teams':[team], 'score': rawScore, 'proj': rawProject,
         'startScore': score,'startProj': proj, 'starts': isStart, 'flexes': isFlex, 'benches': isBench, 'beatProj': beatProj,
             'startBeatProj': starterBeatProj,'pos':pos,'record':[isW,isL,isT],'recordStarting':[startW,startL,startT],
-            'byes':isBye,'rings':isChamp,'deweyDoesTimes':isDew,'war':war,'warRate':war,'timesNegative':0,'highScore':score,
+            'byes':isBye,'rings':isChamp,'deweyDoesTimes':isDew,'war':war,'warRate':war,'timesNegative':0,'highScore':[score,[{year,week,team}]],
             'lowScore':score,'times on IR':isIR,'rawScoreInYear':{},'startScoreInYear':{}}
     }
     for(const name of names){teamTracker[name] = []}
@@ -152,7 +152,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
 
             if (playerTracker.filter(x=>x.name==name).length<=0){
                 playerTracker.push(PlayerTrackerInit(name,year,team,rawScore,rawProject,score,proj,isStart,isFlex,isBench,isIR,
-                    beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war))
+                    beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war,week))
                     playerTracker[playerTracker.length-1]['teamInYear'] = {}
                     playerTracker[playerTracker.length-1]['teamInYear'][year] = [team]
                     if (score < 0){playerTracker[playerTracker.length-1]['timesNegative'] = 1}
@@ -180,9 +180,13 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                                 ['startBeatProj',starterBeatProj],
                                 ['rings',isChamp],['deweyDoesTimes',isDew],['byes',isBye],['war',war],['times on IR',isIR]
                                 ]
+                if(playerTracker[index]['highScore'][0]<score){
+                    playerTracker[index]['highScore'] = [score,[{year,week,team}]]
+                }
+                else if(playerTracker[index]['highScore'][0]==score){
+                    playerTracker[index]['highScore'][1].push({year,week,team})
+                }
 
-                playerTracker[index]['highScore'] = Math.max(playerTracker[index]['highScore'],score)
-                playerTracker[index]['lowScore'] = Math.min(playerTracker[index]['lowScore'],score)
                 if (score < 0){playerTracker[index]['timesNegative'] += 1}
 
 
@@ -431,7 +435,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         {"id":"pa35","title":"Absolutely Nothing!","description":"The player with the lowest WAR per game started (min "+lowMinGames.toString()+" games played)","keyID":"warRate","pos":"all","MinMax":"min","calcType":"normal","minGames":lowMinGames,"meta":["name"]},
         {"id":"pa36","title":"Negative Nancy","description":"The Player who has score negative the most","keyID":"timesNegative","pos":"all","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa37","title":"Real Negative Nancy","description":"The non D/ST who has score negative the most","keyID":"timesNegative","pos":"noDST","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
-        {"id":"pa38","title":"Top Dawg","description":"The highest score ever recorded","keyID":"highScore","pos":"all","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
+        {"id":"pa38","title":"Top Dawg","description":"The highest score ever recorded","keyID":"highScore","pos":"all","MinMax":"max","calcType":"metaDict","minGames":0,"meta":["name",'year','week','team']},
         {"id":"pa39","title":"Bad Day","description":"The worst score ever recorded","keyID":"lowScore","pos":"all","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa40","title":"Bad Day1","description":"The worst score ever recorded (no D/ST)","keyID":"lowScore","pos":"noDST","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {'id':'pa41','title':'Top Scorer','description':"The player who has scored the most points",'keyID':'score','pos':'all','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
@@ -522,6 +526,22 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                             onlyValsEach[pos].push(onlyValue)
                         }
                     }
+                    else if (item.calcType==='metaDict'){ //high score with meta dict
+                        // console.log({1:line[key]})
+                        onlyValue = line[key][0]
+                        for (const time of line[key][1]){
+                            value = {'value':onlyValue,'name':line['name']}
+                            for(const key of Object.keys(time)){
+                                value[key]=time[key]
+                            }
+                            vals.push(value)
+                            onlyVals.push(onlyValue)
+                            valsEach[pos].push({...value})
+                            onlyValsEach[pos].push(onlyValue)
+                            // console.log({1:time})
+                        }
+                    
+                    }
                     else{//just compare values, no calculations
                         onlyValue = line[key]
                         value = {'value':onlyValue,'name':line['name']}
@@ -533,7 +553,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         value.value = onlyValue
                     }
                     
-                    if(item.calcType!=='years'){
+                    if(item.calcType!=='years'&&item.calcType!=='metaDict'){
                         vals.push(value)
                         onlyVals.push(onlyValue)
                         valsEach[pos].push({...value})
