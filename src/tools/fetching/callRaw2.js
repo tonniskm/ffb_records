@@ -129,6 +129,9 @@ export async function callRaw(vars,setRaw){
                 }
             }//week
             }//year
+            for (const [k, v] of Object.entries(out)) {  // delete empties for the offseason
+                if (Array.isArray(v) && v.length === 0) delete out[k];
+                }
             setRaw(out)
         }
         }

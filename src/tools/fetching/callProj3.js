@@ -129,6 +129,7 @@ function FixJrs(name){
         method:"GET",
         headers
         })
+    if(!res.ok){setProj(out); return}
     const json = await res.json()
             for (let index = 0; index < json.length; index++) {
             const line = json[index];

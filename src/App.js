@@ -22,6 +22,7 @@ import { callProj2 } from './tools/fetching/callProj3';
 import { YearlyReview } from './tools/outputs/yearlyReview';
 import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
 import { getAllNames, getLameDucks } from './tools/calculations/getNames';
+import { InvalidLeagueSelector } from './tools/outputs/invalidLeagueSelector';
 
 
   
@@ -39,8 +40,18 @@ const YEAR_FOR_CACHE = 2025
   //cookies are stored in the router
 function App() {
 
-  let leagueID = new URLSearchParams(window.location.search).get('league')?.toLowerCase() || 'rajan'
   const yearMins = {'rajan':2012,'schulte':2023,'sfc':2025}
+  const urlLeagueID = new URLSearchParams(window.location.search).get('league')?.toLowerCase() || 'rajan'
+  const eligibleLeagueIDs = Object.keys(yearMins)
+  const hasValidLeagueID = eligibleLeagueIDs.includes(urlLeagueID)
+  const leagueID = hasValidLeagueID ? urlLeagueID : eligibleLeagueIDs[0]
+
+  const handleLeagueSelection = (selectedLeagueID) => {
+    const nextURL = new URL(window.location.href)
+    nextURL.searchParams.set('league', selectedLeagueID)
+    window.location.assign(nextURL.toString())
+  }
+
   const leagueNos = {'rajan':'596787','schulte':'2077814555','sfc':'1524625178'}
   const [raw,setRaw] = useState([{'Week':'init'}])
   const [proj,setProj] = useState([{'Week':'init'}])
@@ -51,21 +62,16 @@ function App() {
   const [weekOldRecords,setWeekOldRecords] = useState({})
 
   const [macroType,setMacroType] = useState('Yearly Awards')
-  
-
-  const [didMount,setDidMount] = useState(false) 
+  const [didMount,setDidMount] = useState(false)
   const [scale, setScale] = useState(1);
   
 
   const scrollRef  = useRef(null)
   // const stickyRef = useRef(null);
-  document.addEventListener('gesturestart', e => e.preventDefault());
-  document.addEventListener('gesturechange', e => e.preventDefault());
-document.addEventListener('gestureend', e => e.preventDefault());
 
-
-  const yearMin = yearMins[leagueID] || 2012   
+  const yearMin = yearMins[leagueID] || 2012
   const currentYear = new Date().getFullYear();
+
   const weekMax =18 
 
   // const teamnos = [1, 2, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -165,19 +171,36 @@ document.addEventListener('gestureend', e => e.preventDefault());
       output = <DraftReview pickMacro={pickMacro} records={records} vars={vars}></DraftReview>
     }  
   }  //end if undefined 
-  else{output=loadingScreen()}    
+  else{output=loadingScreen(vars)}    
     // output = loadingScreen()    testing 
   useEffect(()=>{   
+    if(!hasValidLeagueID){return}
     if(raw['Week']!=='init'){callRaw(vars,setRaw)}
     if(UPDATE_DRAFT_INFO){getPlayerIDInfo(vars)}
     // CallESPNProj(vars,setProj,loading,setLoading)   
-  },[])    
+  },[hasValidLeagueID])    
+
+  useEffect(() => {
+    const preventGesture = (e) => e.preventDefault();
+    document.addEventListener('gesturestart', preventGesture);
+    document.addEventListener('gesturechange', preventGesture);
+    document.addEventListener('gestureend', preventGesture);
+
+    return () => {
+      document.removeEventListener('gesturestart', preventGesture);
+      document.removeEventListener('gesturechange', preventGesture);
+      document.removeEventListener('gestureend', preventGesture);
+    };
+  }, []);
+
   useEffect(()=>{     
+    if(!hasValidLeagueID){return}
     // CallESPNRaw(vars,setRaw,loading,setLoading)
     if(proj['Week']!=='init'){callProj2(vars,setProj)}
-  },[])        
+  },[hasValidLeagueID])        
  
   useEffect(()=>{
+    if(!hasValidLeagueID){return}
     if(!SHOW_RAW_FOR_CACHE&&!SHOW_PROJ_FOR_CACHE){    
       if(((Object.keys(raw).includes((currentYear-1).toString())&&Object.keys(proj).includes((currentYear-1).toString()))||(currentYear === yearMin&&raw[currentYear]&&proj[currentYear]))&&!didMount){
         const lastYear1 = Object.keys(raw).map(x=>parseInt(x))
@@ -203,7 +226,7 @@ document.addEventListener('gestureend', e => e.preventDefault());
         // CallESPNProj(vars,setProj,loading,setLoading)  
     }  
   }
-  },[raw,proj])
+  },[raw,proj,hasValidLeagueID])
 
 
            
@@ -239,6 +262,13 @@ document.addEventListener('gestureend', e => e.preventDefault());
 //   console.log(proj)   
 //  console.log(raw)  
   // console.log(predone.filter(x=>x.height))
+  if(!hasValidLeagueID){
+    return <InvalidLeagueSelector
+      invalidLeagueID={urlLeagueID}
+      eligibleLeagueIDs={eligibleLeagueIDs}
+      onSelectLeague={handleLeagueSelection}
+    ></InvalidLeagueSelector>
+  }
   if(SHOW_RAW_FOR_CACHE){return <pre style={{overflow: 'auto',maxHeight: '100vh'}}>{JSON.stringify(raw[YEAR_FOR_CACHE],null,2)}</pre>}
   if(SHOW_PROJ_FOR_CACHE){return <pre style={{overflow: 'auto',maxHeight: '100vh'}}>{JSON.stringify(proj[YEAR_FOR_CACHE],null,2)}</pre>}
   return (                               
