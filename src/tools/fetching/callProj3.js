@@ -149,7 +149,7 @@ function FixJrs(name){
 
 
             for (let year=lastSavedYear;year<=yearMax;year++){
-                if(year<2025){continue}
+                if(year<2025||Object.keys(out).includes(year.toString())){continue}
                 out[year] = []
                 for(let week=1;week<nflState.week;week++){
             const scoring_settings = sleeperSettings[year].scoring_settings
@@ -197,6 +197,9 @@ function FixJrs(name){
             }
         }
     }
+                for (const [k, v] of Object.entries(out)) {  // delete empties for the offseason
+                if (Array.isArray(v) && v.length === 0) delete out[k];
+                }
             setProj(out)
         }
         }
