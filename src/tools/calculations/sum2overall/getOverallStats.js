@@ -47,9 +47,11 @@ export function getOverallStats(vars,input){
     }
     let gp = {}
     for (const year in awards){
-        if (awards[year]['champ'][1] != 't0'){
-            overallStats['Championships'][awards[year]['champ'][1]] += 1
-            overallStats['Dewey Does'][awards[year]['dewey does'][1]] += 1
+        const champWinner = awards[year]['champ']?.name?.[0] ?? 't0'
+        const deweyWinner = awards[year]['dewey does']?.name?.[0] ?? 't0'
+        if (champWinner != 't0'){
+            overallStats['Championships'][champWinner] += 1
+            overallStats['Dewey Does'][deweyWinner] += 1
         }
         gp[year] = 99
         for (const team of vars.allNames){
@@ -57,7 +59,7 @@ export function getOverallStats(vars,input){
                 gp[year] = Math.min(gp[year],stats[year]['games played'][team])
             }
         }
-        if (awards[year]['champ'][1] != 't0'){gp[year] =gp[year] - 1}//idk what this is doing
+        if (champWinner != 't0'){gp[year] =gp[year] - 1}//idk what this is doing
 
         for(const team of vars.allNames){
             if(team=='t0'){continue}
@@ -122,7 +124,8 @@ export function getOverallStats(vars,input){
         ]
         for(const item of tempList){
             if(!input.isComplete.reg&&year==input.isComplete.lastYear){continue}
-            for(const person of awards[year][item[0]][1]){
+            const winners = awards[year][item[0]]?.name ?? []
+            for(const person of winners){
                 if(vars.lameDucks.includes(person)){continue}
                 overallStats[item[1]][person] += 1
             }

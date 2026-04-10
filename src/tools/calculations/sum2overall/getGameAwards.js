@@ -1,4 +1,5 @@
 import { getNames } from "../getNames"
+import { SortNRank } from "../other"
 
 
 
@@ -101,12 +102,7 @@ export function getGameAwards(vars,raw){
         }//for game
     }//for year
     for(const item of list.concat(list2)){
-        let sorted = [...onlyVals[item.id]].sort((a,b)=>a-b)
-        if(item.minMax!='min'){sorted = sorted.reverse()}
-        for(const line of vals[item.id]){
-            line['rank'] = sorted.indexOf(line.value) + 1
-
-    }
+        vals[item.id] = SortNRank(onlyVals[item.id], vals[item.id], item.minMax, true)
     let meta
     // const wrongMeta = ['King of the Rock','Noodle Armed']
     // if(wrongMeta.includes(item[0])){meta=['name','year','week']}

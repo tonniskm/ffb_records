@@ -1,4 +1,6 @@
 
+import { SortNRank } from "../other"
+
 
 export function getAwardsProj(vars,input){
     const projStatsRaw = input['yearProj']
@@ -72,11 +74,7 @@ export function getAwardsProj(vars,input){
             }//for name
 
         }
-        let sorted = [...onlyVals].sort((a,b)=>a-b)
-        if(item.MinMax!='min'){sorted = sorted.reverse()}
-        for(const line of vals){
-            line['rank'] = sorted.indexOf(line.value) + 1
-        }
+        vals = SortNRank(onlyVals, vals, item.MinMax, true)
         // let meta = ['name','year','week']
         // if(noMetaList.includes(item[0])){meta=['name']}
         awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':item.meta,'id':item.id})

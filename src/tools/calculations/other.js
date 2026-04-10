@@ -222,7 +222,7 @@ export function UnpackProjLine(line,names){
     //     const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,names)
 }
 
-export function SortNRank(onlyVals,vals,type){
+export function SortNRank(onlyVals,vals,type,preserveInputOrder=false){
     // let sorted = [...onlyVals].sort((a,b)=>a-b)
     // if(type!='min'){sorted = sorted.reverse()}
     // for(const line of vals){
@@ -239,7 +239,17 @@ export function SortNRank(onlyVals,vals,type){
             sorted[i].rank = sorted[i-1].rank
         }
     }
-    return sorted
+    if(!preserveInputOrder){
+        return sorted
+    }
+
+    return vals.map((line) => {
+        const rankedLine = sorted.find((x) => Object.is(x.value, line.value))
+        return {
+            ...line,
+            rank: rankedLine ? rankedLine.rank : 999999,
+        }
+    })
 }
 
 export function Round(val,digs=2){

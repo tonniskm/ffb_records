@@ -1,4 +1,6 @@
 
+import { SortNRank } from "../other"
+
 
 export function getWeekAwards(vars,input){
     const misc = input['misc']
@@ -21,11 +23,7 @@ export function getWeekAwards(vars,input){
                 vals.push({'week':ind+1,'year':year,'value':value})
             }
         }
-        let sorted = [...onlyVals].sort((a,b)=>a-b)
-        if(item.MinMax!='min'){sorted = sorted.reverse()}
-        for(const line of vals){
-            line['rank'] = sorted.indexOf(line.value) + 1
-        }
+        vals = SortNRank(onlyVals, vals, item.MinMax, true)
         weekAwards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['year','week'],'id':item.id})
     }
     return weekAwards

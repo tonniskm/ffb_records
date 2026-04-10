@@ -1,4 +1,5 @@
 //outputs name and year
+import { SortNRank } from "../other"
 
 
 export function getNameYearAwards(vars,input){
@@ -48,11 +49,7 @@ export function getNameYearAwards(vars,input){
                 onlyVals.push(value)
             }
         }
-    let sorted = [...onlyVals].sort((a,b)=>a-b)
-    if(item.MinMax!='min'){sorted = sorted.reverse()}
-    for(const line of vals){
-        line['rank'] = sorted.indexOf(line.value) + 1
-    }
+    vals = SortNRank(onlyVals, vals, item.MinMax, true)
     awards.push({'title':item.title,'desc':item.description,'values':vals,'meta':['name','year'],'id':item.id})
     incomplete.push({'title':item.title,'desc':item.description,'values':incompleteVals,'meta':['name','year'],'id':item.id})
     }

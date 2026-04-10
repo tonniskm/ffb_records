@@ -22,6 +22,18 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             'byes':isBye,'rings':isChamp,'deweyDoesTimes':isDew,'war':war,'warRate':war,'timesNegative':0,'highScore':[score,[{year,week,team}]],
             'lowScore':score,'times on IR':isIR,'rawScoreInYear':{},'startScoreInYear':{}}
     }
+    function upsertPlayerEntry(tracker,key,createEntry,updateFn){
+        const index = tracker.findIndex(x=>x.name==key)
+        if(index===-1){
+            const newEntry = createEntry()
+            tracker.push(newEntry)
+            updateFn(newEntry,true)
+            return {entry:newEntry,index:tracker.length-1,isNew:true}
+        }
+        const existingEntry = tracker[index]
+        updateFn(existingEntry,false)
+        return {entry:existingEntry,index,isNew:false}
+    }
     for(const name of names){teamTracker[name] = []}
     
     for(const year in rawProjIn){
@@ -58,60 +70,61 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             if (score > proj){beatProj = 1}
             else{beatProj = 0}
             if (gameType != 'BYE' && gameType != 'lame'){
-                if (teamTracker[team].filter(x=>x.name==name).length>0){
-                    const ind = teamTracker[team].findIndex(x=>x.name==name)
-                    teamTracker[team][ind]['weeks owned'] += 1
-                    if (!teamTracker[team][ind]['years'].includes(year)){teamTracker[team][ind]['years'].push(year)}
-                    if (beatProj ==  1 ){teamTracker[team][ind]['beat proj times'] += 1}
-                    teamTracker[team][ind]['scored'] += score
-                    teamTracker[team][ind]['proj score'] += proj
-                    teamTracker[team][ind]['score-proj'] += score - proj
-                    if (teamTracker[team][ind]['best score'][0] == score){teamTracker[team][ind]['best score'][1].push([year,week])}
-                    else if (teamTracker[team][ind]['best score'][0] < score){teamTracker[team][ind]['best score'] = [score,[year,week]]}
-                    if (teamTracker[team][ind]['worst score'][0] == score && (rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['worst score'][1].push([year,week])
-                    }
-                    else if (teamTracker[team][ind]['worst score'][0] > score&& (rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['worst score'] = [score,[year,week]]
-                    }
-                    if (teamTracker[team][ind]['best lose score'][0] == score&&outcome=='L'&&(rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['best lose score'][1].push([year, week])}
-                    else if (teamTracker[team][ind]['best lose score'][0] < score&&(outcome=='L')&&(rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['best lose score'] = [score, [year, week]]}
+                upsertPlayerEntry(
+                    teamTracker[team],
+                    name,
+                    () => TeamTrackerInit(name,year,score,proj,pos),
+                    (entry,isNew) => {
+                        if(!isNew){
+                            entry['weeks owned'] += 1
+                            if (!entry['years'].includes(year)){entry['years'].push(year)}
+                            if (beatProj ==  1 ){entry['beat proj times'] += 1}
+                            entry['scored'] += score
+                            entry['proj score'] += proj
+                            entry['score-proj'] += score - proj
+                            if (entry['best score'][0] == score){entry['best score'][1].push([year,week])}
+                            else if (entry['best score'][0] < score){entry['best score'] = [score,[year,week]]}
+                            if (entry['worst score'][0] == score && (rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['worst score'][1].push([year,week])
+                            }
+                            else if (entry['worst score'][0] > score&& (rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['worst score'] = [score,[year,week]]
+                            }
+                            if (entry['best lose score'][0] == score&&outcome=='L'&&(rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['best lose score'][1].push([year, week])}
+                            else if (entry['best lose score'][0] < score&&(outcome=='L')&&(rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['best lose score'] = [score, [year, week]]}
 
-                    if (teamTracker[team][ind]['worst win score'][0] == score &&(outcome=='W' && rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['worst win score'][1].push([year, week])}
-                    else if (teamTracker[team][ind]['worst win score'][0] > score &&(outcome=='W' && rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][ind]['worst win score'] = [score, [year, week]]}
+                            if (entry['worst win score'][0] == score &&(outcome=='W' && rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['worst win score'][1].push([year, week])}
+                            else if (entry['worst win score'][0] > score &&(outcome=='W' && rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['worst win score'] = [score, [year, week]]}
 
-                    if (rosterSpot=='Bench' || rosterSpot=='IR'){teamTracker[team][ind]['weeks benched'] += 1}
-                    else{
-                        teamTracker[team][ind]['weeks started'] += 1
-                        if (rosterSpot =='FLEX'){teamTracker[team][ind]['weeks flexed'] += 1}
+                            if (rosterSpot=='Bench' || rosterSpot=='IR'){entry['weeks benched'] += 1}
+                            else{
+                                entry['weeks started'] += 1
+                                if (rosterSpot =='FLEX'){entry['weeks flexed'] += 1}
+                                }
+                            if(score < 0){entry['timesNegative'] += 1}
+                            if(rosterSpot=='IR'){entry['times on IR'] += 1}
+                        }else{
+                            entry['best score']=[score,[year,week]]
+                            if((rosterSpot!='Bench' && rosterSpot!='IR')){
+                                entry['worst score'] = [score,[year,week]]
+                                entry['best lose score'] = [score,[year,week]]
+                                if(outcome=='W'){entry['worst win score'] = [score,[year,week]]}
+                            }
+                            if(score<0){entry['timesNegative'] = 1}
+                            if (beatProj == 1){entry['beat proj times'] = 1}
+                            if (rosterSpot=='Bench' || rosterSpot=='IR'){entry['weeks benched'] = 1}
+                            else{
+                                entry['weeks started'] = 1
+                                if (rosterSpot == 'FLEX'){entry['weeks flexed'] = 1}
+                            }
+                            if(rosterSpot=='IR'){entry['times on IR'] = 1}
                         }
-                    if(score < 0){teamTracker[team][ind]['timesNegative'] += 1}
-                    if(rosterSpot=='IR'){teamTracker[team][ind]['times on IR'] += 1}
-                }
-                else{
-                    // isAppend = 1 // because record is done later
-                    teamTracker[team].push(TeamTrackerInit(name,year,score,proj,pos))
-                    const i = teamTracker[team].length - 1
-                    teamTracker[team][i]['best score']=[score,[year,week]]
-                    if((rosterSpot!='Bench' && rosterSpot!='IR')){
-                        teamTracker[team][i]['worst score'] = [score,[year,week]]
-                        teamTracker[team][i]['best lose score'] = [score,[year,week]]
-                        if(outcome=='W'){teamTracker[team][i]['worst win score'] = [score,[year,week]]}
                     }
-                    if(score<0){teamTracker[team][i]['timesNegative'] = 1}
-                    if (beatProj == 1){teamTracker[team][i]['beat proj times'] = 1}
-                    if (rosterSpot=='Bench' || rosterSpot=='IR'){teamTracker[team][i]['weeks benched'] = 1}
-                    else{
-                        teamTracker[team][i]['weeks started'] = 1
-                        if (rosterSpot == 'FLEX'){teamTracker[team][i]['weeks flexed'] = 1}
-                    }
-                    if(rosterSpot=='IR'){teamTracker[team][i]['times on IR'] = 1}
-
-                }
+                )
                 
 
             }//if real game
@@ -150,55 +163,62 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             else if (isStart == 1 && (teamScore - rawScore) + replacement[pos] > oppoScore && isT == 1){ war = -0.5}
             else if (isStart == 1 && (teamScore - rawScore) + replacement[pos] < oppoScore && isT == 1){war = 0.5}else{war=0}
 
-            if (playerTracker.filter(x=>x.name==name).length<=0){
-                playerTracker.push(PlayerTrackerInit(name,year,team,rawScore,rawProject,score,proj,isStart,isFlex,isBench,isIR,
-                    beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war,week))
-                    playerTracker[playerTracker.length-1]['teamInYear'] = {}
-                    playerTracker[playerTracker.length-1]['teamInYear'][year] = [team]
-                    if (score < 0){playerTracker[playerTracker.length-1]['timesNegative'] = 1}
-                    playerTracker[playerTracker.length-1]['rawScoreInYear'][year] = rawScore
-                    playerTracker[playerTracker.length-1]['startScoreInYear'][year] = score
-            }
-            else{//already in playerTracker
-                const index = playerTracker.findIndex(x=>x.name==name)
-                // console.log({1:playerTracker,2:index,3:name,4:playerTracker[index],5:playerTracker[index]['years'],6:year})
-                if ((playerTracker[index]['years']).includes(year)){
-                    if (!playerTracker[index]['teamInYear'][year].includes(team)){
-                        playerTracker[index]['teamInYear'][year].push(team)}
-                    playerTracker[index]['rawScoreInYear'][year] += rawScore
-                    playerTracker[index]['startScoreInYear'][year] += score
-                }else{
-                    playerTracker[index]['teamInYear'][year] = [team]
-                    playerTracker[index]['years'].push(year)
-                    playerTracker[index]['rawScoreInYear'][year] = rawScore
-                    playerTracker[index]['startScoreInYear'][year] = score
+            upsertPlayerEntry(
+                playerTracker,
+                name,
+                () => PlayerTrackerInit(name,year,team,rawScore,rawProject,score,proj,isStart,isFlex,isBench,isIR,
+                    beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war,week),
+                (entry,isNew) => {
+                    if(isNew){
+                        entry['teamInYear'] = {}
+                        entry['teamInYear'][year] = [team]
+                        if (score < 0){entry['timesNegative'] = 1}
+                        entry['rawScoreInYear'][year] = rawScore
+                        entry['startScoreInYear'][year] = score
+                    }
+                    else{
+                        // console.log({1:playerTracker,2:index,3:name,4:playerTracker[index],5:playerTracker[index]['years'],6:year})
+                        if ((entry['years']).includes(year)){
+                            if (!entry['teamInYear'][year].includes(team)){
+                                entry['teamInYear'][year].push(team)}
+                            entry['rawScoreInYear'][year] += rawScore
+                            entry['startScoreInYear'][year] += score
+                        }else{
+                            entry['teamInYear'][year] = [team]
+                            entry['years'].push(year)
+                            entry['rawScoreInYear'][year] = rawScore
+                            entry['startScoreInYear'][year] = score
+                        }
+                        if (!entry['teams'].includes(team)){entry['teams'].push(team)}
+
+                        const additiveKeys = [['score',rawScore], ['proj',rawProject], ['startScore',score], ['startProj',proj],
+                                        ['starts',isStart], ['flexes',isFlex], ['benches',isBench], ['beatProj',beatProj],
+                                        ['startBeatProj',starterBeatProj],
+                                        ['rings',isChamp],['deweyDoesTimes',isDew],['byes',isBye],['war',war],['times on IR',isIR]
+                                        ]
+                        if(entry['highScore'][0]<score){
+                            entry['highScore'] = [score,[{year,week,team}]]
+                        }
+                        else if(entry['highScore'][0]==score){
+                            entry['highScore'][1].push({year,week,team})
+                        }
+                        if(entry['lowScore']>score){
+                            entry['lowScore'] = score
+                        }
+
+                        if (score < 0){entry['timesNegative'] += 1}
+
+
+                        const recordKeys = [['record',[isW,isL,isT]],['recordStarting',[startW,startL,startT]]]
+
+                        for (const key of additiveKeys){entry[key[0]] += key[1]}
+                        for (const key of recordKeys){
+                            for (let iter=0;iter<3;iter++){entry[key[0]][iter] +=key[1][iter]}
+                        }
+                        entry['warRate'] = entry['war']/Math.max(1,entry['starts'])
+                    }
                 }
-                if (!playerTracker[index]['teams'].includes(team)){playerTracker[index]['teams'].push(team)}
-
-                const additiveKeys = [['score',rawScore], ['proj',rawProject], ['startScore',score], ['startProj',proj],
-                                ['starts',isStart], ['flexes',isFlex], ['benches',isBench], ['beatProj',beatProj],
-                                ['startBeatProj',starterBeatProj],
-                                ['rings',isChamp],['deweyDoesTimes',isDew],['byes',isBye],['war',war],['times on IR',isIR]
-                                ]
-                if(playerTracker[index]['highScore'][0]<score){
-                    playerTracker[index]['highScore'] = [score,[{year,week,team}]]
-                }
-                else if(playerTracker[index]['highScore'][0]==score){
-                    playerTracker[index]['highScore'][1].push({year,week,team})
-                }
-
-                if (score < 0){playerTracker[index]['timesNegative'] += 1}
-
-
-                const recordKeys = [['record',[isW,isL,isT]],['recordStarting',[startW,startL,startT]]]
-
-                for (const key of additiveKeys){playerTracker[index][key[0]] += key[1]}
-                for (const key of recordKeys){
-                    for (let iter=0;iter<3;iter++){playerTracker[index][key[0]][iter] +=key[1][iter]}
-                }
-                playerTracker[index]['warRate'] = playerTracker[index]['war']/Math.max(1,playerTracker[index]['starts'])
-                
-            }
+            )
             if (gameType !='BYE' && gameType != 'lame'){
                     const recordKeys = [['record', [isW, isL, isT]], ['startRecord', [startW, startL, startT]]]
                     const index = teamTracker[team].findIndex(x=>x.name==name)
@@ -571,6 +591,67 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
             }
 
     }//for list4
+
+    // Revenge Game: player started against a team that previously dropped/traded them.
+    let revengeVals = []
+    let revengeOnlyVals = []
+    for (const year in rawProjIn){
+        if(year>yearMax){continue}
+        const lastWeek = parseInt(raw[year][raw[year].length-1]['Week'])
+        const yearNames = getNames(vars.leagueID,year)
+        const byPlayer = {}
+
+        for(const line of rawProjIn[year]){
+            const {week,NFLName,actual,team,slot} = UnpackProjLine(line,yearNames)
+            if(week>lastWeek){continue}
+            const type = tables.types[year][team][week]
+            if(type==='lame'){continue}
+            if(!(NFLName in byPlayer)){byPlayer[NFLName] = {}}
+            byPlayer[NFLName][week] = {
+                team,
+                slot,
+                started: !['Bench','IR'].includes(slot) && !['BYE','lame'].includes(type),
+                score: actual,
+                oppo: tables.oppos[year][team][week]
+            }
+        }
+
+        for(const playerName in byPlayer){
+            const weekMap = byPlayer[playerName]
+            const weeks = Object.keys(weekMap).map(x=>parseInt(x)).sort((a,b)=>a-b)
+            let lastTeam = null
+            const droppedByForOwner = {}
+
+            for(const week of weeks){
+                const line = weekMap[week]
+                const owner = line.team
+                if(lastTeam!==null && owner!==lastTeam){
+                    if(!(owner in droppedByForOwner)){droppedByForOwner[owner] = new Set()}
+                    droppedByForOwner[owner].add(lastTeam)
+                }
+
+                if(line.started && line.oppo && droppedByForOwner[owner] && droppedByForOwner[owner].has(line.oppo)){
+                    revengeVals.push({
+                        value: line.score,
+                        name: playerName,
+                        team: owner,
+                        droppedBy: line.oppo,
+                        year,
+                        week
+                    })
+                    revengeOnlyVals.push(line.score)
+                }
+                lastTeam = owner
+            }
+        }
+    }
+    awards.push({
+        id: 'pa53',
+        title: 'Revenge Game',
+        desc: 'Highest score by a started player against a team that previously dropped/traded them',
+        values: SortNRank(revengeOnlyVals, revengeVals, 'max'),
+        meta: ['name','team','droppedBy','year','week']
+    })
 
     // flexcounts
     let flexCounts = {'RB':0,'WR':0,'TE':0}

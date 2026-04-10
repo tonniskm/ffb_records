@@ -22,6 +22,7 @@ export const RecordTable = (props)=>{
     const [focusName,setFocusName] = useState('All')
     const [awardType,setAwardType] = useState('All')
     const [summaryYear,setSummaryYear] = useState('All')
+    const [searchQuery,setSearchQuery] = useState('')
     const [chartVisible,setChartVisible] = useState(false)
     const [chartInd,setChartInd] = useState({})
     const chartData = useRef(null)
@@ -39,7 +40,19 @@ export const RecordTable = (props)=>{
     let pickNFL = [SuggestionInput(allNFLNames,focusNFL,setFocusNFL)]
     if(focusNFL!=='All'){pickNFL.push(<button key={'reset'} onClick={()=>setFocusNFL('All')}>Reset</button>)}
     pickNFL = <div style={{flexDirection:'column',whiteSpace:'nowrap'}} key={'pickNFL1'}>{pickNFL}</div>
-    const relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum]
+    const pickSearch = <div key={'searchbar'} style={{display:'flex',alignItems:'center',gap:'4px',whiteSpace:'nowrap'}}>
+        <label htmlFor='record-search' className='txt'>Search: </label>
+        <input
+            id='record-search'
+            type='text'
+            value={searchQuery}
+            onChange={e=>setSearchQuery(e.target.value)}
+            placeholder='title or description…'
+            style={{padding:'2px 6px',fontSize:'inherit',minWidth:'160px'}}
+        />
+        {searchQuery && <button onClick={()=>setSearchQuery('')} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:'inherit'}}>✕</button>}
+    </div>
+    const relevantChoices=[pickMacro,pickAward,pickName,pickWeek,pickSumYear,pickNFL,pickNum,pickSearch]
 
 
     let shownRecords
@@ -92,6 +105,14 @@ export const RecordTable = (props)=>{
   }, [chartVisible]);
 
         
+    const q = searchQuery.trim().toLowerCase()
+    if(q){
+        const tokens = q.split(/\s+/).filter(Boolean)
+        shownRecords = shownRecords.filter(x=>{
+            const haystack = ((x.title??'')+' '+(x.desc??'')).toLowerCase()
+            return tokens.every(t=>haystack.includes(t))
+        })
+    }
     const awards = shownRecords
     let out = [<div className="tableRow" key={'trh'} data-row={0}>
                 <div className="headerCell" key={'rrh'}><p className="txt">Record</p></div>

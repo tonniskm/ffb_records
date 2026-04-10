@@ -291,7 +291,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     }
     }//end each name
     //cleanup
-    for(let i=0;i<set0;i++){
+    for(let i=0;i<set0.length;i++){
         let item = set0[i]
         let list = scores[item]
         for(let j=0;j<list.length;j++){
@@ -299,7 +299,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
             if(value==0){scores[item][j] = 'none'}
         }
     }
-    for(let j=0;j<sethigh;j++){
+    for(let j=0;j<sethigh.length;j++){
         let item = sethigh[j]
         let list = scores[item]
         for(let i=0;i<list.length;i++){
