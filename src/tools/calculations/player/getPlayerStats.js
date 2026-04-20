@@ -823,5 +823,5 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     }
     
 // console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
-return {'awards':awards,'fantasyTeams':fantasyTeams,'bestPlayers':bestPlayers,'playerTracker':playerTracker}  
+return {'awards':awards,'fantasyTeams':fantasyTeams,'bestPlayers':bestPlayers,'playerTracker':playerTracker,'teamTracker':teamTracker,'ownedTable':ownedTable,'ownedInYears':ownedInYears}  
 }

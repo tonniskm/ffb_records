@@ -76,6 +76,9 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       out['fantasyTeams'] = playerStats.fantasyTeams 
       out['bestPlayers'] = playerStats.bestPlayers
       out['playerTracker'] = playerStats.playerTracker 
+      out['teamTracker'] = playerStats.teamTracker
+      out['ownedTable'] = playerStats.ownedTable
+      out['ownedInYears'] = playerStats.ownedInYears
       GetTeamAwards(vars,tables,out)  
       out['fiddleAwards'] = getFiddleAwards(vars,tables,out)
       // try{await AnalyzeDraft(out,yearMax)}catch(e){console.log(e)}
