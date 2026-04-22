@@ -1,0 +1,172 @@
+.connectionsShell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px 28px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.connectionsIntro {
+  text-align: center;
+}
+
+.connectionsTitle {
+  margin: 0 0 4px;
+}
+
+.connectionsCopy {
+  font-size: 0.84rem;
+  opacity: 0.72;
+  margin: 0;
+}
+
+/* ── Stats bar ─────────────────────────────────────────────────────────── */
+.connectionsStats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.connectionsStatCard {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.connectionsStatLabel {
+  font-size: 0.68rem;
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Board ─────────────────────────────────────────────────────────────── */
+.connectionsBoard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Solved / revealed group rows ──────────────────────────────────────── */
+.connectionsSolvedRow {
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: connFadeIn 0.25s ease;
+}
+
+.connectionsSolvedRow.is-revealed {
+  opacity: 0.65;
+}
+
+@keyframes connFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.connectionsSolvedRow.yellow { background: #f9df6d; color: #1a1a1a; }
+.connectionsSolvedRow.green  { background: #a0c35a; color: #1a1a1a; }
+.connectionsSolvedRow.blue   { background: #b0c4ef; color: #1a1a1a; }
+.connectionsSolvedRow.purple { background: #ba81c5; color: #1a1a1a; }
+
+.connectionsSolvedName {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.connectionsSolvedPlayers {
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ── Player card grid ──────────────────────────────────────────────────── */
+.connectionsPlayerGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.connectionsPlayerCard {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 600;
+  transition: background 0.12s, border-color 0.12s;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.connectionsPlayerCard:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.connectionsPlayerCard.is-selected {
+  background: rgba(140, 140, 140, 0.45);
+  border-color: rgba(210, 210, 210, 0.85);
+}
+
+.connectionsPlayerCard.is-incorrect {
+  animation: connIncorrectPulse 0.36s ease;
+  border-color: rgba(227, 83, 83, 0.9);
+  background: rgba(227, 83, 83, 0.22);
+}
+
+@keyframes connIncorrectPulse {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+/* ── Feedback & actions ────────────────────────────────────────────────── */
+.connectionsFeedback {
+  text-align: center;
+  font-size: 0.88rem;
+  min-height: 22px;
+  margin: 0;
+}
+
+.connectionsActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.connectionsSuccess {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ── Button group (top bar) ────────────────────────────────────────────── */
+.connectionsButtonGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

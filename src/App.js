@@ -24,6 +24,7 @@ import { getPlayerIDInfo } from './tools/fetching/fetch_id_info';
 import { getAllNames, getLameDucks } from './tools/calculations/getNames';
 import { InvalidLeagueSelector } from './tools/outputs/invalidLeagueSelector';
 import { FantasyGrid } from './tools/fantasy_grid/FantasyGrid';
+import { Connections } from './tools/connections/Connections';
 
 
   
@@ -92,7 +93,7 @@ function App() {
   }  
   let allNFLNames = []
   if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Fantasy Grid','Players by Team','Recent Updates','Weekly Review','Yearly Review']
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Fantasy Grid','Connections','Players by Team','Recent Updates','Weekly Review','Yearly Review']
   if(leagueID==='rajan'){macroTypes.push('Draft')}
  
   // let nameSelectMessage
@@ -156,6 +157,9 @@ function App() {
     }
     else if(macroType==='Fantasy Grid'){
       output = <FantasyGrid pickMacro={pickMacro} vars={vars} records={records}></FantasyGrid>
+    }
+    else if(macroType==='Connections'){
+      output = <Connections pickMacro={pickMacro} vars={vars} records={records}></Connections>
     }
     else if(macroType==='Recent Updates'){
       // GetRecords(vars,currentYear,setRecords,raw,proj,fa)

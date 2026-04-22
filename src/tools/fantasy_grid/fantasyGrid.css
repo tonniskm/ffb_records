@@ -147,7 +147,18 @@
 }
 
 .fantasyGridWrongGuess {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   white-space: nowrap;
+}
+
+.fantasyGridWrongGuessMetadata {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  line-height: 1.2;
+  opacity: 0.82;
 }
 
 .fantasyGridEntryCard {

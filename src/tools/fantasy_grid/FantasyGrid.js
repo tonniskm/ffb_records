@@ -763,16 +763,18 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                 {!cell?.isCorrect && hasWrongGuesses && (
                   <div className='fantasyGridWrongGuesses'>
                     {cell.incorrectGuesses.map(name => {
-                      const cellAnswers = getFantasyGridCellAnswers(gridData, rowOwner, colOwner)
-                      const matchingAnswer = cellAnswers.find(ans => normalizeFantasyGridValue(ans.name) === normalizeFantasyGridValue(name))
-                      const startsInfo = (gridData.categoryTypes?.[rowOwner] === 'many-starts' || gridData.categoryTypes?.[colOwner] === 'many-starts') 
-                        && matchingAnswer?.startsCount !== undefined
-                        ? ` (${matchingAnswer.startsCount} starts)`
-                        : ''
+                      const metadataLines = getMetadataForPlayerInCell(gridData, rowOwner, colOwner, name)
                       return (
-                        <span key={`${cellKey}-${name}`} className='fantasyGridWrongGuess'>
-                          {name}{startsInfo}
-                        </span>
+                        <div key={`${cellKey}-${name}`} className='fantasyGridWrongGuess'>
+                          <span>{name}</span>
+                          {metadataLines.length > 0 && (
+                            <div className='fantasyGridWrongGuessMetadata'>
+                              {metadataLines.map(line => (
+                                <span key={`${cellKey}-${name}-${line}`}>{line}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       )
                     })}
                   </div>
