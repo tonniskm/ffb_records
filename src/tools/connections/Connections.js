@@ -39,6 +39,20 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
   if (group.type === 'big-game') {
     return `${connectionsData?.playerHighScore?.[playerKey] ?? 0} pts`
   }
+  if (group.type === 'champ-loser') {
+    const rings = connectionsData?.playerChampionships?.[playerKey] ?? 0
+    const dewey = connectionsData?.playerDeweyDoesTimes?.[playerKey] ?? 0
+    return `${rings} rings, ${dewey} dewey`
+  }
+  if (group.type === 'huge-year') {
+    const meta = connectionsData?.playerMaxStartScoreInYearMeta?.[playerKey]
+    const value = meta?.value ?? 0
+    const years = Array.isArray(meta?.years) ? meta.years : []
+    if (years.length === 0) {
+      return `${value}`
+    }
+    return `${years.join(', ')} (${value})`
+  }
   return ''
 }
 

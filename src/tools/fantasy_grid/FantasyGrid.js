@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './fantasyGrid.css'
+import { getCategoryDisplayInfo, getPlayerCategoryMetadataLines } from '../shared/categoryDefinitions'
 import {
   buildFantasyGridData,
   createFantasyGridCells,
@@ -15,90 +16,6 @@ function getCellKey(rowOwner, colOwner) {
   return `${rowOwner}__${colOwner}`
 }
 
-function formatYearList(years) {
-  if (!Array.isArray(years) || years.length === 0) {
-    return 'Never'
-  }
-  return years.join(', ')
-}
-
-function getCategoryMetadataLines(categoryTypes, rowCategory, colCategory, yearsByOwner, answer) {
-  const lines = []
-  if (categoryTypes?.[rowCategory] === 'owner') {
-    lines.push(`${rowCategory}: ${formatYearList(yearsByOwner?.[rowCategory])}`)
-  }
-  if (categoryTypes?.[colCategory] === 'owner') {
-    lines.push(`${colCategory}: ${formatYearList(yearsByOwner?.[colCategory])}`)
-  }
-  if (categoryTypes?.[rowCategory] === 'many-starts' && answer?.startsCount !== undefined) {
-    lines.push(`Many Starts: ${answer.startsCount} starts`)
-  }
-  if (categoryTypes?.[colCategory] === 'many-starts' && answer?.startsCount !== undefined) {
-    lines.push(`Many Starts: ${answer.startsCount} starts`)
-  }
-  if (categoryTypes?.[rowCategory] === 'big-game' && answer?.highScore !== undefined) {
-    lines.push(`Big Game: ${answer.highScore} pts`)
-  }
-  if (categoryTypes?.[colCategory] === 'big-game' && answer?.highScore !== undefined) {
-    lines.push(`Big Game: ${answer.highScore} pts`)
-  }
-  return lines
-}
-
-function getMetadataForPlayerInCell(gridData, rowCategory, colCategory, playerName) {
-  const playerKey = normalizeFantasyGridValue(playerName)
-  if (!playerKey) {
-    return []
-  }
-
-  const categoryTypes = gridData?.categoryTypes ?? {}
-  const yearsByOwner = gridData?.playerYearsByOwner?.[playerKey] ?? {}
-  const startsByOwner = gridData?.playerStartsByOwner?.[playerKey] ?? {}
-  const totalStarts = gridData?.playerTotalStarts?.[playerKey] ?? 0
-  const highScore = gridData?.playerHighScore?.[playerKey] ?? 0
-  const bestScoreByOwner = gridData?.playerBestScoreByOwner?.[playerKey] ?? {}
-  const lines = []
-
-  if (categoryTypes[rowCategory] === 'owner') {
-    lines.push(`${rowCategory}: ${formatYearList(yearsByOwner[rowCategory])}`)
-  }
-  if (categoryTypes[colCategory] === 'owner') {
-    lines.push(`${colCategory}: ${formatYearList(yearsByOwner[colCategory])}`)
-  }
-
-  if (categoryTypes[rowCategory] === 'many-starts') {
-    if (categoryTypes[colCategory] === 'owner') {
-      lines.push(`Many Starts: ${startsByOwner[colCategory] ?? 0} starts`)
-    } else {
-      lines.push(`Many Starts: ${totalStarts} starts`)
-    }
-  }
-  if (categoryTypes[colCategory] === 'many-starts') {
-    if (categoryTypes[rowCategory] === 'owner') {
-      lines.push(`Many Starts: ${startsByOwner[rowCategory] ?? 0} starts`)
-    } else {
-      lines.push(`Many Starts: ${totalStarts} starts`)
-    }
-  }
-
-  if (categoryTypes[rowCategory] === 'big-game') {
-    if (categoryTypes[colCategory] === 'owner') {
-      lines.push(`Big Game: ${bestScoreByOwner[colCategory] ?? 0} pts`)
-    } else {
-      lines.push(`Big Game: ${highScore} pts`)
-    }
-  }
-  if (categoryTypes[colCategory] === 'big-game') {
-    if (categoryTypes[rowCategory] === 'owner') {
-      lines.push(`Big Game: ${bestScoreByOwner[rowCategory] ?? 0} pts`)
-    } else {
-      lines.push(`Big Game: ${highScore} pts`)
-    }
-  }
-
-  return lines
-}
-
 function getWrongGuessLabel(validation, rawGuess) {
   if (validation.displayName) {
     return validation.displayName
@@ -106,64 +23,8 @@ function getWrongGuessLabel(validation, rawGuess) {
   return (rawGuess ?? '').toString().trim()
 }
 
-function getCategoryDetails(categoryName, categoryTypes, puzzle) {
-  const type = categoryTypes?.[categoryName]
-  if (type === 'owner') {
-    return {
-      title: categoryName,
-      description: `Owner/Manager`,
-      details: `Players owned by ${categoryName}`,
-    }
-  }
-  if (type === 'position') {
-    return {
-      title: categoryName,
-      description: `NFL Position`,
-      details: `Players with position ${categoryName}`,
-    }
-  }
-  if (type === 'many-starts') {
-    const isRowCategory = puzzle?.rowOwners?.includes(categoryName)
-    const pairedCategories = isRowCategory ? (puzzle?.colOwners || []) : (puzzle?.rowOwners || [])
-    const ownerPairs = pairedCategories.filter(cat => categoryTypes?.[cat] === 'owner')
-    const nonOwnerPairs = pairedCategories.filter(cat => categoryTypes?.[cat] !== 'owner')
-
-    const details = []
-    if (ownerPairs.length > 0) {
-      details.push(`With owner: Players started ≥10 times by that owner`)
-    }
-    if (nonOwnerPairs.length > 0) {
-      details.push(`With non-owner category: Players with ≥20 total starts`)
-    }
-    return {
-      title: 'Many Starts',
-      description: 'Players with significant starting history',
-      details: details.length > 0 ? details.join(' | ') : 'High-volume starting players',
-    }
-  }
-  if (type === 'big-game') {
-    const isRowCategory = puzzle?.rowOwners?.includes(categoryName)
-    const pairedCategories = isRowCategory ? (puzzle?.colOwners || []) : (puzzle?.rowOwners || [])
-    const ownerPairs = pairedCategories.filter(cat => categoryTypes?.[cat] === 'owner')
-    const nonOwnerPairs = pairedCategories.filter(cat => categoryTypes?.[cat] !== 'owner')
-    const details = []
-    if (ownerPairs.length > 0) {
-      details.push(`With owner: QBs with best score >30 pts, others >20 pts with that owner`)
-    }
-    if (nonOwnerPairs.length > 0) {
-      details.push(`With non-owner category: QBs with high score >30 pts, others >20 pts`)
-    }
-    return {
-      title: 'Big Game',
-      description: 'Players with a standout scoring performance',
-      details: details.length > 0 ? details.join(' | ') : 'High single-game scorers',
-    }
-  }
-  return {
-    title: categoryName,
-    description: 'Category',
-    details: '',
-  }
+function getCategoryDetails(categoryName, categoryTypes, puzzle, gridData) {
+  return getCategoryDisplayInfo(categoryName, categoryTypes, puzzle, gridData)
 }
 
 function getRecentDateKeys(numberOfDays) {
@@ -513,7 +374,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
   const selectedSearchPlayerKey = normalizeFantasyGridValue(selectedSearchPlayerName)
   const searchedPlayerIsCorrect = !!activeCellAnswers.find(answer => answer.key === selectedSearchPlayerKey)
   const searchedPlayerMetadata = activeCell
-    ? getMetadataForPlayerInCell(gridData, activeCell.rowOwner, activeCell.colOwner, selectedSearchPlayerName)
+    ? getPlayerCategoryMetadataLines({
+      gridData,
+      rowCategory: activeCell.rowOwner,
+      colCategory: activeCell.colOwner,
+      playerKey: selectedSearchPlayerKey,
+    })
     : []
 
   function selectCell(rowOwner, colOwner) {
@@ -746,7 +612,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                     {!cell.isRevealed && (() => {
                       const cellAnswers = getFantasyGridCellAnswers(gridData, rowOwner, colOwner)
                       const correctAnswer = cellAnswers.find(ans => normalizeFantasyGridValue(ans.name) === normalizeFantasyGridValue(cell.correctGuess))
-                      const metadataLines = getCategoryMetadataLines(gridData.categoryTypes, rowOwner, colOwner, cell.correctYearsByOwner, correctAnswer)
+                      const metadataLines = getPlayerCategoryMetadataLines({
+                        gridData,
+                        rowCategory: rowOwner,
+                        colCategory: colOwner,
+                        playerKey: correctAnswer?.key,
+                      })
                       return metadataLines.length > 0 ? (
                         <div className='fantasyGridCellYears'>
                           {metadataLines.map(line => (
@@ -763,7 +634,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                 {!cell?.isCorrect && hasWrongGuesses && (
                   <div className='fantasyGridWrongGuesses'>
                     {cell.incorrectGuesses.map(name => {
-                      const metadataLines = getMetadataForPlayerInCell(gridData, rowOwner, colOwner, name)
+                      const metadataLines = getPlayerCategoryMetadataLines({
+                        gridData,
+                        rowCategory: rowOwner,
+                        colCategory: colOwner,
+                        playerKey: normalizeFantasyGridValue(name),
+                      })
                       return (
                         <div key={`${cellKey}-${name}`} className='fantasyGridWrongGuess'>
                           <span>{name}</span>
@@ -881,7 +757,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                   {activeCellAnswers.map(answer => (
                     <div className='fantasyGridAnswerItem' key={answer.key}>
                       <strong>{answer.name}</strong>
-                      {getCategoryMetadataLines(gridData.categoryTypes, activeCell.rowOwner, activeCell.colOwner, answer.yearsByOwner, answer).map(line => (
+                      {getPlayerCategoryMetadataLines({
+                        gridData,
+                        rowCategory: activeCell.rowOwner,
+                        colCategory: activeCell.colOwner,
+                        playerKey: answer.key,
+                      }).map(line => (
                         <span key={`${answer.key}-${line}`}>{line}</span>
                       ))}
                     </div>
@@ -898,16 +779,16 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
           <div className='fantasyGridEntryCard fantasyGridModalCard' onClick={event => event.stopPropagation()}>
             <div className='fantasyGridModalHeader'>
               <p className='fantasyGridPanelTitle'>
-                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle).title}
+                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle, gridData).title}
               </p>
               <button type='button' className='fantasyGridCloseButton' onClick={() => setSelectedCategory(null)}>Close</button>
             </div>
             <div className='fantasyGridCategoryDetails'>
               <p className='fantasyGridCategoryType'>
-                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle).description}
+                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle, gridData).description}
               </p>
               <p className='fantasyGridCategoryDescription'>
-                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle).details}
+                {getCategoryDetails(selectedCategory, gridData?.categoryTypes, puzzle, gridData).details}
               </p>
             </div>
           </div>

@@ -2,18 +2,12 @@
 // Unique-solution guarantee: each of the 16 players on the board belongs to exactly
 // one of the 4 chosen categories (enforced via exclusive-set filtering).
 
-const MANY_STARTS_TOTAL_THRESHOLD = 20
-const BIG_GAME_QB_THRESHOLD = 30
-const BIG_GAME_OTHER_THRESHOLD = 20
-
-const MANY_STARTS_NAME = 'Many Starts'
-const BIG_GAME_NAME = 'Big Game'
+import {
+  buildSharedCategoryData,
+  normalizeCategoryValue,
+} from '../shared/categoryData'
 
 const GROUP_COLORS = ['yellow', 'green', 'blue', 'purple']
-
-function sortStrings(values) {
-  return [...values].sort((a, b) => a.localeCompare(b))
-}
 
 function getDateSeed(dateKey) {
   let hash = 0
@@ -45,147 +39,25 @@ function shuffleWithSeed(list, randomFn) {
   return output
 }
 
-function sortYears(values) {
-  return [...values].sort((a, b) => a - b)
-}
-
-export function normalizeConnectionsValue(value) {
-  return (value ?? '').toString().trim().toLowerCase()
-}
+export const normalizeConnectionsValue = normalizeCategoryValue
 
 export function buildConnectionsData(activeNames, playerTracker, teamTracker) {
-  const owners = sortStrings([...new Set((activeNames ?? []).filter(Boolean))])
-  const positions = sortStrings([
-    ...new Set((playerTracker ?? []).map(p => p?.pos).filter(Boolean)),
-  ])
-
-  const categoryTypes = {}
-  const categoryPlayers = {}   // { catName: Set<normalizedKey> }
-  const playerLookup = {}      // { normalizedKey: displayName }
-  const playerPositionByKey = {}
-  const playerTotalStarts = {}
-  const playerHighScore = {}
-  const playerYearsByOwner = {}
-
-  for (const owner of owners) {
-    categoryTypes[owner] = 'owner'
-    categoryPlayers[owner] = new Set()
-  }
-  for (const pos of positions) {
-    categoryTypes[pos] = 'position'
-    categoryPlayers[pos] = new Set()
-  }
-  categoryTypes[MANY_STARTS_NAME] = 'many-starts'
-  categoryPlayers[MANY_STARTS_NAME] = new Set()
-  categoryTypes[BIG_GAME_NAME] = 'big-game'
-  categoryPlayers[BIG_GAME_NAME] = new Set()
-
-  for (const player of playerTracker ?? []) {
-    if (!player?.name || !Array.isArray(player?.teams)) {
-      continue
-    }
-    const key = normalizeConnectionsValue(player.name)
-    if (!key) {
-      continue
-    }
-
-    if (!(key in playerLookup)) {
-      playerLookup[key] = player.name
-    }
-    if (!(key in playerPositionByKey)) {
-      playerPositionByKey[key] = player.pos ?? ''
-    }
-    if (!(key in playerHighScore)) {
-      playerHighScore[key] = player['highScore']?.[0] ?? 0
-    }
-    if (!(key in playerTotalStarts)) {
-      playerTotalStarts[key] = 0
-    }
-    if (!(key in playerYearsByOwner)) {
-      playerYearsByOwner[key] = {}
-    }
-
-    if (player.pos && categoryPlayers[player.pos]) {
-      categoryPlayers[player.pos].add(key)
-    }
-
-    const ownersForPlayer = [...new Set(player.teams.filter(team => owners.includes(team)))]
-    for (const owner of ownersForPlayer) {
-      categoryPlayers[owner].add(key)
-      if (!(owner in playerYearsByOwner[key])) {
-        playerYearsByOwner[key][owner] = new Set()
-      }
-    }
-
-    if (player.teamInYear && typeof player.teamInYear === 'object') {
-      for (const year of Object.keys(player.teamInYear)) {
-        const teamsInYear = Array.isArray(player.teamInYear[year]) ? player.teamInYear[year] : []
-        for (const owner of teamsInYear) {
-          if (!owners.includes(owner)) {
-            continue
-          }
-          if (!(owner in playerYearsByOwner[key])) {
-            playerYearsByOwner[key][owner] = new Set()
-          }
-          const parsedYear = Number(year)
-          if (!Number.isNaN(parsedYear)) {
-            playerYearsByOwner[key][owner].add(parsedYear)
-          }
-        }
-      }
-    }
-  }
-
-  // Accumulate starts from teamTracker
-  for (const ownerName of owners) {
-    for (const playerRecord of teamTracker?.[ownerName] ?? []) {
-      const name = playerRecord?.name
-      if (!name) {
-        continue
-      }
-      const key = normalizeConnectionsValue(name)
-      if (!key) {
-        continue
-      }
-      if (!(key in playerTotalStarts)) {
-        playerTotalStarts[key] = 0
-      }
-      playerTotalStarts[key] += playerRecord['weeks started'] ?? 0
-    }
-  }
-
-  // Populate Many Starts and Big Game sets
-  for (const key of Object.keys(playerLookup)) {
-    if ((playerTotalStarts[key] ?? 0) >= MANY_STARTS_TOTAL_THRESHOLD) {
-      categoryPlayers[MANY_STARTS_NAME].add(key)
-    }
-    const hs = playerHighScore[key] ?? 0
-    const pos = playerPositionByKey[key] ?? ''
-    const threshold = pos === 'QB' ? BIG_GAME_QB_THRESHOLD : BIG_GAME_OTHER_THRESHOLD
-    if (hs > threshold) {
-      categoryPlayers[BIG_GAME_NAME].add(key)
-    }
-  }
-
-  const categories = [...owners, ...positions, MANY_STARTS_NAME, BIG_GAME_NAME]
+  const sharedData = buildSharedCategoryData(activeNames, playerTracker, teamTracker, normalizeConnectionsValue)
 
   return {
-    categories,
-    categoryTypes,
-    categoryPlayers,
-    playerLookup,
-    allPlayers: sortStrings(Object.values(playerLookup)),
-    playerPositionByKey,
-    playerTotalStarts,
-    playerHighScore,
-    playerYearsByOwner: Object.fromEntries(
-      Object.entries(playerYearsByOwner).map(([playerKey, ownerMap]) => ([
-        playerKey,
-        Object.fromEntries(
-          Object.entries(ownerMap).map(([owner, years]) => ([owner, sortYears(Array.from(years ?? []))]))
-        ),
-      ]))
-    ),
+    categories: sharedData.categories,
+    categoryTypes: sharedData.categoryTypes,
+    categoryPlayers: sharedData.categoryPlayerKeys,
+    playerLookup: sharedData.playerLookup,
+    allPlayers: Object.values(sharedData.playerLookup).sort((a, b) => a.localeCompare(b)),
+    playerPositionByKey: sharedData.playerPositionByKey,
+    playerTotalStarts: sharedData.playerTotalStarts,
+    playerHighScore: sharedData.playerHighScore,
+    playerYearsByOwner: sharedData.playerYearsByOwner,
+    playerChampionships: sharedData.playerChampionships,
+    playerDeweyDoesTimes: sharedData.playerDeweyDoesTimes,
+    playerMaxStartScoreInYear: sharedData.playerMaxStartScoreInYear,
+    playerMaxStartScoreInYearMeta: sharedData.playerMaxStartScoreInYearMeta,
   }
 }
 

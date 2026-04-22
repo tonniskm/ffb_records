@@ -12,7 +12,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         return {'name':name,'years':[year],'weeks owned':1,'beat proj times':0,'scored':score,'proj score':proj,
         'score-proj':score-proj,'weeks started':0,'weeks benched':0,'weeks flexed':0,'record':[0,0,0],
       'startRecord':[0,0,0],'pos':pos,'best score':[0,[]],'worst score':[9999,[]],
-      'best lose score':[0,[]],'worst win score':[9999,[]],'timesNegative':0,'times on IR':0}
+            'best lose score':[0,[]],'worst win score':[9999,[]],'timesNegative':0,'times on IR':0,
+            'rings':0,'deweyDoesTimes':0,'startScoreInYear':{[year]:score}}
     }
     function PlayerTrackerInit(name,year,team,rawScore,rawProject,score,proj,isStart,isFlex,isBench,isIR,
         beatProj,starterBeatProj,pos,isW,isL,isT,startW,startL,startT,isChamp,isDew,isBye,war,week){
@@ -78,6 +79,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         if(!isNew){
                             entry['weeks owned'] += 1
                             if (!entry['years'].includes(year)){entry['years'].push(year)}
+                            if (!(year in entry['startScoreInYear'])){entry['startScoreInYear'][year] = 0}
+                            entry['startScoreInYear'][year] += score
                             if (beatProj ==  1 ){entry['beat proj times'] += 1}
                             entry['scored'] += score
                             entry['proj score'] += proj
@@ -107,6 +110,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                                 }
                             if(score < 0){entry['timesNegative'] += 1}
                             if(rosterSpot=='IR'){entry['times on IR'] += 1}
+                            if (gameType == 'P3' && outcome == 'W'){entry['rings'] += 1}
+                            if (gameType == 'L3' && outcome == 'L'){entry['deweyDoesTimes'] += 1}
                         }else{
                             entry['best score']=[score,[year,week]]
                             if((rosterSpot!='Bench' && rosterSpot!='IR')){
@@ -122,6 +127,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                                 if (rosterSpot == 'FLEX'){entry['weeks flexed'] = 1}
                             }
                             if(rosterSpot=='IR'){entry['times on IR'] = 1}
+                            if (gameType == 'P3' && outcome == 'W'){entry['rings'] = 1}
+                            if (gameType == 'L3' && outcome == 'L'){entry['deweyDoesTimes'] = 1}
                         }
                     }
                 )

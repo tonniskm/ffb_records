@@ -1,17 +1,21 @@
+import {
+  BIG_GAME_CATEGORY_NAME,
+  CHAMP_LOSER_CATEGORY_NAME,
+  HUGE_YEAR_CATEGORY_NAME,
+  buildSharedCategoryData,
+  MANY_STARTS_CATEGORY_NAME,
+  normalizeCategoryValue,
+} from '../shared/categoryData'
+import { doesPlayerMatchCategoryForPair } from '../shared/categoryDefinitions'
+
 // ─── Debug Mode ────────────────────────────────────────────────────────────────
 // Set DEBUG_GRID_MODE to true to force today's grid to include DEBUG_FORCED_CATEGORY.
 // Set to false when finished with development.
 const DEBUG_GRID_MODE = false
-const DEBUG_FORCED_CATEGORY = 'Big Game'
+const DEBUG_FORCED_CATEGORY = 'huge year'
 // ────────────────────────────────────────────────────────────────────────────────
 
-function sortStrings(values) {
-  return [...values].sort((left, right) => left.localeCompare(right))
-}
-
-export function normalizeFantasyGridValue(value) {
-  return (value ?? '').toString().trim().toLowerCase()
-}
+export const normalizeFantasyGridValue = normalizeCategoryValue
 
 function getDateSeed(dateKey) {
   let hash = 0
@@ -43,132 +47,34 @@ function shuffleWithSeed(list, randomFn) {
   return output
 }
 
-function sortYears(values) {
-  return [...values].sort((left, right) => left - right)
-}
-
 export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
-  const owners = sortStrings([...new Set((activeNames ?? []).filter(Boolean))])
-  const positions = sortStrings([
-    ...new Set(
-      (playerTracker ?? [])
-        .map(player => player?.pos)
-        .filter(Boolean)
-    ),
-  ])
-  const manyStartsCategoryName = 'Many Starts'
-  const bigGameCategoryName = 'Big Game'
-  const categories = [...owners, ...positions, manyStartsCategoryName, bigGameCategoryName]
-  const ownerToPlayers = {}
-  const positionToPlayers = {}
-  const playerLookup = {}
-  const playerYearsByOwner = {}
-  const categoryTypes = {}
-  const playerTotalStarts = {}
-  const playerStartsByOwner = {}
-  const playerHighScore = {}
-  const playerBestScoreByOwner = {}
-  const playerPositionByKey = {}
-
-  for (const owner of owners) {
-    ownerToPlayers[owner] = new Set()
-    categoryTypes[owner] = 'owner'
-  }
-
-  for (const position of positions) {
-    positionToPlayers[position] = new Set()
-    categoryTypes[position] = 'position'
-  }
-
-  categoryTypes[manyStartsCategoryName] = 'many-starts'
-  categoryTypes[bigGameCategoryName] = 'big-game'
-
-  for (const player of playerTracker ?? []) {
-    if (!player?.name || !Array.isArray(player?.teams)) {
-      continue
-    }
-
-    const normalizedName = normalizeFantasyGridValue(player.name)
-    if (!normalizedName) {
-      continue
-    }
-
-    if (!(normalizedName in playerLookup)) {
-      playerLookup[normalizedName] = player.name
-    }
-    if (!(normalizedName in playerYearsByOwner)) {
-      playerYearsByOwner[normalizedName] = {}
-    }
-    if (!(normalizedName in playerTotalStarts)) {
-      playerTotalStarts[normalizedName] = 0
-    }
-    if (!(normalizedName in playerStartsByOwner)) {
-      playerStartsByOwner[normalizedName] = {}
-    }
-    if (!(normalizedName in playerHighScore)) {
-      playerHighScore[normalizedName] = player['highScore']?.[0] ?? 0
-    }
-    if (!(normalizedName in playerPositionByKey)) {
-      playerPositionByKey[normalizedName] = player.pos ?? ''
-    }
-    if (player.pos && positionToPlayers[player.pos]) {
-      positionToPlayers[player.pos].add(playerLookup[normalizedName])
-    }
-
-    const ownersForPlayer = [...new Set(player.teams.filter(team => owners.includes(team)))]
-    for (const owner of ownersForPlayer) {
-      ownerToPlayers[owner].add(playerLookup[normalizedName])
-      if (!(owner in playerYearsByOwner[normalizedName])) {
-        playerYearsByOwner[normalizedName][owner] = new Set()
-      }
-    }
-
-    if (player.teamInYear && typeof player.teamInYear === 'object') {
-      for (const year of Object.keys(player.teamInYear)) {
-        const teamsInYear = Array.isArray(player.teamInYear[year]) ? player.teamInYear[year] : []
-        for (const owner of teamsInYear) {
-          if (!owners.includes(owner)) {
-            continue
-          }
-          if (!(owner in playerYearsByOwner[normalizedName])) {
-            playerYearsByOwner[normalizedName][owner] = new Set()
-          }
-          const parsedYear = Number(year)
-          if (!Number.isNaN(parsedYear)) {
-            playerYearsByOwner[normalizedName][owner].add(parsedYear)
-          }
-        }
-      }
-    }
-  }
-
-  // Build playerTotalStarts from teamTracker
-  for (const ownerName of owners) {
-    const ownedPlayers = teamTracker?.[ownerName] ?? []
-    for (const playerRecord of ownedPlayers) {
-      const playerName = playerRecord?.name
-      if (!playerName) {
-        continue
-      }
-      const normalizedName = normalizeFantasyGridValue(playerName)
-      if (!normalizedName) {
-        continue
-      }
-      if (!(normalizedName in playerTotalStarts)) {
-        playerTotalStarts[normalizedName] = 0
-      }
-      if (!(normalizedName in playerStartsByOwner)) {
-        playerStartsByOwner[normalizedName] = {}
-      }
-      const weeksStarted = playerRecord['weeks started'] ?? 0
-      playerTotalStarts[normalizedName] += weeksStarted
-      playerStartsByOwner[normalizedName][ownerName] = (playerStartsByOwner[normalizedName][ownerName] ?? 0) + weeksStarted
-      if (!(normalizedName in playerBestScoreByOwner)) {
-        playerBestScoreByOwner[normalizedName] = {}
-      }
-      playerBestScoreByOwner[normalizedName][ownerName] = playerRecord['best score']?.[0] ?? 0
-    }
-  }
+  const sharedData = buildSharedCategoryData(activeNames, playerTracker, teamTracker, normalizeFantasyGridValue)
+  const {
+    owners,
+    positions,
+    categories,
+    categoryTypes,
+    ownerPlayerKeys,
+    positionPlayerKeys,
+    categoryPlayerKeys,
+    playerLookup,
+    playerYearsByOwner,
+    playerTotalStarts,
+    playerStartsByOwner,
+    playerHighScore,
+    playerBestScoreByOwner,
+    playerPositionByKey,
+    playerChampionships,
+    playerDeweyDoesTimes,
+    playerChampionshipsByOwner,
+    playerDeweyDoesTimesByOwner,
+    playerMaxStartScoreInYear,
+    playerMaxStartScoreInYearByOwner,
+    playerMaxStartScoreInYearMeta,
+    playerMaxStartScoreInYearMetaByOwner,
+    manyStartsAllThreshold,
+    manyStartsByOwnerThreshold,
+  } = sharedData
 
   const answersByPair = {}
   for (const rowCategory of categories) {
@@ -177,18 +83,14 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
       let answers = []
 
       // Handle "Many Starts" category pairs
-      if (rowCategory === manyStartsCategoryName || colCategory === manyStartsCategoryName) {
-        const otherCategory = rowCategory === manyStartsCategoryName ? colCategory : rowCategory
+      if (rowCategory === MANY_STARTS_CATEGORY_NAME || colCategory === MANY_STARTS_CATEGORY_NAME) {
+        const otherCategory = rowCategory === MANY_STARTS_CATEGORY_NAME ? colCategory : rowCategory
 
         if (categoryTypes[otherCategory] === 'owner') {
-          // Many Starts paired with owner: threshold is 10 weeks started by that owner
+          // Many Starts paired with owner: top 20% of that owner's players by starts
           const ownerName = otherCategory
           const ownedPlayers = teamTracker?.[ownerName] ?? []
           for (const playerRecord of ownedPlayers) {
-            const weeksStarted = playerRecord['weeks started'] ?? 0
-            if (weeksStarted < 10) {
-              continue
-            }
             const playerName = playerRecord?.name
             if (!playerName) {
               continue
@@ -197,6 +99,16 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             if (!playerKey) {
               continue
             }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: MANY_STARTS_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const weeksStarted = playerRecord['weeks started'] ?? 0
             const displayName = playerLookup[playerKey] ?? playerName
             const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
             answers.push({
@@ -204,41 +116,26 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
               name: displayName,
               startsCount: weeksStarted,
               yearsByOwner: {
-                ...(categoryTypes[otherCategory] === 'owner' ? { [otherCategory]: sortYears(Array.from(yearsByOwner[otherCategory] ?? [])) } : {}),
+                ...(categoryTypes[otherCategory] === 'owner' ? { [otherCategory]: yearsByOwner[otherCategory] ?? [] } : {}),
               },
             })
           }
-        } else if (categoryTypes[otherCategory] === 'position') {
-          // Many Starts paired with position: threshold is 20 total starts
-          const position = otherCategory
-          const positionPlayers = positionToPlayers[position] ?? new Set()
-          for (const playerName of positionPlayers) {
-            const playerKey = normalizeFantasyGridValue(playerName)
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: MANY_STARTS_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
             const totalStarts = playerTotalStarts[playerKey] ?? 0
-            if (totalStarts < 20) {
-              continue
-            }
-            answers.push({
-              key: playerKey,
-              name: playerName,
-              startsCount: totalStarts,
-              yearsByOwner: {},
-            })
-          }
-        } else if (categoryTypes[otherCategory] === 'big-game') {
-          // Many Starts paired with Big Game: player needs >=20 total starts AND high score > threshold
-          for (const playerName of Object.values(playerLookup)) {
-            const playerKey = normalizeFantasyGridValue(playerName)
-            const totalStarts = playerTotalStarts[playerKey] ?? 0
-            if (totalStarts < 20) {
-              continue
-            }
-            const highScore = playerHighScore[playerKey] ?? 0
-            const pos = playerPositionByKey[playerKey] ?? ''
-            const threshold = pos === 'QB' ? 30 : 20
-            if (highScore <= threshold) {
-              continue
-            }
             answers.push({
               key: playerKey,
               name: playerName,
@@ -256,15 +153,14 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             startsCount: answer.startsCount,
             yearsByOwner: answer.yearsByOwner,
           }))
-      } else if (rowCategory === bigGameCategoryName || colCategory === bigGameCategoryName) {
-        const otherCategory = rowCategory === bigGameCategoryName ? colCategory : rowCategory
+      } else if (rowCategory === BIG_GAME_CATEGORY_NAME || colCategory === BIG_GAME_CATEGORY_NAME) {
+        const otherCategory = rowCategory === BIG_GAME_CATEGORY_NAME ? colCategory : rowCategory
 
         if (categoryTypes[otherCategory] === 'owner') {
           // Big Game paired with owner: use bestScore per owner
           const ownerName = otherCategory
           const ownedPlayers = teamTracker?.[ownerName] ?? []
           for (const playerRecord of ownedPlayers) {
-            const bestScore = playerRecord['best score']?.[0] ?? 0
             const playerName = playerRecord?.name
             if (!playerName) {
               continue
@@ -273,11 +169,16 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             if (!playerKey) {
               continue
             }
-            const pos = playerPositionByKey[playerKey] ?? ''
-            const threshold = pos === 'QB' ? 30 : 20
-            if (bestScore <= threshold) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: BIG_GAME_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
               continue
             }
+            const bestScore = playerRecord['best score']?.[0] ?? 0
             const displayName = playerLookup[playerKey] ?? playerName
             const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
             answers.push({
@@ -285,23 +186,27 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
               name: displayName,
               highScore: bestScore,
               yearsByOwner: {
-                [ownerName]: sortYears(Array.from(yearsByOwner[ownerName] ?? [])),
+                [ownerName]: yearsByOwner[ownerName] ?? [],
               },
             })
           }
         } else {
           // Big Game paired with position or other non-owner: use playerTracker highScore
           const playerSet = categoryTypes[otherCategory] === 'position'
-            ? (positionToPlayers[otherCategory] ?? new Set())
-            : new Set(Object.values(playerLookup))
-          for (const playerName of playerSet) {
-            const playerKey = normalizeFantasyGridValue(playerName)
-            const highScore = playerHighScore[playerKey] ?? 0
-            const pos = playerPositionByKey[playerKey] ?? ''
-            const threshold = pos === 'QB' ? 30 : 20
-            if (highScore <= threshold) {
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+          for (const playerKey of playerSet) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: BIG_GAME_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
               continue
             }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            const highScore = playerHighScore[playerKey] ?? 0
             answers.push({
               key: playerKey,
               name: playerName,
@@ -319,27 +224,157 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             highScore: answer.highScore,
             yearsByOwner: answer.yearsByOwner,
           }))
+      } else if (rowCategory === CHAMP_LOSER_CATEGORY_NAME || colCategory === CHAMP_LOSER_CATEGORY_NAME) {
+        const otherCategory = rowCategory === CHAMP_LOSER_CATEGORY_NAME ? colCategory : rowCategory
+
+        if (categoryTypes[otherCategory] === 'owner') {
+          const ownerName = otherCategory
+          const ownedPlayers = teamTracker?.[ownerName] ?? []
+          for (const playerRecord of ownedPlayers) {
+            const playerName = playerRecord?.name
+            if (!playerName) {
+              continue
+            }
+            const playerKey = normalizeFantasyGridValue(playerName)
+            if (!playerKey) {
+              continue
+            }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: CHAMP_LOSER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const displayName = playerLookup[playerKey] ?? playerName
+            const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
+            answers.push({
+              key: playerKey,
+              name: displayName,
+              yearsByOwner: {
+                [ownerName]: yearsByOwner[ownerName] ?? [],
+              },
+            })
+          }
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: CHAMP_LOSER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            answers.push({
+              key: playerKey,
+              name: playerName,
+              yearsByOwner: {},
+            })
+          }
+        }
+
+        answers = answers
+          .sort((left, right) => left.name.localeCompare(right.name))
+          .map(answer => ({
+            key: answer.key,
+            name: answer.name,
+            yearsByOwner: answer.yearsByOwner,
+          }))
+      } else if (rowCategory === HUGE_YEAR_CATEGORY_NAME || colCategory === HUGE_YEAR_CATEGORY_NAME) {
+        const otherCategory = rowCategory === HUGE_YEAR_CATEGORY_NAME ? colCategory : rowCategory
+
+        if (categoryTypes[otherCategory] === 'owner') {
+          const ownerName = otherCategory
+          const ownedPlayers = teamTracker?.[ownerName] ?? []
+          for (const playerRecord of ownedPlayers) {
+            const playerName = playerRecord?.name
+            if (!playerName) {
+              continue
+            }
+            const playerKey = normalizeFantasyGridValue(playerName)
+            if (!playerKey) {
+              continue
+            }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: HUGE_YEAR_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const displayName = playerLookup[playerKey] ?? playerName
+            const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
+            answers.push({
+              key: playerKey,
+              name: displayName,
+              yearsByOwner: {
+                [ownerName]: yearsByOwner[ownerName] ?? [],
+              },
+            })
+          }
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: HUGE_YEAR_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            answers.push({
+              key: playerKey,
+              name: playerName,
+              yearsByOwner: {},
+            })
+          }
+        }
+
+        answers = answers
+          .sort((left, right) => left.name.localeCompare(right.name))
+          .map(answer => ({
+            key: answer.key,
+            name: answer.name,
+            yearsByOwner: answer.yearsByOwner,
+          }))
       } else {
         // Existing logic for non-"Many Starts" categories
         const rowPlayers = categoryTypes[rowCategory] === 'position'
-          ? (positionToPlayers[rowCategory] ?? new Set())
-          : (ownerToPlayers[rowCategory] ?? new Set())
+          ? (positionPlayerKeys[rowCategory] ?? new Set())
+          : (ownerPlayerKeys[rowCategory] ?? new Set())
         const colPlayers = categoryTypes[colCategory] === 'position'
-          ? (positionToPlayers[colCategory] ?? new Set())
-          : (ownerToPlayers[colCategory] ?? new Set())
+          ? (positionPlayerKeys[colCategory] ?? new Set())
+          : (ownerPlayerKeys[colCategory] ?? new Set())
 
-        for (const playerName of rowPlayers) {
-          if (!colPlayers.has(playerName)) {
+        for (const playerKey of rowPlayers) {
+          if (!colPlayers.has(playerKey)) {
             continue
           }
-          const playerKey = normalizeFantasyGridValue(playerName)
+          const playerName = playerLookup[playerKey] ?? playerKey
           const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
           answers.push({
             key: playerKey,
             name: playerName,
             yearsByOwner: {
-              ...(categoryTypes[rowCategory] === 'owner' ? { [rowCategory]: sortYears(Array.from(yearsByOwner[rowCategory] ?? [])) } : {}),
-              ...(categoryTypes[colCategory] === 'owner' ? { [colCategory]: sortYears(Array.from(yearsByOwner[colCategory] ?? [])) } : {}),
+              ...(categoryTypes[rowCategory] === 'owner' ? { [rowCategory]: yearsByOwner[rowCategory] ?? [] } : {}),
+              ...(categoryTypes[colCategory] === 'owner' ? { [colCategory]: yearsByOwner[colCategory] ?? [] } : {}),
             },
           })
         }
@@ -362,22 +397,25 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
     positions,
     categories,
     categoryTypes,
-    allPlayers: sortStrings(Object.values(playerLookup)),
+    allPlayers: Object.values(playerLookup).sort((left, right) => left.localeCompare(right)),
     answersByPair,
     playerLookup,
-    playerYearsByOwner: Object.fromEntries(
-      Object.entries(playerYearsByOwner).map(([playerKey, ownerMap]) => ([
-        playerKey,
-        Object.fromEntries(
-          Object.entries(ownerMap).map(([owner, years]) => ([owner, sortYears(Array.from(years ?? []))]))
-        ),
-      ]))
-    ),
+    playerYearsByOwner,
     playerTotalStarts,
     playerStartsByOwner,
     playerHighScore,
     playerBestScoreByOwner,
     playerPositionByKey,
+    playerChampionships,
+    playerDeweyDoesTimes,
+    playerChampionshipsByOwner,
+    playerDeweyDoesTimesByOwner,
+    playerMaxStartScoreInYear,
+    playerMaxStartScoreInYearByOwner,
+    playerMaxStartScoreInYearMeta,
+    playerMaxStartScoreInYearMetaByOwner,
+    manyStartsAllThreshold,
+    manyStartsByOwnerThreshold,
   }
 }
 
