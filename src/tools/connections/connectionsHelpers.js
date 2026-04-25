@@ -58,6 +58,9 @@ export function buildConnectionsData(activeNames, playerTracker, teamTracker) {
     playerDeweyDoesTimes: sharedData.playerDeweyDoesTimes,
     playerMaxStartScoreInYear: sharedData.playerMaxStartScoreInYear,
     playerMaxStartScoreInYearMeta: sharedData.playerMaxStartScoreInYearMeta,
+    playerWinningRate: sharedData.playerWinningRate,
+    playerStarts: sharedData.playerStarts,
+    playerBenches: sharedData.playerBenches,
   }
 }
 
@@ -90,6 +93,11 @@ export function pickConnectionsPuzzle(connectionsData, seedInput) {
       for (let k = j + 1; k < n - 1; k += 1) {
         for (let l = k + 1; l < n; l += 1) {
           const combo = [categories[i], categories[j], categories[k], categories[l]]
+          const ownerCount = combo.filter(catName => categoryTypes[catName] === 'owner').length
+          const positionCount = combo.filter(catName => categoryTypes[catName] === 'position').length
+          if (ownerCount > 1 || positionCount < 1) {
+            continue
+          }
           const exclusiveSets = buildExclusiveSets(combo, categoryPlayers)
           if (exclusiveSets.every(s => s.length >= 4)) {
             validCombos.push({ combo, exclusiveSets })

@@ -151,6 +151,13 @@
   margin: 0;
 }
 
+.connectionsHintText {
+  text-align: center;
+  font-size: 0.82rem;
+  margin: -2px 0 0;
+  opacity: 0.85;
+}
+
 .connectionsActions {
   display: flex;
   gap: 12px;

@@ -2,10 +2,13 @@ export const MANY_STARTS_CATEGORY_NAME = 'Many Starts'
 export const BIG_GAME_CATEGORY_NAME = 'Big Game'
 export const CHAMP_LOSER_CATEGORY_NAME = 'Champ/Loser'
 export const HUGE_YEAR_CATEGORY_NAME = 'Huge Year'
+export const WINNING_RECORD_CATEGORY_NAME = 'Winning Record'
+export const BENCH_WARMER_CATEGORY_NAME = 'Bench Warmer'
 
 const BIG_GAME_QB_THRESHOLD = 30
 const BIG_GAME_OTHER_THRESHOLD = 20
 const HUGE_YEAR_THRESHOLD = 200
+const WINNING_RECORD_THRESHOLD = 0.5
 
 /**
  * Calculate the 80th percentile (top 20% threshold) from a list of values
@@ -18,13 +21,6 @@ function getPercentileThreshold(values) {
   // 80th percentile index: 0.8 * (length - 1)
   const index = Math.ceil(0.8 * (sorted.length - 1))
   return sorted[index]
-}
-
-function getMaxNumberValue(valueMap) {
-  if (!valueMap || typeof valueMap !== 'object') {
-    return 0
-  }
-  return Math.max(0, ...Object.values(valueMap).map(value => Number(value) || 0))
 }
 
 function getMaxNumberWithYears(valueMap) {
@@ -49,6 +45,20 @@ function getMaxNumberWithYears(valueMap) {
   return { value: maxValue, years }
 }
 
+function getWinRateFromRecord(record) {
+  if (!Array.isArray(record) || record.length < 3) {
+    return 0
+  }
+  const wins = Number(record[0]) || 0
+  const losses = Number(record[1]) || 0
+  const ties = Number(record[2]) || 0
+  const games = wins + losses + ties
+  if (games <= 0) {
+    return 0
+  }
+  return (wins + ties / 2) / games
+}
+
 export function normalizeCategoryValue(value) {
   return (value ?? '').toString().trim().toLowerCase()
 }
@@ -66,7 +76,7 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   const positions = sortCategoryStrings([
     ...new Set((playerTracker ?? []).map(player => player?.pos).filter(Boolean)),
   ])
-  const categories = [...owners, ...positions, MANY_STARTS_CATEGORY_NAME, BIG_GAME_CATEGORY_NAME, CHAMP_LOSER_CATEGORY_NAME, HUGE_YEAR_CATEGORY_NAME]
+  const categories = [...owners, ...positions, MANY_STARTS_CATEGORY_NAME, BIG_GAME_CATEGORY_NAME, CHAMP_LOSER_CATEGORY_NAME, HUGE_YEAR_CATEGORY_NAME, WINNING_RECORD_CATEGORY_NAME, BENCH_WARMER_CATEGORY_NAME]
 
   const categoryTypes = {}
   const ownerPlayerKeys = {}
@@ -87,6 +97,12 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   const playerMaxStartScoreInYearByOwner = {}
   const playerMaxStartScoreInYearMeta = {}
   const playerMaxStartScoreInYearMetaByOwner = {}
+  const playerWinningRate = {}
+  const playerWinningRateByOwner = {}
+  const playerStarts = {}
+  const playerBenches = {}
+  const playerStartsByOwnerForBenchWarmer = {}
+  const playerBenchesByOwner = {}
 
   for (const owner of owners) {
     categoryTypes[owner] = 'owner'
@@ -108,6 +124,10 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   categoryPlayerKeys[CHAMP_LOSER_CATEGORY_NAME] = new Set()
   categoryTypes[HUGE_YEAR_CATEGORY_NAME] = 'huge-year'
   categoryPlayerKeys[HUGE_YEAR_CATEGORY_NAME] = new Set()
+  categoryTypes[WINNING_RECORD_CATEGORY_NAME] = 'winning-record'
+  categoryPlayerKeys[WINNING_RECORD_CATEGORY_NAME] = new Set()
+  categoryTypes[BENCH_WARMER_CATEGORY_NAME] = 'bench-warmer'
+  categoryPlayerKeys[BENCH_WARMER_CATEGORY_NAME] = new Set()
 
   for (const player of playerTracker ?? []) {
     if (!player?.name || !Array.isArray(player?.teams)) {
@@ -159,6 +179,24 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     }
     if (!(playerKey in playerMaxStartScoreInYearMetaByOwner)) {
       playerMaxStartScoreInYearMetaByOwner[playerKey] = {}
+    }
+    if (!(playerKey in playerWinningRate)) {
+      playerWinningRate[playerKey] = getWinRateFromRecord(player?.recordStarting)
+    }
+    if (!(playerKey in playerWinningRateByOwner)) {
+      playerWinningRateByOwner[playerKey] = {}
+    }
+    if (!(playerKey in playerStarts)) {
+      playerStarts[playerKey] = Number(player?.starts) || 0
+    }
+    if (!(playerKey in playerBenches)) {
+      playerBenches[playerKey] = Number(player?.benches) || 0
+    }
+    if (!(playerKey in playerStartsByOwnerForBenchWarmer)) {
+      playerStartsByOwnerForBenchWarmer[playerKey] = {}
+    }
+    if (!(playerKey in playerBenchesByOwner)) {
+      playerBenchesByOwner[playerKey] = {}
     }
 
     if (player.pos && positionPlayerKeys[player.pos]) {
@@ -224,6 +262,15 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
       if (!(playerKey in playerMaxStartScoreInYearMetaByOwner)) {
         playerMaxStartScoreInYearMetaByOwner[playerKey] = {}
       }
+      if (!(playerKey in playerWinningRateByOwner)) {
+        playerWinningRateByOwner[playerKey] = {}
+      }
+      if (!(playerKey in playerStartsByOwnerForBenchWarmer)) {
+        playerStartsByOwnerForBenchWarmer[playerKey] = {}
+      }
+      if (!(playerKey in playerBenchesByOwner)) {
+        playerBenchesByOwner[playerKey] = {}
+      }
 
       const weeksStarted = playerRecord['weeks started'] ?? 0
       playerTotalStarts[playerKey] += weeksStarted
@@ -234,6 +281,9 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
       const ownerMaxScoreMeta = getMaxNumberWithYears(playerRecord?.startScoreInYear)
       playerMaxStartScoreInYearByOwner[playerKey][ownerName] = ownerMaxScoreMeta.value
       playerMaxStartScoreInYearMetaByOwner[playerKey][ownerName] = ownerMaxScoreMeta
+      playerWinningRateByOwner[playerKey][ownerName] = getWinRateFromRecord(playerRecord?.startRecord)
+      playerStartsByOwnerForBenchWarmer[playerKey][ownerName] = Number(playerRecord?.['weeks started']) || 0
+      playerBenchesByOwner[playerKey][ownerName] = Number(playerRecord?.['weeks benched']) || 0
     }
   }
 
@@ -269,6 +319,15 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     if (maxStartScoreInYear > HUGE_YEAR_THRESHOLD) {
       categoryPlayerKeys[HUGE_YEAR_CATEGORY_NAME].add(playerKey)
     }
+    const winningRate = playerWinningRate[playerKey] ?? 0
+    if (winningRate > WINNING_RECORD_THRESHOLD) {
+      categoryPlayerKeys[WINNING_RECORD_CATEGORY_NAME].add(playerKey)
+    }
+    const starts = playerStarts[playerKey] ?? 0
+    const benches = playerBenches[playerKey] ?? 0
+    if (benches > starts) {
+      categoryPlayerKeys[BENCH_WARMER_CATEGORY_NAME].add(playerKey)
+    }
   }
 
   return {
@@ -301,6 +360,12 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     playerMaxStartScoreInYearByOwner,
     playerMaxStartScoreInYearMeta,
     playerMaxStartScoreInYearMetaByOwner,
+    playerWinningRate,
+    playerWinningRateByOwner,
+    playerStarts,
+    playerBenches,
+    playerStartsByOwnerForBenchWarmer,
+    playerBenchesByOwner,
     manyStartsAllThreshold,
     manyStartsByOwnerThreshold,
   }

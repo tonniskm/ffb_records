@@ -5,13 +5,16 @@
  */
 
 import {
+  BENCH_WARMER_CATEGORY_NAME,
   BIG_GAME_CATEGORY_NAME,
   CHAMP_LOSER_CATEGORY_NAME,
   HUGE_YEAR_CATEGORY_NAME,
   MANY_STARTS_CATEGORY_NAME,
+  WINNING_RECORD_CATEGORY_NAME,
 } from './categoryData'
 
 const HUGE_YEAR_THRESHOLD = 200
+const WINNING_RECORD_THRESHOLD = 0.5
 
 function formatYearList(years) {
   if (!Array.isArray(years) || years.length === 0) {
@@ -22,6 +25,10 @@ function formatYearList(years) {
 
 function getBigGameThresholdByPosition(position) {
   return position === 'QB' ? 30 : 20
+}
+
+function formatWinRate(value) {
+  return (Number(value) || 0).toFixed(3)
 }
 
 function formatHugeYearMetadata(meta) {
@@ -242,6 +249,90 @@ const CATEGORY_TYPE_DEFINITIONS = {
       return `${HUGE_YEAR_CATEGORY_NAME}: ${formatHugeYearMetadata(overallMeta)}`
     },
   },
+  'winning-record': {
+    getDisplayInfo: ({ categoryTypes, categoryName, puzzle }) => {
+      const { ownerPairs, nonOwnerPairs } = getPairedCategoriesForCategory(categoryName, categoryTypes, puzzle)
+      const details = []
+
+      if (ownerPairs.length > 0) {
+        details.push('With owner: starting win rate with that owner > 0.500')
+      }
+
+      if (nonOwnerPairs.length > 0) {
+        details.push('With non-owner category: overall starting win rate > 0.500')
+      }
+
+      return {
+        title: WINNING_RECORD_CATEGORY_NAME,
+        description: 'Players with a winning record while starting',
+        details: details.length > 0 ? details.join(' | ') : 'Starting win rate over 0.500',
+      }
+    },
+    matchesPlayer: ({ otherCategory, categoryTypes, gridData, playerKey }) => {
+      const otherType = categoryTypes?.[otherCategory]
+      if (otherType === 'owner') {
+        const byOwner = gridData?.playerWinningRateByOwner?.[playerKey] ?? {}
+        return (byOwner[otherCategory] ?? 0) > WINNING_RECORD_THRESHOLD
+      }
+
+      const overall = gridData?.playerWinningRate?.[playerKey] ?? 0
+      return overall > WINNING_RECORD_THRESHOLD
+    },
+    getMetadataLine: ({ otherCategory, categoryTypes, gridData, playerKey }) => {
+      const otherType = categoryTypes?.[otherCategory]
+      if (otherType === 'owner') {
+        const byOwner = gridData?.playerWinningRateByOwner?.[playerKey] ?? {}
+        return `${WINNING_RECORD_CATEGORY_NAME}: ${formatWinRate(byOwner[otherCategory] ?? 0)}`
+      }
+
+      const overall = gridData?.playerWinningRate?.[playerKey] ?? 0
+      return `${WINNING_RECORD_CATEGORY_NAME}: ${formatWinRate(overall)}`
+    },
+  },
+  'bench-warmer': {
+    getDisplayInfo: ({ categoryTypes, categoryName, puzzle }) => {
+      const { ownerPairs, nonOwnerPairs } = getPairedCategoriesForCategory(categoryName, categoryTypes, puzzle)
+      const details = []
+
+      if (ownerPairs.length > 0) {
+        details.push('With owner: weeks benched > weeks started with that owner')
+      }
+
+      if (nonOwnerPairs.length > 0) {
+        details.push('With non-owner category: career benches > starts')
+      }
+
+      return {
+        title: BENCH_WARMER_CATEGORY_NAME,
+        description: 'Players benched more often than started',
+        details: details.length > 0 ? details.join(' | ') : 'Benches greater than starts',
+      }
+    },
+    matchesPlayer: ({ otherCategory, categoryTypes, gridData, playerKey }) => {
+      const otherType = categoryTypes?.[otherCategory]
+      if (otherType === 'owner') {
+        const startsByOwner = gridData?.playerStartsByOwnerForBenchWarmer?.[playerKey] ?? {}
+        const benchesByOwner = gridData?.playerBenchesByOwner?.[playerKey] ?? {}
+        return (benchesByOwner[otherCategory] ?? 0) > (startsByOwner[otherCategory] ?? 0)
+      }
+
+      const starts = gridData?.playerStarts?.[playerKey] ?? 0
+      const benches = gridData?.playerBenches?.[playerKey] ?? 0
+      return benches > starts
+    },
+    getMetadataLine: ({ otherCategory, categoryTypes, gridData, playerKey }) => {
+      const otherType = categoryTypes?.[otherCategory]
+      if (otherType === 'owner') {
+        const startsByOwner = gridData?.playerStartsByOwnerForBenchWarmer?.[playerKey] ?? {}
+        const benchesByOwner = gridData?.playerBenchesByOwner?.[playerKey] ?? {}
+        return `${BENCH_WARMER_CATEGORY_NAME}: ${benchesByOwner[otherCategory] ?? 0} benched, ${startsByOwner[otherCategory] ?? 0} starts`
+      }
+
+      const starts = gridData?.playerStarts?.[playerKey] ?? 0
+      const benches = gridData?.playerBenches?.[playerKey] ?? 0
+      return `${BENCH_WARMER_CATEGORY_NAME}: ${benches} benched, ${starts} starts`
+    },
+  },
 }
 
 function getCategoryTypeDefinition(categoryType) {
@@ -291,7 +382,7 @@ export function getPlayerCategoryMetadataLines({ gridData, rowCategory, colCateg
 /**
  * Get the display information for a category (title, description, detailed rules)
  * @param {string} categoryName - The category name
- * @param {object} categoryTypes - Map of category name to type (owner|position|many-starts|big-game|champ-loser|huge-year)
+ * @param {object} categoryTypes - Map of category name to type (owner|position|many-starts|big-game|champ-loser|huge-year|winning-record|bench-warmer)
  * @param {object} puzzle - The current puzzle containing row/col owners
  * @param {object} sharedData - Shared category data containing thresholds and stats
  * @returns {object} Object with title, description, and details fields

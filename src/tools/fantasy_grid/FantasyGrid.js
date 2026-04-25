@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './fantasyGrid.css'
+import { CleanName } from '../calculations/other'
 import { getCategoryDisplayInfo, getPlayerCategoryMetadataLines } from '../shared/categoryDefinitions'
 import {
   buildFantasyGridData,
@@ -25,6 +26,57 @@ function getWrongGuessLabel(validation, rawGuess) {
 
 function getCategoryDetails(categoryName, categoryTypes, puzzle, gridData) {
   return getCategoryDisplayInfo(categoryName, categoryTypes, puzzle, gridData)
+}
+
+function normalizeSearchText(value) {
+  return normalizeFantasyGridValue(value)
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ')
+}
+
+function compactSearchText(value) {
+  return normalizeFantasyGridValue(value).replace(/[^a-z0-9]+/g, '')
+}
+
+function createPlayerSearchMatcher(searchValue) {
+  const rawSearch = (searchValue ?? '').toString().trim()
+  if (!rawSearch) {
+    return () => false
+  }
+
+  const normalizedSearch = normalizeSearchText(rawSearch)
+  const cleanedSearch = normalizeSearchText(CleanName(rawSearch))
+  const compactSearch = compactSearchText(rawSearch)
+  const compactCleanedSearch = compactSearchText(CleanName(rawSearch))
+  const spacedPhraseTerms = Array.from(new Set([normalizedSearch, cleanedSearch].filter(Boolean)))
+  const phraseTerms = Array.from(new Set([
+    ...spacedPhraseTerms,
+    compactSearch,
+    compactCleanedSearch,
+  ].filter(Boolean)))
+  const tokenTerms = Array.from(new Set(
+    spacedPhraseTerms.flatMap(term => term.split(' ').filter(Boolean))
+  ))
+
+  return function matchesPlayerName(playerName) {
+    const normalizedPlayerName = normalizeSearchText(playerName)
+    const cleanedPlayerName = normalizeSearchText(CleanName(playerName))
+    const compactPlayerName = compactSearchText(playerName)
+    const compactCleanedPlayerName = compactSearchText(CleanName(playerName))
+    const playerVariants = [
+      normalizedPlayerName,
+      cleanedPlayerName,
+      compactPlayerName,
+      compactCleanedPlayerName,
+    ]
+
+    if (phraseTerms.some(term => playerVariants.some(nameVariant => nameVariant.includes(term)))) {
+      return true
+    }
+
+    return tokenTerms.length > 0 && playerVariants.some(nameVariant => tokenTerms.every(term => nameVariant.includes(term)))
+  }
 }
 
 function getRecentDateKeys(numberOfDays) {
@@ -262,11 +314,9 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
       return
     }
 
-    const normalizedGuess = normalizeFantasyGridValue(guess)
-    const matchingPlayers = gridData.allPlayers.filter(playerName =>
-      normalizeFantasyGridValue(playerName).includes(normalizedGuess)
-    )
-    setFilteredPlayers(matchingPlayers.slice(0, 8))
+    const doesPlayerMatch = createPlayerSearchMatcher(guess)
+    const matchingPlayers = gridData.allPlayers.filter(playerName => doesPlayerMatch(playerName))
+    setFilteredPlayers(matchingPlayers.slice(0, 12))
   }, [gridData, guess])
 
   useEffect(() => {
@@ -362,12 +412,13 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
   const activeCellAnswers = activeCell
     ? getFantasyGridCellAnswers(gridData, activeCell.rowOwner, activeCell.colOwner)
     : []
-  const normalizedAnswerSearch = normalizeFantasyGridValue(answerSearch)
-  const searchedPlayers = !normalizedAnswerSearch
+  const doesAnswerSearchMatchPlayer = createPlayerSearchMatcher(answerSearch)
+  const searchedPlayers = !answerSearch.trim()
     ? []
     : gridData.allPlayers
-      .filter(playerName => normalizeFantasyGridValue(playerName).includes(normalizedAnswerSearch))
-      .slice(0, 10)
+      .filter(playerName => doesAnswerSearchMatchPlayer(playerName))
+      .slice(0, 14)
+  const normalizedAnswerSearch = normalizeFantasyGridValue(answerSearch)
   const selectedSearchPlayerName = selectedSearchPlayer || (
     gridData.playerLookup?.[normalizedAnswerSearch] ?? ''
   )
@@ -479,11 +530,6 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
       closeGuessPopup()
     }
     return true
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault()
-    submitGuessValue(guess, false)
   }
 
   function handleSuggestionSelect(playerName) {
@@ -679,12 +725,17 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
             </div>
 
             {!activeCellShowsAnswers && (
-              <form onSubmit={handleSubmit}>
+              <div>
                 <input
                   ref={guessInputRef}
                   type='text'
                   value={guess}
                   onChange={event => setGuess(event.target.value)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault()
+                    }
+                  }}
                   placeholder='Enter an NFL player name'
                   className='fantasyGridInput'
                 />
@@ -703,13 +754,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                     ))}
                 </div>
                 <div className='fantasyGridButtonGroup'>
-                  <button type='submit'>Submit Player</button>
                   <button type='button' onClick={() => setGuess('')}>Clear</button>
                 </div>
                 <p className='fantasyGridHint'>
-                  This square has {activeCellAnswers.length} valid answers.
+                  This square has {activeCellAnswers.length} valid answers. Select one from the bubbles to submit.
                 </p>
-              </form>
+              </div>
             )}
 
             {activeCellShowsAnswers && (

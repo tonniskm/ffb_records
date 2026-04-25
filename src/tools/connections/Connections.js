@@ -53,6 +53,14 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
     }
     return `${years.join(', ')} (${value})`
   }
+  if (group.type === 'winning-record') {
+    return `${(connectionsData?.playerWinningRate?.[playerKey] ?? 0).toFixed(3)}`
+  }
+  if (group.type === 'bench-warmer') {
+    const starts = connectionsData?.playerStarts?.[playerKey] ?? 0
+    const benches = connectionsData?.playerBenches?.[playerKey] ?? 0
+    return `${benches} benched, ${starts} starts`
+  }
   return ''
 }
 
@@ -80,6 +88,7 @@ export const Connections = ({ pickMacro, vars, records }) => {
   const [feedback, setFeedback] = useState('Select four players you think belong together, then submit.')
   const [guessCount, setGuessCount] = useState(0)
   const [hasGivenUp, setHasGivenUp] = useState(false)
+  const [hintedGroupIndices, setHintedGroupIndices] = useState([])
   const [incorrectFlashKeys, setIncorrectFlashKeys] = useState(new Set())
   const [savedState, setSavedState] = useState(null)
   const [hasLoadedStorage, setHasLoadedStorage] = useState(false)
@@ -128,6 +137,7 @@ export const Connections = ({ pickMacro, vars, records }) => {
       setSelectedKeys(new Set())
       setGuessCount(0)
       setHasGivenUp(false)
+      setHintedGroupIndices([])
       setFeedback('Select four players you think belong together, then submit.')
       return
     }
@@ -145,6 +155,11 @@ export const Connections = ({ pickMacro, vars, records }) => {
     setSelectedKeys(new Set())
     setGuessCount(typeof savedState.guessCount === 'number' ? savedState.guessCount : 0)
     setHasGivenUp(savedState.hasGivenUp === true)
+    setHintedGroupIndices(
+      Array.isArray(savedState.hintedGroupIndices)
+        ? savedState.hintedGroupIndices.filter(i => typeof i === 'number' && i >= 0 && i < nextPuzzle.groups.length)
+        : []
+    )
     setFeedback(
       typeof savedState.feedback === 'string'
         ? savedState.feedback
@@ -160,12 +175,12 @@ export const Connections = ({ pickMacro, vars, records }) => {
     try {
       window.localStorage.setItem(
         storageKey,
-        JSON.stringify({ version: 1, solvedGroupIndices, guessCount, hasGivenUp, feedback })
+        JSON.stringify({ version: 1, solvedGroupIndices, guessCount, hasGivenUp, hintedGroupIndices, feedback })
       )
     } catch (_error) {
       // Ignore storage errors.
     }
-  }, [feedback, guessCount, hasGivenUp, hasLoadedStorage, puzzle, solvedGroupIndices, storageKey])
+  }, [feedback, guessCount, hasGivenUp, hasLoadedStorage, hintedGroupIndices, puzzle, solvedGroupIndices, storageKey])
 
   useEffect(() => {
     return () => {
@@ -262,12 +277,28 @@ export const Connections = ({ pickMacro, vars, records }) => {
     setFeedback('Gave up. Here are all the groups.')
   }
 
+  function handleHint() {
+    if (isGameOver) {
+      return
+    }
+    const hintedSet = new Set(hintedGroupIndices)
+    const nextHintIndex = puzzle.groups.findIndex((_, idx) => !solvedGroupIndices.includes(idx) && !hintedSet.has(idx))
+    if (nextHintIndex === -1) {
+      setFeedback('No more category hints available.')
+      return
+    }
+    const hintedGroup = puzzle.groups[nextHintIndex]
+    setHintedGroupIndices(previous => [...previous, nextHintIndex])
+    setFeedback(`Hint: one category is "${hintedGroup.name}".`)
+  }
+
   function handleReset() {
     setSolvedGroupIndices([])
     setRemainingKeys(puzzle.allPlayerKeys)
     setSelectedKeys(new Set())
     setGuessCount(0)
     setHasGivenUp(false)
+    setHintedGroupIndices([])
     setIncorrectFlashKeys(new Set())
     if (wrongFlashTimerRef.current) {
       window.clearTimeout(wrongFlashTimerRef.current)
@@ -280,6 +311,12 @@ export const Connections = ({ pickMacro, vars, records }) => {
   const unsolvedGroupsDisplay = hasGivenUp
     ? puzzle.groups.filter((_, idx) => !solvedGroupIndices.includes(idx))
     : []
+  const hintedCategories = hintedGroupIndices
+    .filter(idx => !solvedGroupIndices.includes(idx))
+    .map(idx => puzzle.groups[idx]?.name)
+    .filter(Boolean)
+  const hintedSet = new Set(hintedGroupIndices)
+  const hasUnusedHints = puzzle.groups.some((_, idx) => !solvedGroupIndices.includes(idx) && !hintedSet.has(idx))
 
   return [
     <div className='topContainer' key='topcontconn-live'>
@@ -364,6 +401,11 @@ export const Connections = ({ pickMacro, vars, records }) => {
       </div>
 
       <p className='connectionsFeedback'>{feedback}</p>
+      {hintedCategories.length > 0 && (
+        <p className='connectionsHintText'>
+          Hint{hintedCategories.length === 1 ? '' : 's'}: {hintedCategories.join(' | ')}
+        </p>
+      )}
 
       {!isGameOver && (
         <div className='connectionsActions'>
@@ -380,6 +422,13 @@ export const Connections = ({ pickMacro, vars, records }) => {
             disabled={selectedKeys.size !== 4}
           >
             Submit
+          </button>
+          <button
+            type='button'
+            onClick={handleHint}
+            disabled={!hasUnusedHints}
+          >
+            Hint
           </button>
         </div>
       )}
