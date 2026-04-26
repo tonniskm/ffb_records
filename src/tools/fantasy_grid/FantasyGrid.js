@@ -125,6 +125,179 @@ function getFeedbackMessage(reason, displayName, rowOwner, colOwner, answerCount
   return 'Select a square to start playing.'
 }
 
+function toNumberOrNull(value) {
+  const numericValue = Number(value)
+  return Number.isFinite(numericValue) ? numericValue : null
+}
+
+function getSortableMetricValueForCategory({ categoryName, otherCategory, categoryTypes, gridData, playerKey }) {
+  const categoryType = categoryTypes?.[categoryName]
+  const otherType = categoryTypes?.[otherCategory]
+
+  if (categoryType === 'owner') {
+    const years = gridData?.playerYearsByOwner?.[playerKey]?.[categoryName]
+    return Array.isArray(years) ? years.length : 0
+  }
+
+  if (categoryType === 'many-starts') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerStartsByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerTotalStarts?.[playerKey])
+  }
+
+  if (categoryType === 'big-game') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerBestScoreByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerHighScore?.[playerKey])
+  }
+
+  if (categoryType === 'champ') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerChampionshipsByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerChampionships?.[playerKey])
+  }
+
+  if (categoryType === 'loser') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerDeweyDoesTimesByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerDeweyDoesTimes?.[playerKey])
+  }
+
+  if (categoryType === 'huge-year') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerMaxStartScoreInYearByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerMaxStartScoreInYear?.[playerKey])
+  }
+
+  if (categoryType === 'winning-record') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerWinningRateByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerWinningRate?.[playerKey])
+  }
+
+  if (categoryType === 'bench-warmer') {
+    if (otherType === 'owner') {
+      const benches = toNumberOrNull(gridData?.playerBenchesByOwner?.[playerKey]?.[otherCategory]) ?? 0
+      const starts = toNumberOrNull(gridData?.playerStartsByOwnerForBenchWarmer?.[playerKey]?.[otherCategory]) ?? 0
+      return benches - starts
+    }
+    const benches = toNumberOrNull(gridData?.playerBenches?.[playerKey]) ?? 0
+    const starts = toNumberOrNull(gridData?.playerStarts?.[playerKey]) ?? 0
+    return benches - starts
+  }
+
+  if (categoryType === 'sojourner') {
+    return toNumberOrNull(gridData?.playerTeamCount?.[playerKey])
+  }
+
+  if (categoryType === 'experienced') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerExperienceYearsByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerYears?.[playerKey])
+  }
+
+  if (categoryType === 'negative-scorer') {
+    if (otherType === 'owner') {
+      return toNumberOrNull(gridData?.playerTimesNegativeByOwner?.[playerKey]?.[otherCategory])
+    }
+    return toNumberOrNull(gridData?.playerTimesNegative?.[playerKey])
+  }
+
+  return null
+}
+
+function getCategoryRankingData({ gridData, categoryName, otherCategory, answers }) {
+  const categoryTypes = gridData?.categoryTypes ?? {}
+  const scoredAnswers = answers
+    .map(answer => ({
+      answer,
+      metricValue: getSortableMetricValueForCategory({
+        categoryName,
+        otherCategory,
+        categoryTypes,
+        gridData,
+        playerKey: answer.key,
+      }),
+    }))
+
+  const sortableValues = scoredAnswers
+    .map(item => item.metricValue)
+    .filter(value => value !== null)
+
+  if (sortableValues.length !== answers.length) {
+    return null
+  }
+
+  const sortedScoredAnswers = [...scoredAnswers].sort((a, b) => {
+    if (b.metricValue !== a.metricValue) {
+      return b.metricValue - a.metricValue
+    }
+    return a.answer.name.localeCompare(b.answer.name)
+  })
+
+  const rankByPlayerKey = {}
+  let previousValue = null
+  let previousRank = 0
+  sortedScoredAnswers.forEach((item, index) => {
+    // Competition ranking: ties keep the same rank, next rank skips ahead (1,1,3).
+    const isSameAsPrevious = previousValue !== null && item.metricValue === previousValue
+    const rank = isSameAsPrevious ? previousRank : index + 1
+    rankByPlayerKey[item.answer.key] = rank
+    previousValue = item.metricValue
+    previousRank = rank
+  })
+
+  return {
+    categoryName,
+    answers: sortedScoredAnswers.map(item => item.answer),
+    rankByPlayerKey,
+  }
+}
+
+function getCellSortingData({ gridData, rowCategory, colCategory, answers, sortBy }) {
+  const rowRanking = getCategoryRankingData({
+    gridData,
+    categoryName: rowCategory,
+    otherCategory: colCategory,
+    answers,
+  })
+  const colRanking = getCategoryRankingData({
+    gridData,
+    categoryName: colCategory,
+    otherCategory: rowCategory,
+    answers,
+  })
+
+  const availableSorts = [
+    ...(rowRanking ? ['row'] : []),
+    ...(colRanking ? ['col'] : []),
+  ]
+  const defaultSortBy = rowRanking ? 'row' : (colRanking ? 'col' : '')
+  const resolvedSortBy = availableSorts.includes(sortBy) ? sortBy : defaultSortBy
+
+  const displayedAnswers =
+    resolvedSortBy === 'row' && rowRanking
+      ? rowRanking.answers
+      : resolvedSortBy === 'col' && colRanking
+        ? colRanking.answers
+        : answers
+
+  return {
+    displayedAnswers,
+    rowRanking,
+    colRanking,
+    availableSorts,
+    resolvedSortBy,
+  }
+}
+
 export const FantasyGrid = ({ pickMacro, vars, records }) => {
   const ownerKey = (vars.activeNames ?? []).join('|')
   const recentDateKeys = getRecentDateKeys(7)
@@ -145,6 +318,7 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [answerSearch, setAnswerSearch] = useState('')
   const [selectedSearchPlayer, setSelectedSearchPlayer] = useState('')
+  const [answerSortBy, setAnswerSortBy] = useState('')
   const [frozenSolvedCount, setFrozenSolvedCount] = useState(null)
   const guessInputRef = useRef(null)
 
@@ -342,6 +516,7 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
   useEffect(() => {
     setAnswerSearch('')
     setSelectedSearchPlayer('')
+    setAnswerSortBy('')
   }, [activeCellKey])
 
   useEffect(() => {
@@ -420,6 +595,16 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
   const activeCellAnswers = activeCell
     ? getFantasyGridCellAnswers(gridData, activeCell.rowOwner, activeCell.colOwner)
     : []
+  const activeCellSortingData = activeCell
+    ? getCellSortingData({
+      gridData,
+      rowCategory: activeCell.rowOwner,
+      colCategory: activeCell.colOwner,
+      answers: activeCellAnswers,
+      sortBy: answerSortBy,
+    })
+    : { displayedAnswers: activeCellAnswers, rowRanking: null, colRanking: null, availableSorts: [], resolvedSortBy: '' }
+  const displayedActiveCellAnswers = activeCellSortingData.displayedAnswers
   const doesAnswerSearchMatchPlayer = createPlayerSearchMatcher(answerSearch)
   const searchedPlayers = !answerSearch.trim()
     ? []
@@ -638,7 +823,15 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
           ...puzzle.colOwners.map(colOwner => {
             const cellKey = getCellKey(rowOwner, colOwner)
             const cell = cells[cellKey]
-            const answerCount = getFantasyGridCellAnswers(gridData, rowOwner, colOwner).length
+            const cellAnswers = getFantasyGridCellAnswers(gridData, rowOwner, colOwner)
+            const answerCount = cellAnswers.length
+            const cellSortingData = getCellSortingData({
+              gridData,
+              rowCategory: rowOwner,
+              colCategory: colOwner,
+              answers: cellAnswers,
+              sortBy: 'none',
+            })
             const isActive = activeCellKey === cellKey
             const wrongGuessCount = cell?.incorrectGuesses?.length ?? 0
             const hasWrongGuesses = wrongGuessCount > 0
@@ -664,7 +857,6 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                       </span>
                     )}
                     {!cell.isRevealed && (() => {
-                      const cellAnswers = getFantasyGridCellAnswers(gridData, rowOwner, colOwner)
                       const correctAnswer = cellAnswers.find(ans => normalizeFantasyGridValue(ans.name) === normalizeFantasyGridValue(cell.correctGuess))
                       const metadataLines = getPlayerCategoryMetadataLines({
                         gridData,
@@ -674,6 +866,16 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                       })
                       return metadataLines.length > 0 ? (
                         <div className='fantasyGridCellYears'>
+                          {cellSortingData.rowRanking?.rankByPlayerKey?.[correctAnswer?.key] ? (
+                            <span>
+                              Rank ({rowOwner}): #{cellSortingData.rowRanking.rankByPlayerKey[correctAnswer?.key]} of {cellAnswers.length}
+                            </span>
+                          ) : null}
+                          {cellSortingData.colRanking?.rankByPlayerKey?.[correctAnswer?.key] ? (
+                            <span>
+                              Rank ({colOwner}): #{cellSortingData.colRanking.rankByPlayerKey[correctAnswer?.key]} of {cellAnswers.length}
+                            </span>
+                          ) : null}
                           {metadataLines.map(line => (
                             <span key={`${cellKey}-${line}`}>{line}</span>
                           ))}
@@ -773,6 +975,26 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
             {activeCellShowsAnswers && (
               <>
                 <div className='fantasyGridCategoryDetails'>
+                  <div className='fantasyGridButtonGroup'>
+                    {activeCellSortingData.rowRanking && (
+                      <button
+                        type='button'
+                        onClick={() => setAnswerSortBy('row')}
+                        className={activeCellSortingData.resolvedSortBy === 'row' ? 'is-active' : ''}
+                      >
+                        Sort by {activeCell.rowOwner}
+                      </button>
+                    )}
+                    {activeCellSortingData.colRanking && (
+                      <button
+                        type='button'
+                        onClick={() => setAnswerSortBy('col')}
+                        className={activeCellSortingData.resolvedSortBy === 'col' ? 'is-active' : ''}
+                      >
+                        Sort by {activeCell.colOwner}
+                      </button>
+                    )}
+                  </div>
                   <input
                     type='text'
                     value={answerSearch}
@@ -812,9 +1034,19 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
                 </div>
 
                 <div className='fantasyGridAnswerList'>
-                  {activeCellAnswers.map(answer => (
+                  {displayedActiveCellAnswers.map(answer => (
                     <div className='fantasyGridAnswerItem' key={answer.key}>
                       <strong>{answer.name}</strong>
+                      {activeCellSortingData.rowRanking?.rankByPlayerKey?.[answer.key] ? (
+                        <span>
+                          Rank ({activeCell.rowOwner}): #{activeCellSortingData.rowRanking.rankByPlayerKey[answer.key]} of {displayedActiveCellAnswers.length}
+                        </span>
+                      ) : null}
+                      {activeCellSortingData.colRanking?.rankByPlayerKey?.[answer.key] ? (
+                        <span>
+                          Rank ({activeCell.colOwner}): #{activeCellSortingData.colRanking.rankByPlayerKey[answer.key]} of {displayedActiveCellAnswers.length}
+                        </span>
+                      ) : null}
                       {getPlayerCategoryMetadataLines({
                         gridData,
                         rowCategory: activeCell.rowOwner,

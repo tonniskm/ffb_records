@@ -34,12 +34,16 @@ function getBigGameThresholdByPosition(position) {
   return position === 'QB' ? 30 : 20
 }
 
+function formatDecimal2(value) {
+  return (Math.round((Number(value) || 0) * 100) / 100).toFixed(2)
+}
+
 function formatWinRate(value) {
-  return (Number(value) || 0).toFixed(3)
+  return formatDecimal2(value)
 }
 
 function formatHugeYearMetadata(meta) {
-  const value = meta?.value ?? 0
+  const value = formatDecimal2(meta?.value)
   const years = Array.isArray(meta?.years) ? meta.years : []
   if (years.length === 0) {
     return `${value}`
@@ -168,10 +172,10 @@ const CATEGORY_TYPE_DEFINITIONS = {
       const otherType = categoryTypes?.[otherCategory]
       if (otherType === 'owner') {
         const bestScoreByOwner = gridData?.playerBestScoreByOwner?.[playerKey] ?? {}
-        return `${BIG_GAME_CATEGORY_NAME}: ${bestScoreByOwner[otherCategory] ?? 0} pts`
+        return `${BIG_GAME_CATEGORY_NAME}: ${formatDecimal2(bestScoreByOwner[otherCategory])} pts`
       }
       const highScore = gridData?.playerHighScore?.[playerKey] ?? 0
-      return `${BIG_GAME_CATEGORY_NAME}: ${highScore} pts`
+      return `${BIG_GAME_CATEGORY_NAME}: ${formatDecimal2(highScore)} pts`
     },
   },
   champ: {

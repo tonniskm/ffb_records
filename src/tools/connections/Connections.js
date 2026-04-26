@@ -25,6 +25,10 @@ function getDateOptionLabel(dateKey, index) {
   return dateKey
 }
 
+function formatDecimal2(value) {
+  return (Math.round((Number(value) || 0) * 100) / 100).toFixed(2)
+}
+
 function formatPlayerMetadata(group, playerKey, connectionsData) {
   if (group.type === 'owner') {
     const years = connectionsData?.playerYearsByOwner?.[playerKey]?.[group.categoryName] ?? []
@@ -37,7 +41,7 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
     return `${connectionsData?.playerTotalStarts?.[playerKey] ?? 0} starts`
   }
   if (group.type === 'big-game') {
-    return `${connectionsData?.playerHighScore?.[playerKey] ?? 0} pts`
+    return `${formatDecimal2(connectionsData?.playerHighScore?.[playerKey])} pts`
   }
   if (group.type === 'champ') {
     const rings = connectionsData?.playerChampionships?.[playerKey] ?? 0
@@ -49,7 +53,7 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
   }
   if (group.type === 'huge-year') {
     const meta = connectionsData?.playerMaxStartScoreInYearMeta?.[playerKey]
-    const value = meta?.value ?? 0
+    const value = formatDecimal2(meta?.value)
     const years = Array.isArray(meta?.years) ? meta.years : []
     if (years.length === 0) {
       return `${value}`
@@ -57,7 +61,7 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
     return `${years.join(', ')} (${value})`
   }
   if (group.type === 'winning-record') {
-    return `${(connectionsData?.playerWinningRate?.[playerKey] ?? 0).toFixed(3)}`
+    return `${formatDecimal2(connectionsData?.playerWinningRate?.[playerKey])}`
   }
   if (group.type === 'bench-warmer') {
     const starts = connectionsData?.playerStarts?.[playerKey] ?? 0

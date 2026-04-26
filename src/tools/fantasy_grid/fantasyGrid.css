@@ -224,6 +224,19 @@
   font-size: 14px;
   font-weight: 700;
   padding: 8px 12px;
+  transition: background-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease;
+}
+
+.fantasyGridButtonGroup button:hover {
+  transform: translateY(-1px);
+}
+
+.fantasyGridButtonGroup button.is-active {
+  background: #6ce09a;
+  color: #102030;
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 34, 0.55), 0 0 0 3px rgba(255, 255, 255, 0.28);
 }
 
 .fantasyGridButtonGroup button:disabled {
