@@ -6,6 +6,8 @@ import {
   buildFantasyGridData,
   createFantasyGridCells,
   createFantasyGridSeed,
+  getFantasyGridCategoryMode,
+  getFantasyGridCategoryModeLabel,
   getFantasyGridCellAnswers,
   getFantasyGridProgress,
   normalizeFantasyGridValue,
@@ -94,13 +96,14 @@ function getRecentDateKeys(numberOfDays) {
 }
 
 function getDateOptionLabel(dateKey, index) {
+  const modeLabel = getFantasyGridCategoryModeLabel(dateKey)
   if (index === 0) {
-    return `Today (${dateKey})`
+    return modeLabel ? `Today (${dateKey}) - ${modeLabel}` : `Today (${dateKey})`
   }
   if (index === 1) {
-    return `Yesterday (${dateKey})`
+    return modeLabel ? `Yesterday (${dateKey}) - ${modeLabel}` : `Yesterday (${dateKey})`
   }
-  return dateKey
+  return modeLabel ? `${dateKey} - ${modeLabel}` : dateKey
 }
 
 function getFeedbackMessage(reason, displayName, rowOwner, colOwner, answerCount) {
@@ -192,7 +195,12 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
       return
     }
 
-    const nextPuzzle = pickFantasyGridPuzzle(gridData, createFantasyGridSeed(vars.leagueID, puzzleIndex, selectedDateKey))
+    const categoryMode = getFantasyGridCategoryMode(selectedDateKey)
+    const nextPuzzle = pickFantasyGridPuzzle(
+      gridData,
+      createFantasyGridSeed(vars.leagueID, puzzleIndex, selectedDateKey),
+      categoryMode
+    )
     setPuzzle(nextPuzzle)
     const defaultCells = createFantasyGridCells(nextPuzzle?.rowOwners, nextPuzzle?.colOwners)
 

@@ -1,14 +1,27 @@
 export const MANY_STARTS_CATEGORY_NAME = 'Many Starts'
 export const BIG_GAME_CATEGORY_NAME = 'Big Game'
-export const CHAMP_LOSER_CATEGORY_NAME = 'Champ/Loser'
+export const CHAMP_CATEGORY_NAME = 'Champ'
+export const LOSER_CATEGORY_NAME = 'Loser'
 export const HUGE_YEAR_CATEGORY_NAME = 'Huge Year'
 export const WINNING_RECORD_CATEGORY_NAME = 'Winning Record'
 export const BENCH_WARMER_CATEGORY_NAME = 'Bench Warmer'
+export const SOJOURNER_CATEGORY_NAME = 'Sojourner'
+export const EXPERIENCED_CATEGORY_NAME = 'Experienced'
+export const NEGATIVE_SCORER_CATEGORY_NAME = 'Negative Scorer'
 
 const BIG_GAME_QB_THRESHOLD = 30
 const BIG_GAME_OTHER_THRESHOLD = 20
 const HUGE_YEAR_THRESHOLD = 200
 const WINNING_RECORD_THRESHOLD = 0.5
+const SOJOURNER_TEAMS_THRESHOLD = 6
+const EXPERIENCED_TOTAL_YEARS_THRESHOLD = 7
+
+function getYearsCount(value) {
+  if (Array.isArray(value)) {
+    return value.length
+  }
+  return Number(value) || 0
+}
 
 /**
  * Calculate the 80th percentile (top 20% threshold) from a list of values
@@ -76,7 +89,7 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   const positions = sortCategoryStrings([
     ...new Set((playerTracker ?? []).map(player => player?.pos).filter(Boolean)),
   ])
-  const categories = [...owners, ...positions, MANY_STARTS_CATEGORY_NAME, BIG_GAME_CATEGORY_NAME, CHAMP_LOSER_CATEGORY_NAME, HUGE_YEAR_CATEGORY_NAME, WINNING_RECORD_CATEGORY_NAME, BENCH_WARMER_CATEGORY_NAME]
+  const categories = [...owners, ...positions, MANY_STARTS_CATEGORY_NAME, BIG_GAME_CATEGORY_NAME, CHAMP_CATEGORY_NAME, LOSER_CATEGORY_NAME, HUGE_YEAR_CATEGORY_NAME, WINNING_RECORD_CATEGORY_NAME, BENCH_WARMER_CATEGORY_NAME, SOJOURNER_CATEGORY_NAME, EXPERIENCED_CATEGORY_NAME, NEGATIVE_SCORER_CATEGORY_NAME]
 
   const categoryTypes = {}
   const ownerPlayerKeys = {}
@@ -103,6 +116,11 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   const playerBenches = {}
   const playerStartsByOwnerForBenchWarmer = {}
   const playerBenchesByOwner = {}
+  const playerTeamCount = {}
+  const playerYears = {}
+  const playerExperienceYearsByOwner = {}
+  const playerTimesNegative = {}
+  const playerTimesNegativeByOwner = {}
 
   for (const owner of owners) {
     categoryTypes[owner] = 'owner'
@@ -120,14 +138,22 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
   categoryPlayerKeys[MANY_STARTS_CATEGORY_NAME] = new Set()
   categoryTypes[BIG_GAME_CATEGORY_NAME] = 'big-game'
   categoryPlayerKeys[BIG_GAME_CATEGORY_NAME] = new Set()
-  categoryTypes[CHAMP_LOSER_CATEGORY_NAME] = 'champ-loser'
-  categoryPlayerKeys[CHAMP_LOSER_CATEGORY_NAME] = new Set()
+  categoryTypes[CHAMP_CATEGORY_NAME] = 'champ'
+  categoryPlayerKeys[CHAMP_CATEGORY_NAME] = new Set()
+  categoryTypes[LOSER_CATEGORY_NAME] = 'loser'
+  categoryPlayerKeys[LOSER_CATEGORY_NAME] = new Set()
   categoryTypes[HUGE_YEAR_CATEGORY_NAME] = 'huge-year'
   categoryPlayerKeys[HUGE_YEAR_CATEGORY_NAME] = new Set()
   categoryTypes[WINNING_RECORD_CATEGORY_NAME] = 'winning-record'
   categoryPlayerKeys[WINNING_RECORD_CATEGORY_NAME] = new Set()
   categoryTypes[BENCH_WARMER_CATEGORY_NAME] = 'bench-warmer'
   categoryPlayerKeys[BENCH_WARMER_CATEGORY_NAME] = new Set()
+  categoryTypes[SOJOURNER_CATEGORY_NAME] = 'sojourner'
+  categoryPlayerKeys[SOJOURNER_CATEGORY_NAME] = new Set()
+  categoryTypes[EXPERIENCED_CATEGORY_NAME] = 'experienced'
+  categoryPlayerKeys[EXPERIENCED_CATEGORY_NAME] = new Set()
+  categoryTypes[NEGATIVE_SCORER_CATEGORY_NAME] = 'negative-scorer'
+  categoryPlayerKeys[NEGATIVE_SCORER_CATEGORY_NAME] = new Set()
 
   for (const player of playerTracker ?? []) {
     if (!player?.name || !Array.isArray(player?.teams)) {
@@ -142,8 +168,8 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     if (!(playerKey in playerLookup)) {
       playerLookup[playerKey] = player.name
     }
-    if (!(playerKey in playerYearsByOwner)) {
-      playerYearsByOwner[playerKey] = {}
+    if (!(playerKey in playerExperienceYearsByOwner)) {
+      playerExperienceYearsByOwner[playerKey] = {}
     }
     if (!(playerKey in playerTotalStarts)) {
       playerTotalStarts[playerKey] = 0
@@ -197,6 +223,21 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     }
     if (!(playerKey in playerBenchesByOwner)) {
       playerBenchesByOwner[playerKey] = {}
+    }
+    if (!(playerKey in playerTeamCount)) {
+      playerTeamCount[playerKey] = new Set(Array.isArray(player?.teams) ? player.teams.filter(Boolean) : []).size
+    }
+    if (!(playerKey in playerYears)) {
+      playerYears[playerKey] = getYearsCount(player?.years)
+    }
+    if (!(playerKey in playerYearsByOwner)) {
+      playerYearsByOwner[playerKey] = {}
+    }
+    if (!(playerKey in playerTimesNegative)) {
+      playerTimesNegative[playerKey] = Number(player?.timesNegative) || 0
+    }
+    if (!(playerKey in playerTimesNegativeByOwner)) {
+      playerTimesNegativeByOwner[playerKey] = {}
     }
 
     if (player.pos && positionPlayerKeys[player.pos]) {
@@ -271,6 +312,12 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
       if (!(playerKey in playerBenchesByOwner)) {
         playerBenchesByOwner[playerKey] = {}
       }
+      if (!(playerKey in playerExperienceYearsByOwner)) {
+        playerExperienceYearsByOwner[playerKey] = {}
+      }
+      if (!(playerKey in playerTimesNegativeByOwner)) {
+        playerTimesNegativeByOwner[playerKey] = {}
+      }
 
       const weeksStarted = playerRecord['weeks started'] ?? 0
       playerTotalStarts[playerKey] += weeksStarted
@@ -284,6 +331,8 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
       playerWinningRateByOwner[playerKey][ownerName] = getWinRateFromRecord(playerRecord?.startRecord)
       playerStartsByOwnerForBenchWarmer[playerKey][ownerName] = Number(playerRecord?.['weeks started']) || 0
       playerBenchesByOwner[playerKey][ownerName] = Number(playerRecord?.['weeks benched']) || 0
+      playerExperienceYearsByOwner[playerKey][ownerName] = getYearsCount(playerRecord?.years)
+      playerTimesNegativeByOwner[playerKey][ownerName] = Number(playerRecord?.timesNegative) || 0
     }
   }
 
@@ -312,8 +361,11 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     }
     const championships = playerChampionships[playerKey] ?? 0
     const deweyDoesTimes = playerDeweyDoesTimes[playerKey] ?? 0
-    if (championships > 0 || deweyDoesTimes > 0) {
-      categoryPlayerKeys[CHAMP_LOSER_CATEGORY_NAME].add(playerKey)
+    if (championships > 0) {
+      categoryPlayerKeys[CHAMP_CATEGORY_NAME].add(playerKey)
+    }
+    if (deweyDoesTimes > 0) {
+      categoryPlayerKeys[LOSER_CATEGORY_NAME].add(playerKey)
     }
     const maxStartScoreInYear = playerMaxStartScoreInYear[playerKey] ?? 0
     if (maxStartScoreInYear > HUGE_YEAR_THRESHOLD) {
@@ -327,6 +379,18 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     const benches = playerBenches[playerKey] ?? 0
     if (benches > starts) {
       categoryPlayerKeys[BENCH_WARMER_CATEGORY_NAME].add(playerKey)
+    }
+    const teamCount = playerTeamCount[playerKey] ?? 0
+    if (teamCount >= SOJOURNER_TEAMS_THRESHOLD) {
+      categoryPlayerKeys[SOJOURNER_CATEGORY_NAME].add(playerKey)
+    }
+    const years = playerYears[playerKey] ?? 0
+    if (years >= EXPERIENCED_TOTAL_YEARS_THRESHOLD) {
+      categoryPlayerKeys[EXPERIENCED_CATEGORY_NAME].add(playerKey)
+    }
+    const timesNegative = playerTimesNegative[playerKey] ?? 0
+    if (timesNegative > 0) {
+      categoryPlayerKeys[NEGATIVE_SCORER_CATEGORY_NAME].add(playerKey)
     }
   }
 
@@ -366,6 +430,11 @@ export function buildSharedCategoryData(activeNames, playerTracker, teamTracker,
     playerBenches,
     playerStartsByOwnerForBenchWarmer,
     playerBenchesByOwner,
+    playerTeamCount,
+    playerYears,
+    playerExperienceYearsByOwner,
+    playerTimesNegative,
+    playerTimesNegativeByOwner,
     manyStartsAllThreshold,
     manyStartsByOwnerThreshold,
   }

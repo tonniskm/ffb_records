@@ -1,8 +1,12 @@
 import {
   BENCH_WARMER_CATEGORY_NAME,
   BIG_GAME_CATEGORY_NAME,
-  CHAMP_LOSER_CATEGORY_NAME,
+  CHAMP_CATEGORY_NAME,
+  EXPERIENCED_CATEGORY_NAME,
   HUGE_YEAR_CATEGORY_NAME,
+  LOSER_CATEGORY_NAME,
+  NEGATIVE_SCORER_CATEGORY_NAME,
+  SOJOURNER_CATEGORY_NAME,
   WINNING_RECORD_CATEGORY_NAME,
   buildSharedCategoryData,
   MANY_STARTS_CATEGORY_NAME,
@@ -14,8 +18,48 @@ import { doesPlayerMatchCategoryForPair } from '../shared/categoryDefinitions'
 // Set DEBUG_GRID_MODE to true to force today's grid to include DEBUG_FORCED_CATEGORY.
 // Set to false when finished with development.
 const DEBUG_GRID_MODE = false
-const DEBUG_FORCED_CATEGORY = 'Bench Warmer'
+const DEBUG_FORCED_CATEGORY = 'Negative Scorer'
 // ────────────────────────────────────────────────────────────────────────────────
+
+export const FANTASY_GRID_CATEGORY_MODES = {
+  MIXED: 'mixed',
+  OWNER_ONLY: 'owner-only',
+  NON_OWNER_ONLY: 'non-owner-only',
+}
+
+// Fixed UTC schedule so these special grid modes land on the same weekdays.
+const OWNER_ONLY_DAY_UTC = 1 // Monday
+const NON_OWNER_ONLY_DAY_UTC = 4 // Thursday
+
+function parseDateKeyToUtcDay(dateKey) {
+  const parsedDate = new Date(`${dateKey}T00:00:00Z`)
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null
+  }
+  return parsedDate.getUTCDay()
+}
+
+export function getFantasyGridCategoryMode(dateKey) {
+  const utcDay = parseDateKeyToUtcDay(dateKey)
+  if (utcDay === OWNER_ONLY_DAY_UTC) {
+    return FANTASY_GRID_CATEGORY_MODES.OWNER_ONLY
+  }
+  if (utcDay === NON_OWNER_ONLY_DAY_UTC) {
+    return FANTASY_GRID_CATEGORY_MODES.NON_OWNER_ONLY
+  }
+  return FANTASY_GRID_CATEGORY_MODES.MIXED
+}
+
+export function getFantasyGridCategoryModeLabel(dateKey) {
+  const mode = getFantasyGridCategoryMode(dateKey)
+  if (mode === FANTASY_GRID_CATEGORY_MODES.OWNER_ONLY) {
+    return 'Owner Categories Day'
+  }
+  if (mode === FANTASY_GRID_CATEGORY_MODES.NON_OWNER_ONLY) {
+    return 'Non-Owner Categories Day'
+  }
+  return ''
+}
 
 export const normalizeFantasyGridValue = normalizeCategoryValue
 
@@ -80,6 +124,11 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
     playerBenches,
     playerStartsByOwnerForBenchWarmer,
     playerBenchesByOwner,
+    playerTeamCount,
+    playerYears,
+    playerExperienceYearsByOwner,
+    playerTimesNegative,
+    playerTimesNegativeByOwner,
     manyStartsAllThreshold,
     manyStartsByOwnerThreshold,
   } = sharedData
@@ -232,8 +281,16 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             highScore: answer.highScore,
             yearsByOwner: answer.yearsByOwner,
           }))
-      } else if (rowCategory === CHAMP_LOSER_CATEGORY_NAME || colCategory === CHAMP_LOSER_CATEGORY_NAME) {
-        const otherCategory = rowCategory === CHAMP_LOSER_CATEGORY_NAME ? colCategory : rowCategory
+      } else if (
+        rowCategory === CHAMP_CATEGORY_NAME ||
+        colCategory === CHAMP_CATEGORY_NAME ||
+        rowCategory === LOSER_CATEGORY_NAME ||
+        colCategory === LOSER_CATEGORY_NAME
+      ) {
+        const categoryName = [rowCategory, colCategory].find(
+          category => category === CHAMP_CATEGORY_NAME || category === LOSER_CATEGORY_NAME
+        )
+        const otherCategory = rowCategory === categoryName ? colCategory : rowCategory
 
         if (categoryTypes[otherCategory] === 'owner') {
           const ownerName = otherCategory
@@ -248,7 +305,7 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
               continue
             }
             if (!doesPlayerMatchCategoryForPair({
-              categoryName: CHAMP_LOSER_CATEGORY_NAME,
+              categoryName,
               otherCategory,
               categoryTypes,
               gridData: sharedData,
@@ -273,7 +330,7 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
 
           for (const playerKey of candidatePlayers) {
             if (!doesPlayerMatchCategoryForPair({
-              categoryName: CHAMP_LOSER_CATEGORY_NAME,
+              categoryName,
               otherCategory,
               categoryTypes,
               gridData: sharedData,
@@ -492,6 +549,201 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
             name: answer.name,
             yearsByOwner: answer.yearsByOwner,
           }))
+      } else if (rowCategory === SOJOURNER_CATEGORY_NAME || colCategory === SOJOURNER_CATEGORY_NAME) {
+        const otherCategory = rowCategory === SOJOURNER_CATEGORY_NAME ? colCategory : rowCategory
+
+        if (categoryTypes[otherCategory] === 'owner') {
+          const ownerName = otherCategory
+          const ownedPlayers = teamTracker?.[ownerName] ?? []
+          for (const playerRecord of ownedPlayers) {
+            const playerName = playerRecord?.name
+            if (!playerName) {
+              continue
+            }
+            const playerKey = normalizeFantasyGridValue(playerName)
+            if (!playerKey) {
+              continue
+            }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: SOJOURNER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const displayName = playerLookup[playerKey] ?? playerName
+            const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
+            answers.push({
+              key: playerKey,
+              name: displayName,
+              yearsByOwner: {
+                [ownerName]: yearsByOwner[ownerName] ?? [],
+              },
+            })
+          }
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: SOJOURNER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            answers.push({
+              key: playerKey,
+              name: playerName,
+              yearsByOwner: {},
+            })
+          }
+        }
+
+        answers = answers
+          .sort((left, right) => left.name.localeCompare(right.name))
+          .map(answer => ({
+            key: answer.key,
+            name: answer.name,
+            yearsByOwner: answer.yearsByOwner,
+          }))
+      } else if (rowCategory === EXPERIENCED_CATEGORY_NAME || colCategory === EXPERIENCED_CATEGORY_NAME) {
+        const otherCategory = rowCategory === EXPERIENCED_CATEGORY_NAME ? colCategory : rowCategory
+
+        if (categoryTypes[otherCategory] === 'owner') {
+          const ownerName = otherCategory
+          const ownedPlayers = teamTracker?.[ownerName] ?? []
+          for (const playerRecord of ownedPlayers) {
+            const playerName = playerRecord?.name
+            if (!playerName) {
+              continue
+            }
+            const playerKey = normalizeFantasyGridValue(playerName)
+            if (!playerKey) {
+              continue
+            }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: EXPERIENCED_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const displayName = playerLookup[playerKey] ?? playerName
+            const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
+            answers.push({
+              key: playerKey,
+              name: displayName,
+              yearsByOwner: {
+                [ownerName]: yearsByOwner[ownerName] ?? [],
+              },
+            })
+          }
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: EXPERIENCED_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            answers.push({
+              key: playerKey,
+              name: playerName,
+              yearsByOwner: {},
+            })
+          }
+        }
+
+        answers = answers
+          .sort((left, right) => left.name.localeCompare(right.name))
+          .map(answer => ({
+            key: answer.key,
+            name: answer.name,
+            yearsByOwner: answer.yearsByOwner,
+          }))
+      } else if (rowCategory === NEGATIVE_SCORER_CATEGORY_NAME || colCategory === NEGATIVE_SCORER_CATEGORY_NAME) {
+        const otherCategory = rowCategory === NEGATIVE_SCORER_CATEGORY_NAME ? colCategory : rowCategory
+
+        if (categoryTypes[otherCategory] === 'owner') {
+          const ownerName = otherCategory
+          const ownedPlayers = teamTracker?.[ownerName] ?? []
+          for (const playerRecord of ownedPlayers) {
+            const playerName = playerRecord?.name
+            if (!playerName) {
+              continue
+            }
+            const playerKey = normalizeFantasyGridValue(playerName)
+            if (!playerKey) {
+              continue
+            }
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: NEGATIVE_SCORER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const displayName = playerLookup[playerKey] ?? playerName
+            const yearsByOwner = playerYearsByOwner[playerKey] ?? {}
+            answers.push({
+              key: playerKey,
+              name: displayName,
+              yearsByOwner: {
+                [ownerName]: yearsByOwner[ownerName] ?? [],
+              },
+            })
+          }
+        } else {
+          const candidatePlayers = categoryTypes[otherCategory] === 'position'
+            ? (positionPlayerKeys[otherCategory] ?? new Set())
+            : (categoryPlayerKeys[otherCategory] ?? new Set(Object.keys(playerLookup)))
+
+          for (const playerKey of candidatePlayers) {
+            if (!doesPlayerMatchCategoryForPair({
+              categoryName: NEGATIVE_SCORER_CATEGORY_NAME,
+              otherCategory,
+              categoryTypes,
+              gridData: sharedData,
+              playerKey,
+            })) {
+              continue
+            }
+            const playerName = playerLookup[playerKey] ?? playerKey
+            answers.push({
+              key: playerKey,
+              name: playerName,
+              yearsByOwner: {},
+            })
+          }
+        }
+
+        answers = answers
+          .sort((left, right) => left.name.localeCompare(right.name))
+          .map(answer => ({
+            key: answer.key,
+            name: answer.name,
+            yearsByOwner: answer.yearsByOwner,
+          }))
       } else {
         // Existing logic for non-"Many Starts" categories
         const rowPlayers = categoryTypes[rowCategory] === 'position'
@@ -558,6 +810,11 @@ export function buildFantasyGridData(activeNames, playerTracker, teamTracker) {
     playerBenches,
     playerStartsByOwnerForBenchWarmer,
     playerBenchesByOwner,
+    playerTeamCount,
+    playerYears,
+    playerExperienceYearsByOwner,
+    playerTimesNegative,
+    playerTimesNegativeByOwner,
     manyStartsAllThreshold,
     manyStartsByOwnerThreshold,
   }
@@ -581,16 +838,30 @@ function buildOwnerTriples(owners, offset) {
   return triples
 }
 
-export function pickFantasyGridPuzzle(gridData, seedInput) {
+export function pickFantasyGridPuzzle(gridData, seedInput, categoryMode = FANTASY_GRID_CATEGORY_MODES.MIXED) {
   const categories = gridData?.categories ?? []
-  if (categories.length < 6) {
+  const categoryTypes = gridData?.categoryTypes ?? {}
+
+  const modeFilteredCategories = categories.filter(category => {
+    const categoryType = categoryTypes[category]
+    if (categoryMode === FANTASY_GRID_CATEGORY_MODES.OWNER_ONLY) {
+      return categoryType === 'owner'
+    }
+    if (categoryMode === FANTASY_GRID_CATEGORY_MODES.NON_OWNER_ONLY) {
+      return categoryType !== 'owner'
+    }
+    return true
+  })
+
+  const puzzleCategories = modeFilteredCategories.length >= 6 ? modeFilteredCategories : categories
+  if (puzzleCategories.length < 6) {
     return null
   }
 
   const seed = typeof seedInput === 'number' ? seedInput : getDateSeed(seedInput ?? new Date().toISOString().slice(0, 10))
   const randomFn = mulberry32(seed)
-  const shuffledOwnersForRows = shuffleWithSeed(categories, randomFn)
-  const shuffledOwnersForCols = shuffleWithSeed(categories, randomFn)
+  const shuffledOwnersForRows = shuffleWithSeed(puzzleCategories, randomFn)
+  const shuffledOwnersForCols = shuffleWithSeed(puzzleCategories, randomFn)
   const rowTriples = buildOwnerTriples(shuffledOwnersForRows, 0)
   const colTriples = buildOwnerTriples(shuffledOwnersForCols, 0)
   const candidates = []

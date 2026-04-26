@@ -39,10 +39,13 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
   if (group.type === 'big-game') {
     return `${connectionsData?.playerHighScore?.[playerKey] ?? 0} pts`
   }
-  if (group.type === 'champ-loser') {
+  if (group.type === 'champ') {
     const rings = connectionsData?.playerChampionships?.[playerKey] ?? 0
+    return `${rings} rings`
+  }
+  if (group.type === 'loser') {
     const dewey = connectionsData?.playerDeweyDoesTimes?.[playerKey] ?? 0
-    return `${rings} rings, ${dewey} dewey`
+    return `${dewey} dewey`
   }
   if (group.type === 'huge-year') {
     const meta = connectionsData?.playerMaxStartScoreInYearMeta?.[playerKey]
@@ -60,6 +63,15 @@ function formatPlayerMetadata(group, playerKey, connectionsData) {
     const starts = connectionsData?.playerStarts?.[playerKey] ?? 0
     const benches = connectionsData?.playerBenches?.[playerKey] ?? 0
     return `${benches} benched, ${starts} starts`
+  }
+  if (group.type === 'sojourner') {
+    return `${connectionsData?.playerTeamCount?.[playerKey] ?? 0} teams`
+  }
+  if (group.type === 'experienced') {
+    return `${connectionsData?.playerYears?.[playerKey] ?? 0} years`
+  }
+  if (group.type === 'negative-scorer') {
+    return `${connectionsData?.playerTimesNegative?.[playerKey] ?? 0} negative starts`
   }
   return ''
 }

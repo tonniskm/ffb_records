@@ -61,6 +61,9 @@ export function buildConnectionsData(activeNames, playerTracker, teamTracker) {
     playerWinningRate: sharedData.playerWinningRate,
     playerStarts: sharedData.playerStarts,
     playerBenches: sharedData.playerBenches,
+    playerTeamCount: sharedData.playerTeamCount,
+    playerYears: sharedData.playerYears,
+    playerTimesNegative: sharedData.playerTimesNegative,
   }
 }
 
