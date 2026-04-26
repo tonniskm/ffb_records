@@ -177,3 +177,75 @@
   gap: 8px;
   align-items: center;
 }
+
+.connectionsModalBackdrop {
+  align-items: center;
+  background: rgba(10, 14, 24, 0.74);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 14px;
+  position: fixed;
+  z-index: 35;
+}
+
+.connectionsModalCard {
+  background: rgba(16, 22, 34, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: min(75vh, 640px);
+  max-width: 560px;
+  padding: 16px;
+  width: 100%;
+}
+
+.connectionsModalHeader {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.connectionsModalTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.connectionsModalClose {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 7px 10px;
+}
+
+.connectionsCategoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.connectionsCategoryItem {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+}
+
+.connectionsCategoryItem span {
+  font-size: 0.82rem;
+  opacity: 0.78;
+}

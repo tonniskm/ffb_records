@@ -39,6 +39,14 @@ function shuffleWithSeed(list, randomFn) {
   return output
 }
 
+function getLocalDateKey() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 export const normalizeConnectionsValue = normalizeCategoryValue
 
 export function buildConnectionsData(activeNames, playerTracker, teamTracker) {
@@ -85,7 +93,7 @@ export function pickConnectionsPuzzle(connectionsData, seedInput) {
 
   const seed = typeof seedInput === 'number'
     ? seedInput
-    : getDateSeed(seedInput ?? new Date().toISOString().slice(0, 10))
+    : getDateSeed(seedInput ?? getLocalDateKey())
   const randomFn = mulberry32(seed)
 
   // Enumerate all valid 4-category combos where each category has >= 4 exclusive players
@@ -205,6 +213,6 @@ export function checkConnectionsGuess(puzzle, selectedKeys) {
 }
 
 export function createConnectionsSeed(leagueID, dateKey) {
-  const resolvedDateKey = dateKey ?? new Date().toISOString().slice(0, 10)
+  const resolvedDateKey = dateKey ?? getLocalDateKey()
   return getDateSeed(`connections:${leagueID}:${resolvedDateKey}`)
 }

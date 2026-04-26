@@ -6,89 +6,12 @@ import {
   createConnectionsSeed,
   pickConnectionsPuzzle,
 } from './connectionsHelpers'
-
-function getRecentDateKeys(numberOfDays) {
-  const dates = []
-  const baseDate = new Date()
-  baseDate.setUTCHours(0, 0, 0, 0)
-  for (let offset = 0; offset < numberOfDays; offset += 1) {
-    const nextDate = new Date(baseDate)
-    nextDate.setUTCDate(baseDate.getUTCDate() - offset)
-    dates.push(nextDate.toISOString().slice(0, 10))
-  }
-  return dates
-}
-
-function getDateOptionLabel(dateKey, index) {
-  if (index === 0) return `Today (${dateKey})`
-  if (index === 1) return `Yesterday (${dateKey})`
-  return dateKey
-}
-
-function formatDecimal2(value) {
-  return (Math.round((Number(value) || 0) * 100) / 100).toFixed(2)
-}
-
-function formatPlayerMetadata(group, playerKey, connectionsData) {
-  if (group.type === 'owner') {
-    const years = connectionsData?.playerYearsByOwner?.[playerKey]?.[group.categoryName] ?? []
-    return years.length > 0 ? years.join(', ') : 'Never'
-  }
-  if (group.type === 'position') {
-    return connectionsData?.playerPositionByKey?.[playerKey] ?? '-'
-  }
-  if (group.type === 'many-starts') {
-    return `${connectionsData?.playerTotalStarts?.[playerKey] ?? 0} starts`
-  }
-  if (group.type === 'big-game') {
-    return `${formatDecimal2(connectionsData?.playerHighScore?.[playerKey])} pts`
-  }
-  if (group.type === 'champ') {
-    const rings = connectionsData?.playerChampionships?.[playerKey] ?? 0
-    return `${rings} rings`
-  }
-  if (group.type === 'loser') {
-    const dewey = connectionsData?.playerDeweyDoesTimes?.[playerKey] ?? 0
-    return `${dewey} dewey`
-  }
-  if (group.type === 'huge-year') {
-    const meta = connectionsData?.playerMaxStartScoreInYearMeta?.[playerKey]
-    const value = formatDecimal2(meta?.value)
-    const years = Array.isArray(meta?.years) ? meta.years : []
-    if (years.length === 0) {
-      return `${value}`
-    }
-    return `${years.join(', ')} (${value})`
-  }
-  if (group.type === 'winning-record') {
-    return `${formatDecimal2(connectionsData?.playerWinningRate?.[playerKey])}`
-  }
-  if (group.type === 'bench-warmer') {
-    const starts = connectionsData?.playerStarts?.[playerKey] ?? 0
-    const benches = connectionsData?.playerBenches?.[playerKey] ?? 0
-    return `${benches} benched, ${starts} starts`
-  }
-  if (group.type === 'sojourner') {
-    return `${connectionsData?.playerTeamCount?.[playerKey] ?? 0} teams`
-  }
-  if (group.type === 'experienced') {
-    return `${connectionsData?.playerYears?.[playerKey] ?? 0} years`
-  }
-  if (group.type === 'negative-scorer') {
-    return `${connectionsData?.playerTimesNegative?.[playerKey] ?? 0} negative starts`
-  }
-  return ''
-}
-
-function formatSolvedGroupPlayers(group, connectionsData) {
-  return group.playerKeys
-    .map(playerKey => {
-      const playerName = connectionsData?.playerLookup?.[playerKey] ?? playerKey
-      const metadata = formatPlayerMetadata(group, playerKey, connectionsData)
-      return metadata ? `${playerName} (${metadata})` : playerName
-    })
-    .join(', ')
-}
+import {
+  buildAllCategoryEntries,
+  formatSolvedGroupPlayers,
+  getDateOptionLabel,
+  getRecentDateKeys,
+} from './connectionsUtils'
 
 export const Connections = ({ pickMacro, vars, records }) => {
   const ownerKey = (vars.activeNames ?? []).join('|')
@@ -108,6 +31,7 @@ export const Connections = ({ pickMacro, vars, records }) => {
   const [incorrectFlashKeys, setIncorrectFlashKeys] = useState(new Set())
   const [savedState, setSavedState] = useState(null)
   const [hasLoadedStorage, setHasLoadedStorage] = useState(false)
+  const [showAllCategories, setShowAllCategories] = useState(false)
   const wrongFlashTimerRef = useRef(null)
 
   // Load from localStorage
@@ -205,6 +129,21 @@ export const Connections = ({ pickMacro, vars, records }) => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!showAllCategories) {
+      return
+    }
+
+    function handleEscape(event) {
+      if (event.key === 'Escape') {
+        setShowAllCategories(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [showAllCategories])
 
   if (!connectionsData) {
     return [
@@ -333,6 +272,7 @@ export const Connections = ({ pickMacro, vars, records }) => {
     .filter(Boolean)
   const hintedSet = new Set(hintedGroupIndices)
   const hasUnusedHints = puzzle.groups.some((_, idx) => !solvedGroupIndices.includes(idx) && !hintedSet.has(idx))
+  const allCategoryEntries = buildAllCategoryEntries(connectionsData)
 
   return [
     <div className='topContainer' key='topcontconn-live'>
@@ -351,6 +291,7 @@ export const Connections = ({ pickMacro, vars, records }) => {
           </select>
         </div>
         <div className='connectionsButtonGroup'>
+          <button onClick={() => setShowAllCategories(true)}>All Categories</button>
           <button onClick={handleReset}>Reset</button>
           {!isGameOver && <button onClick={handleGiveUp}>Give Up</button>}
         </div>
@@ -453,6 +394,27 @@ export const Connections = ({ pickMacro, vars, records }) => {
         <p className='connectionsSuccess'>
           Solved in {guessCount} guess{guessCount === 1 ? '' : 'es'}!
         </p>
+      )}
+
+      {showAllCategories && (
+        <div className='connectionsModalBackdrop' onClick={() => setShowAllCategories(false)}>
+          <div className='connectionsModalCard' onClick={event => event.stopPropagation()}>
+            <div className='connectionsModalHeader'>
+              <p className='connectionsModalTitle'>All Possible Categories</p>
+              <button type='button' className='connectionsModalClose' onClick={() => setShowAllCategories(false)}>
+                Close
+              </button>
+            </div>
+            <div className='connectionsCategoryList'>
+              {allCategoryEntries.map(entry => (
+                <div key={entry.categoryName} className='connectionsCategoryItem'>
+                  <strong>{entry.title}</strong>
+                  <span>{entry.description}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>,
   ]
