@@ -1,0 +1,187 @@
+.fantasyWordleShell {
+  color: white;
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 12px 18px 34px;
+  text-align: left;
+}
+
+.fantasyWordleIntro {
+  margin-bottom: 12px;
+}
+
+.fantasyWordleTitle {
+  font-size: 30px;
+  margin: 4px 0;
+  padding-left: 0;
+}
+
+.fantasyWordleCopy {
+  color: #cfd7ea;
+  margin: 0;
+}
+
+.fantasyWordleStats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  margin: 14px 0;
+}
+
+.fantasyWordleStatCard {
+  background: linear-gradient(160deg, #26314a, #1f2740);
+  border: 1px solid #3f4d71;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.fantasyWordleStatLabel {
+  color: #aab8d9;
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.fantasyWordleGuessInput {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 8px;
+}
+
+.fantasyWordleInput {
+  background: #0f1423;
+  border: 1px solid #41537e;
+  border-radius: 8px;
+  color: white;
+  flex: 1;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.fantasyWordleInput:focus {
+  border-color: #7ca2ff;
+  outline: none;
+}
+
+.fantasyWordleSuggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.fantasyWordleSuggestion {
+  background: #1f2a44;
+  border: 1px solid #3c4f77;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.fantasyWordleFeedback {
+  color: #dce4fa;
+  margin: 10px 0;
+}
+
+.fantasyWordleAnswerReveal {
+  color: #ffd17f;
+  margin: 8px 0 12px;
+}
+
+.fantasyWordleBoard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.wordleHeaderRow,
+.wordleGuessRow {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: 1.6fr repeat(8, 1fr);
+}
+
+.wordleHeaderRow {
+  color: #b6c4e5;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 2px;
+}
+
+.wordleGuessRow span {
+  align-items: center;
+  border: 1px solid #41537e;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  gap: 2px;
+  min-height: 58px;
+  justify-content: center;
+  padding: 6px;
+  text-align: center;
+}
+
+.wordleNameCell {
+  background: #1d253d;
+}
+
+.wordleNameCell.is-exact {
+  background: #1e6a39;
+  border-color: #39c06c;
+}
+
+.wordleMetricCell {
+  background: #1a2239;
+}
+
+.wordleMetricCell.is-exact {
+  background: #1e6a39;
+  border-color: #39c06c;
+}
+
+.wordleMetricCell.is-high {
+  background: #5b232e;
+  border-color: #f06177;
+}
+
+.wordleMetricCell.is-low {
+  background: #1d3d6e;
+  border-color: #5aa0ff;
+}
+
+.wordleGuessRow small {
+  color: #dbe7ff;
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.wordleButtonGroup {
+  display: inline-flex;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.fantasyWordleEmpty {
+  color: #9badce;
+  font-style: italic;
+  margin: 12px 0 0;
+}
+
+@media (max-width: 900px) {
+  .fantasyWordleStats {
+    grid-template-columns: 1fr;
+  }
+
+  .wordleHeaderRow,
+  .wordleGuessRow {
+    grid-template-columns: 1.6fr repeat(8, minmax(90px, 1fr));
+    min-width: 1000px;
+  }
+}

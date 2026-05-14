@@ -35,6 +35,67 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         updateFn(existingEntry,false)
         return {entry:existingEntry,index,isNew:false}
     }
+
+    function getLatestWeekOwnerByPlayer(rawProj, rawData, maxYear){
+        const latestYear = Object.keys(rawProj)
+            .map(year => Number(year))
+            .filter(year => !Number.isNaN(year) && year <= maxYear)
+            .sort((left, right) => right - left)[0]
+
+        if (latestYear === undefined || !rawData?.[latestYear] || rawData[latestYear].length === 0) {
+            return {}
+        }
+
+        const latestWeek = Number(rawData[latestYear][rawData[latestYear].length - 1]?.Week)
+        if (Number.isNaN(latestWeek)) {
+            return {}
+        }
+
+        const latestYearNames = getNames(vars.leagueID, latestYear)
+        const latestTypes = tables.types?.[latestYear] ?? {}
+        const latestOwnerByPlayer = {}
+
+        for (const line of rawProj[latestYear] ?? []) {
+            const { week, NFLName, team } = UnpackProjLine(line, latestYearNames)
+            const weekNum = Number(week)
+            if (weekNum !== latestWeek || !NFLName || !team) {
+                continue
+            }
+            // const gameType = latestTypes?.[team]?.[weekNum]
+            // if (gameType === 'lame') {
+            //     continue
+            // }
+            latestOwnerByPlayer[NFLName] = team
+        }
+
+        return latestOwnerByPlayer
+    }
+
+    function getLastOwnerByPlayer(rawProj, maxYear){
+        const lastOwnerByPlayer = {}
+
+        // Iterate through years in chronological order (oldest to newest)
+        const sortedYears = Object.keys(rawProj)
+            .map(year => Number(year))
+            .filter(year => !Number.isNaN(year) && year <= maxYear)
+            .sort((left, right) => left - right)
+
+        for (const year of sortedYears) {
+            const yearNames = getNames(vars.leagueID, year)
+            for (const line of rawProj[year] ?? []) {
+                const { NFLName, team } = UnpackProjLine(line, yearNames)
+                if (NFLName && team) {
+                    // Keep overwriting with most recent owner
+                    lastOwnerByPlayer[NFLName] = team
+                }
+            }
+        }
+
+        return lastOwnerByPlayer
+    }
+
+    const latestWeekOwnerByPlayer = getLatestWeekOwnerByPlayer(rawProjIn, raw, yearMax)
+    const lastOwnerByPlayer = getLastOwnerByPlayer(rawProjIn, yearMax)
     for(const name of names){teamTracker[name] = []}
     
     for(const year in rawProjIn){
@@ -829,6 +890,11 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         awards.push({'title':item.title,'desc':item.description,'values':SortNRank(onlyVals,vals,item.MinMax),'meta':meta,'id':item.id})
     }
     
+    for (const line of playerTracker) {
+        line['owner'] = latestWeekOwnerByPlayer[line.name] ?? 'FA'
+        line['last owner'] = lastOwnerByPlayer[line.name] ?? 'FA'
+    }
+
 // console.log({1:playerTracker,2:teamTracker,3:ownedTable,4:ownedInYears})
 return {'awards':awards,'fantasyTeams':fantasyTeams,'bestPlayers':bestPlayers,'playerTracker':playerTracker,'teamTracker':teamTracker,'ownedTable':ownedTable,'ownedInYears':ownedInYears}  
 }

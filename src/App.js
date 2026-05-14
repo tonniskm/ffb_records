@@ -25,6 +25,7 @@ import { getAllNames, getLameDucks } from './tools/calculations/getNames';
 import { InvalidLeagueSelector } from './tools/outputs/invalidLeagueSelector';
 import { FantasyGrid } from './tools/fantasy_grid/FantasyGrid';
 import { Connections } from './tools/connections/Connections';
+import { FantasyWordle } from './tools/calculations/wordle/FantasyWordle';
 
 
   
@@ -52,10 +53,12 @@ function App() {
   else if(urlView==='matchups'){initialMacroType='Matchups'}
   else if(urlView==='fantasy teams'){initialMacroType='Fantasy Teams'}
   else if(urlView==='connections'){initialMacroType='Connections'}
+  else if(urlView==='wordle'||urlView==='fantasy wordle'){initialMacroType='Fantasy Wordle'}
   else if(urlView==='players by team'){initialMacroType='Players by Team'}
   else if(urlView==='recent updates'){initialMacroType='Recent Updates'}
   else if(urlView==='weekly review'){initialMacroType='Weekly Review'}
   else if(urlView==='yearly review'){initialMacroType='Yearly Review'}
+  else if (urlView==='wordle'){initialMacroType='Fantasy Wordle'}
   const eligibleLeagueIDs = Object.keys(yearMins)
   const hasValidLeagueID = eligibleLeagueIDs.includes(urlLeagueID)
   const leagueID = hasValidLeagueID ? urlLeagueID : eligibleLeagueIDs[0]
@@ -105,7 +108,7 @@ function App() {
   }
  let allNFLNames = []
   if('playerTracker' in records){allNFLNames=records.playerTracker.map(x=>x.name)}
-  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Fantasy Grid','Connections','Players by Team','Recent Updates','Weekly Review','Yearly Review']
+  const macroTypes = ['Records','Summary','Yearly Awards','Matchups','Fantasy Teams','Fantasy Grid','Connections','Fantasy Wordle','Players by Team','Recent Updates','Weekly Review','Yearly Review']
   if(leagueID==='rajan'){macroTypes.push('Draft')}
  
   // let nameSelectMessage
@@ -172,6 +175,9 @@ function App() {
     }
     else if(macroType==='Connections'){
       output = <Connections pickMacro={pickMacro} vars={vars} records={records}></Connections>
+    }
+    else if(macroType==='Fantasy Wordle'){
+      output = <FantasyWordle pickMacro={pickMacro} vars={vars} records={records}></FantasyWordle>
     }
     else if(macroType==='Recent Updates'){
       // GetRecords(vars,currentYear,setRecords,raw,proj,fa)
