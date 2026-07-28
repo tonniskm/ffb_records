@@ -5,7 +5,21 @@ import { saved_jsons_proj_2025 } from "./saved_jsons/proj/2025";
 import { savedProj } from "./saved_jsons/proj/saved";
 
 const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching settings
-
+function applyReplacements(out){
+    const replacements = [
+            {old:'Kyle Pitts', new:'Kyle Pitts Sr.'},
+            {old:'Chig Okonkwo',new:'Chigoziem Okonkwo'}
+        ]
+        for(const year in out){
+            for(const line of out[year]){
+                for(const rep of replacements){
+                    if(line.PlayerName === rep.old){
+                        line.PlayerName = rep.new
+                    }
+                }
+            }
+        }
+    }
 export async function callProj2(vars,setProj){
     const yearMax = vars.currentYear
     let out = {}
@@ -29,6 +43,7 @@ export async function callProj2(vars,setProj){
     const lastSavedYear = vars.leagueID==='rajan'?Math.max(...Object.keys(out).map(x=>parseInt(x))):vars.yearMin
     const lastSavedWeek = vars.leagueID==='rajan'?Math.max(...out[lastSavedYear].map(x=>x.Week)):0
     if(lastSavedYear===yearMax&&lastSavedWeek>=17 && vars.leagueID === 'rajan'){
+        applyReplacements(out)
         setProj(out)
     }
     else{
@@ -50,6 +65,7 @@ export async function callProj2(vars,setProj){
                     if(json[year].length<1){continue}
                     out[year] = json[year].sort((a,b)=>a.Week-b.Week)
                 }
+                applyReplacements(out)
                 setProj(out)
             })
         }//end espn
@@ -65,7 +81,7 @@ export async function callProj2(vars,setProj){
                 }
             const nflStateRes = await fetch(`https://api.sleeper.app/v1/state/nfl`);
             const nflState = await nflStateRes.json();
-            if(nflState.season < yearMax){setProj(out); return;}
+            if(nflState.season < yearMax){applyReplacements(out);setProj(out); return;}
             const playersRes = await fetch(`https://api.sleeper.app/v1/players/nfl`);
             const players = await playersRes.json();
 
@@ -129,7 +145,7 @@ function FixJrs(name){
         method:"GET",
         headers
         })
-    if(!res.ok){setProj(out); return}
+    if(!res.ok){applyReplacements(out); setProj(out); return}
     const json = await res.json()
             for (let index = 0; index < json.length; index++) {
             const line = json[index];
@@ -200,6 +216,7 @@ function FixJrs(name){
                 for (const [k, v] of Object.entries(out)) {  // delete empties for the offseason
                 if (Array.isArray(v) && v.length === 0) delete out[k];
                 }
+            applyReplacements(out)
             setProj(out)
         }
         }

@@ -13,8 +13,9 @@ import { createPlayerSearchMatcher } from '../../fantasy_grid/fantasyGridUtils'
 
 export const FantasyWordle = ({ pickMacro, vars, records }) => {
   const ownerKey = (vars.activeNames ?? []).join('|')
-  const recentDateKeys = getRecentDateKeys(7)
+  const recentDateKeys = getRecentDateKeys(50)
   const [selectedDateKey, setSelectedDateKey] = useState(recentDateKeys[0])
+  const DATE_PICKER_VISIBLE_ROWS = 7
   const storageKey = `fantasy-wordle:${vars.leagueID}:${selectedDateKey}`
 
   const [wordleData, setWordleData] = useState(null)
@@ -237,6 +238,22 @@ export const FantasyWordle = ({ pickMacro, vars, records }) => {
     return ''
   }
 
+  function openDatePicker(event) {
+    event.preventDefault()
+    event.currentTarget.size = Math.min(DATE_PICKER_VISIBLE_ROWS, recentDateKeys.length)
+    event.currentTarget.focus()
+  }
+
+  function closeDatePicker(event) {
+    event.currentTarget.size = 1
+  }
+
+  function handleDatePickerChange(event) {
+    setSelectedDateKey(event.target.value)
+    event.currentTarget.size = 1
+    event.currentTarget.blur()
+  }
+
   return [
     <div className='topContainer' key='topcontfantasywordle-live'>
       <div className='buttonsContainer'>
@@ -246,7 +263,9 @@ export const FantasyWordle = ({ pickMacro, vars, records }) => {
           <select
             className='wordPicker'
             value={selectedDateKey}
-            onChange={event => setSelectedDateKey(event.target.value)}
+            onMouseDown={openDatePicker}
+            onBlur={closeDatePicker}
+            onChange={handleDatePickerChange}
           >
             {recentDateKeys.map((dateKey, index) => (
               <option key={dateKey} value={dateKey}>{getDateOptionLabel(dateKey, index)}</option>

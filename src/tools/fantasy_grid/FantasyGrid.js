@@ -24,8 +24,9 @@ import {
 } from './fantasyGridUtils'
 
 export const FantasyGrid = ({ pickMacro, vars, records }) => {
+  const DATE_PICKER_VISIBLE_ROWS = 7
   const ownerKey = (vars.activeNames ?? []).join('|')
-  const recentDateKeys = getRecentDateKeys(7)
+  const recentDateKeys = getRecentDateKeys(50)
   const [selectedDateKey, setSelectedDateKey] = useState(recentDateKeys[0])
   const storageKey = `fantasy-grid:${vars.leagueID}:${selectedDateKey}`
   const [gridData, setGridData] = useState(null)
@@ -492,13 +493,35 @@ export const FantasyGrid = ({ pickMacro, vars, records }) => {
     setFeedback('Gave up. All squares are now revealed.')
   }
 
+  function openDatePicker(event) {
+    event.preventDefault()
+    event.currentTarget.size = Math.min(DATE_PICKER_VISIBLE_ROWS, recentDateKeys.length)
+    event.currentTarget.focus()
+  }
+
+  function closeDatePicker(event) {
+    event.currentTarget.size = 1
+  }
+
+  function handleDatePickerChange(event) {
+    setSelectedDateKey(event.target.value)
+    event.currentTarget.size = 1
+    event.currentTarget.blur()
+  }
+
   return [
     <div className='topContainer' key='topcontfantasygrid-live'>
       <div className='buttonsContainer'>
         {pickMacro}
         <div className='buttons'>
           <label style={{ textWrap: 'nowrap' }}>Grid Date: </label>
-          <select className='wordPicker' value={selectedDateKey} onChange={event => setSelectedDateKey(event.target.value)}>
+          <select
+            className='wordPicker'
+            value={selectedDateKey}
+            onMouseDown={openDatePicker}
+            onBlur={closeDatePicker}
+            onChange={handleDatePickerChange}
+          >
             {recentDateKeys.map((dateKeyOption, index) => (
               <option key={dateKeyOption} value={dateKeyOption}>{getDateOptionLabel(dateKeyOption, index)}</option>
             ))}

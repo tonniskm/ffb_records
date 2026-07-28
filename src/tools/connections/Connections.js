@@ -14,8 +14,9 @@ import {
 } from './connectionsUtils'
 
 export const Connections = ({ pickMacro, vars, records }) => {
+  const DATE_PICKER_VISIBLE_ROWS = 7
   const ownerKey = (vars.activeNames ?? []).join('|')
-  const recentDateKeys = getRecentDateKeys(7)
+  const recentDateKeys = getRecentDateKeys(50)
   const [selectedDateKey, setSelectedDateKey] = useState(recentDateKeys[0])
   const storageKey = `connections:${vars.leagueID}:${selectedDateKey}`
 
@@ -262,6 +263,22 @@ export const Connections = ({ pickMacro, vars, records }) => {
     setFeedback('Select four players you think belong together, then submit.')
   }
 
+  function openDatePicker(event) {
+    event.preventDefault()
+    event.currentTarget.size = Math.min(DATE_PICKER_VISIBLE_ROWS, recentDateKeys.length)
+    event.currentTarget.focus()
+  }
+
+  function closeDatePicker(event) {
+    event.currentTarget.size = 1
+  }
+
+  function handleDatePickerChange(event) {
+    setSelectedDateKey(event.target.value)
+    event.currentTarget.size = 1
+    event.currentTarget.blur()
+  }
+
   const solvedGroupsDisplay = solvedGroupIndices.map(idx => puzzle.groups[idx])
   const unsolvedGroupsDisplay = hasGivenUp
     ? puzzle.groups.filter((_, idx) => !solvedGroupIndices.includes(idx))
@@ -283,7 +300,9 @@ export const Connections = ({ pickMacro, vars, records }) => {
           <select
             className='wordPicker'
             value={selectedDateKey}
-            onChange={e => setSelectedDateKey(e.target.value)}
+            onMouseDown={openDatePicker}
+            onBlur={closeDatePicker}
+            onChange={handleDatePickerChange}
           >
             {recentDateKeys.map((d, i) => (
               <option key={d} value={d}>{getDateOptionLabel(d, i)}</option>
