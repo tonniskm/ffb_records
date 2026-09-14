@@ -8,6 +8,34 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
     const names = vars.allNames
     let teamTracker = {}
     let playerTracker = []
+    const flexPositions = ['RB','WR','TE']
+    function getBenchPointsLeft(rawLines,yearNames,lastWeek,types){
+        const weeklyTeams = {}
+        for(const rawLine of rawLines){
+            const details = UnpackProjLine(rawLine,yearNames)
+            if(details.week>lastWeek || types[details.team]?.[details.week]==='lame' || types[details.team]?.[details.week]==='BYE'){
+                continue
+            }
+            const key = details.team+'|'+details.week
+            if(!weeklyTeams[key]){weeklyTeams[key]=[]}
+            weeklyTeams[key].push(details)
+        }
+        const pointsLeft = {}
+        for(const [key,teamLines] of Object.entries(weeklyTeams)){
+            const starters = teamLines.filter(line=>!['Bench','IR'].includes(line.slot))
+            for(const benchLine of teamLines.filter(line=>line.slot==='Bench')){
+                const eligibleStarters = starters.filter(starter =>
+                    starter.pos===benchLine.pos ||
+                    flexPositions.includes(benchLine.pos) && starter.slot==='FLEX'
+                )
+                if(eligibleStarters.length===0){continue}
+                const lowestStarterScore = Math.min(...eligibleStarters.map(line=>line.actual))
+                const value = benchLine.actual-lowestStarterScore
+                if(value>0){pointsLeft[benchLine.NFLName+'|'+key]=value}
+            }
+        }
+        return pointsLeft
+    }
     function TeamTrackerInit(name,year,score,proj,pos){
         return {'name':name,'years':[year],'weeks owned':1,'beat proj times':0,'scored':score,'proj score':proj,
         'score-proj':score-proj,'weeks started':0,'weeks benched':0,'weeks flexed':0,'record':[0,0,0],
@@ -21,6 +49,7 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         'startScore': score,'startProj': proj, 'starts': isStart, 'flexes': isFlex, 'benches': isBench, 'beatProj': beatProj,
             'startBeatProj': starterBeatProj,'pos':pos,'record':[isW,isL,isT],'recordStarting':[startW,startL,startT],
             'byes':isBye,'rings':isChamp,'deweyDoesTimes':isDew,'war':war,'warRate':war,'timesNegative':0,'highScore':[score,[{year,week,team}]],
+            'benchHighScore':[0,[]],'benchPointsLeft':[0,[]],
             'lowScore':score,'times on IR':isIR,'rawScoreInYear':{},'startScoreInYear':{}}
     }
     function upsertPlayerEntry(tracker,key,createEntry,updateFn){
@@ -106,9 +135,10 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         const scores = tables.scores[year]
         const opponent = tables.oppos[year]
         const oppoScores = tables.oppoScores[year]
+        const yearNames = getNames(vars.leagueID,year)
+        const benchPointsLeft = getBenchPointsLeft(rawProjIn[year],yearNames,lastWeek,types)
 
         for (const line of rawProjIn[year]){
-            const yearNames = getNames(vars.leagueID,year)
             const {week,NFLName,actual,projected,team,pos,nflTeam,slot} = UnpackProjLine(line,yearNames)
             if(week>lastWeek){continue}
             const gameType = types[team][week]
@@ -240,6 +270,13 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                     if(isNew){
                         entry['teamInYear'] = {}
                         entry['teamInYear'][year] = [team]
+                        const pointsLeft = benchPointsLeft[NFLName+'|'+team+'|'+week]
+                        if(pointsLeft!==undefined){
+                            entry['benchPointsLeft']=[pointsLeft,[{year,week,team}]]
+                        }
+                        if(rosterSpot=='Bench'){
+                            entry['benchHighScore']=[rawScore,[{year,week,team}]]
+                        }
                         if (score < 0){entry['timesNegative'] = 1}
                         entry['rawScoreInYear'][year] = rawScore
                         entry['startScoreInYear'][year] = score
@@ -269,6 +306,19 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
                         }
                         else if(entry['highScore'][0]==score){
                             entry['highScore'][1].push({year,week,team})
+                        }
+                        const pointsLeft = benchPointsLeft[NFLName+'|'+team+'|'+week]
+                        if(pointsLeft!==undefined && entry['benchPointsLeft'][0]<pointsLeft){
+                            entry['benchPointsLeft'] = [pointsLeft,[{year,week,team}]]
+                        }
+                        else if(pointsLeft!==undefined && entry['benchPointsLeft'][0]==pointsLeft){
+                            entry['benchPointsLeft'][1].push({year,week,team})
+                        }
+                        if(rosterSpot=='Bench' && entry['benchHighScore'][0]<rawScore){
+                            entry['benchHighScore'] = [rawScore,[{year,week,team}]]
+                        }
+                        else if(rosterSpot=='Bench' && entry['benchHighScore'][0]==rawScore){
+                            entry['benchHighScore'][1].push({year,week,team})
                         }
                         if(entry['lowScore']>score){
                             entry['lowScore'] = score
@@ -524,6 +574,8 @@ export function getPlayerStats(vars,raw,projIn,input,tables,yearMax){
         {"id":"pa36","title":"Negative Nancy","description":"The Player who has score negative the most","keyID":"timesNegative","pos":"all","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa37","title":"Real Negative Nancy","description":"The non D/ST who has score negative the most","keyID":"timesNegative","pos":"noDST","MinMax":"max","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa38","title":"Top Dawg","description":"The highest score ever recorded","keyID":"highScore","pos":"all","MinMax":"max","calcType":"metaDict","minGames":0,"meta":["name",'year','week','team']},
+        {"id":"pa54","title":"Top Bench Scorer","description":"The most points a player scored while on the bench in a single game","keyID":"benchHighScore","pos":"Each","MinMax":"max","calcType":"metaDict","minGames":0,"meta":["name",'year','week','team']},
+        {"id":"pa55","title":"Top Points Left On Bench","description":"The most points a bench player scored above the lowest scoring starter they could have replaced in a single game","keyID":"benchPointsLeft","pos":"Each","MinMax":"max","calcType":"metaDict","minGames":0,"meta":["name",'year','week','team']},
         {"id":"pa39","title":"Bad Day","description":"The worst score ever recorded","keyID":"lowScore","pos":"all","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {"id":"pa40","title":"Bad Day1","description":"The worst score ever recorded (no D/ST)","keyID":"lowScore","pos":"noDST","MinMax":"min","calcType":"normal","minGames":0,"meta":["name"]},
         {'id':'pa41','title':'Top Scorer','description':"The player who has scored the most points",'keyID':'score','pos':'all','MinMax':'max','calcType':'normal','minGames':0,'meta':['name']},
