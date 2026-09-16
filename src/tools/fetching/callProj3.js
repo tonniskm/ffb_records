@@ -1,10 +1,15 @@
 import { sleeperNames } from "../constants/sleeper_names";
 import { sleeperSettings } from "../constants/sleeper_settings";
+import { getSleeperLeagueId } from "./sleeperLeague";
 import { missingData } from "./missing2023w1";
 import { saved_jsons_proj_2025 } from "./saved_jsons/proj/2025";
 import { savedProj } from "./saved_jsons/proj/saved";
 
-const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching settings
+function getSleeperSettingsForYear(year){
+    const availableYears = Object.keys(sleeperSettings).map(y=>parseInt(y)).sort((a,b)=>b-a)
+    const bestYear = availableYears.find(y=>y<=year) ?? availableYears[availableYears.length-1]
+    return sleeperSettings[bestYear]
+}
 function applyReplacements(out){
     const replacements = [
             {old:'Kyle Pitts', new:'Kyle Pitts Sr.'},
@@ -167,13 +172,14 @@ function FixJrs(name){
             for (let year=lastSavedYear;year<=yearMax;year++){
                 if(year<2025||Object.keys(out).includes(year.toString())){continue}
                 out[year] = []
+                const leagueIdForYear = await getSleeperLeagueId(year)
                 for(let week=1;week<nflState.week;week++){
-            const scoring_settings = sleeperSettings[year].scoring_settings
-            // const rosterRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/rosters`);
+            const scoring_settings = getSleeperSettingsForYear(year).scoring_settings
+            // const rosterRes = await fetch(`https://api.sleeper.app/v1/league/${leagueIdForYear}/rosters`);
             // const rosters = await rosterRes.json();
             const projRes = await fetch(`https://api.sleeper.com/projections/nfl/${year}/${week}?season_type=regular&position[]=DEF&position[]=K&position[]=QB&position[]=RB&position[]=TE&position[]=WR&order_by=pts_dynasty_std`);
             const projections = await projRes.json();
-            const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/${week}`);
+            const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${leagueIdForYear}/matchups/${week}`);
             const matchups = await matchupsRes.json();
             for(const matchup of matchups){
                 // const mid = matchup.matchup_id
@@ -184,7 +190,7 @@ function FixJrs(name){
                     let pos = metaLine?.position??'NA'
                     let name
                     const startersInd = matchup.starters.indexOf(pid)
-                    let rosterSlot = startersInd>-1?sleeperSettings[year].roster_positions[startersInd]:'Bench'
+                    let rosterSlot = startersInd>-1?getSleeperSettingsForYear(year).roster_positions[startersInd]:'Bench'
                     if(rosterSlot==='DEF'){rosterSlot='D/ST'}
                     if(pos==='DEF'){
                         name = metaLine.last_name + ' D/ST';

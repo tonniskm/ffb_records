@@ -244,7 +244,14 @@ function App() {
           truncProj[lastYear] = truncProj[lastYear].filter(x=>x.Week<lastWeek)
           // console.log({truncRaw,truncProj})
           // truncRaw.append(0)
-          if(lastWeek===1){GetRecords(vars,lastYear-1,setWeekOldRecords,raw,proj,fa)}
+          if(lastWeek===1){
+            // some award calculations (game/team awards) ignore yearMax, so drop the new season entirely
+            let truncRawNewSeason = {...raw}
+            let truncProjNewSeason = {...proj}
+            delete truncRawNewSeason[lastYear]
+            delete truncProjNewSeason[lastYear]
+            GetRecords(vars,lastYear-1,setWeekOldRecords,truncRawNewSeason,truncProjNewSeason,fa)
+          }
           else{GetRecords(vars,lastYear,setWeekOldRecords,truncRaw,truncProj,fa)}
         }
       }else{     

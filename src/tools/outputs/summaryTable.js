@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import { NamePicker } from "./misc/misc"
-import { RecordToFrac, SummaryLine } from "../calculations/other"
+import { RecordToFrac, Round, SummaryLine } from "../calculations/other"
 
 export const SummaryTable = ({records,pickMacro,vars}) =>{
     let dict
@@ -69,6 +69,10 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
     //     {cols}
     // </div>)
     // console.log({1:out,2:dict})
+    const pointStats = dict['point stats']
+    const pointStatsRow = pointStats && (
+        <div key={'pointStats'}>League Points: Mean {Round(pointStats.mean)}, Median {Round(pointStats.median)}, StDev {Round(pointStats.stdev)}</div>
+    )
     out = 
     // <div style={{alignItems:'flex-start',justifyContent:'left',display:'inline-block',flexDirection:"column",backgroundColor:'blue',width:'auto'}}>
         [<div className='topContainer' key={'topcontsum'} ref={stickyRef}>
@@ -76,6 +80,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
                 {relevantChoices}
             </div>  
         </div>,
+        pointStatsRow,
         <div key={'bot2nd'}><div className="tableContainer" key={'2nd'}>
             {cols}
         </div></div>]

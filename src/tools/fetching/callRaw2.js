@@ -1,6 +1,6 @@
 import { sleeperNames } from "../constants/sleeper_names"
+import { getSleeperLeagueId } from "./sleeperLeague"
 import { savedRaw } from "./saved_jsons/raw/saved"
-const sleeper_league_id = '1263340152806195200' //sleeper league id for fetching settings
 
 
 export async function callRaw(vars,setRaw){
@@ -40,8 +40,9 @@ export async function callRaw(vars,setRaw){
                 out[year] = []
                 let wBracket = []
                 let lBracket = []
+                const leagueIdForYear = await getSleeperLeagueId(year)
                 for(let week=1;week<nflState.week;week++){
-                const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${sleeper_league_id}/matchups/${week}`);
+                const matchupsRes = await fetch(`https://api.sleeper.app/v1/league/${leagueIdForYear}/matchups/${week}`);
                 const matchups = await matchupsRes.json();
                 const used_mids = []
                 const mid_inds = {}

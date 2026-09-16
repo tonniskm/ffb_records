@@ -167,7 +167,7 @@ export function getOverallStats(vars,input){
     const misc = input['misc']
     let allPts = []
     for (const year in misc){
-        const val = misc[year]['regPoints']
+        const val = misc[year]['allPoints']
         allPts = allPts.concat(val)
     }
     const ptMean = allPts.reduce((a,b)=>a+b)/allPts.length

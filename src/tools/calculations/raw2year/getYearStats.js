@@ -39,6 +39,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
     let deweyDoes = 'none'
     let champ = 'none'
     let regPoints = []
+    let allPoints = []
     let shootOut = [0,[],[],[]]
     let badShootOut = [999,[],[],[]]
     let closeGame = [999,[],[],[]]
@@ -128,15 +129,17 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
             if(t2!='BYE'){
                 pointList[t1].push(score1)
                 pointList[t2].push(score2)
+                allPoints.push(score1)
+                allPoints.push(score2)
 
                 for(let p=0;p<2;p++){
                     let score, otherScore, player
                     if(p==0){score=score1;otherScore=score2;player=t1}else{score=score2;otherScore=score1;player=t2}
                     scores['games played'][player] += 1
                     if (scores['high'][player] < score){scores['high'][player] = score;scores['high W'][player] = week}
-                    if (scores['low'][player] > score){scores['low'][player] = score;scores['low W'][player] = week}
+                    if (scores['low'][player] > score){scores['low'][player] = score}
                     if (scores['oppo high'][player] < otherScore){scores['oppo high'][player] = otherScore;scores['oppo high W'][player] = week}
-                    if (scores['oppo low'][player] > otherScore){scores['oppo low'][player] = otherScore;scores['oppo low W'][player] = week}
+                    if (scores['oppo low'][player] > otherScore){scores['oppo low'][player] = otherScore}
                 }
             }
 
@@ -321,7 +324,7 @@ export default function GetYearStats(vars,raw,proj,fa,year,tables){
 return {'scores':scores,
     'other':{'champ':champ,'deweyDoes':deweyDoes,'shootOut':shootOut,'badShootOut':badShootOut,
         'closeGame':closeGame,'blowoutGame':blowoutGame,
-        'highL':highL,'lowW':lowW,'regPoints':regPoints,'weekTots':weekTots,'leagueSize':leagueSize
+        'highL':highL,'lowW':lowW,'regPoints':regPoints,'allPoints':allPoints,'weekTots':weekTots,'leagueSize':leagueSize
     }
 }
 }
