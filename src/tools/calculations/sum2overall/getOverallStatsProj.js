@@ -1,4 +1,4 @@
-
+import { RecordToFrac } from "../other"
 
 export function getOverallStatsProj(vars,input){
     const projStatsRaw = input['yearProj']
@@ -81,5 +81,10 @@ export function getOverallStatsProj(vars,input){
                                       Math.max(overall['Projected to Lose'][i]['value'],1)
     }
 
+    overall['Good Gambler'] = {}
+    for(const name of names){
+        const record = ['W','L','T'].map(result=>overall['Good Gambler '+result][name].value)
+        overall['Good Gambler'][name] = {'value':RecordToFrac(record),'record':record}
+    }
     return overall
 }

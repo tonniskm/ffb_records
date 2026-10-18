@@ -28,7 +28,8 @@ export function getAwardsProj(vars,input){
         {'id': 'ap15', 'title': 'Thinking Positive', 'description': 'The most likely to win while projected to win', 'keyID': 'Proj to W W %', 'MinMax': null, 'meta': ['name'], 'agg': 'total'},
         {'id': 'ap16', 'title': 'Glass Half Empty', 'description': 'The most likely to lose when projected to win', 'keyID': 'Proj to W W %', 'MinMax': 'min', 'meta': ['name'], 'agg': 'total'},
         {'id': 'ap17', 'title': 'I Shall Overcome!', 'description': 'The most likely to win when projected to lose', 'keyID': 'Proj to L W %', 'MinMax': null, 'meta': ['name'], 'agg': 'total'},
-        {'id': 'ap18', 'title': 'Defeatist', 'description': 'The most likely to lose when projected to lose', 'keyID': 'Proj to L W %', 'MinMax': 'min', 'meta': ['name'], 'agg': 'total'}
+        {'id': 'ap18', 'title': 'Defeatist', 'description': 'The most likely to lose when projected to lose', 'keyID': 'Proj to L W %', 'MinMax': 'min', 'meta': ['name'], 'agg': 'total'},
+        {'id': 'ap19', 'title': 'Good Gambler', 'description': 'The best winning percentage against the projected spread: actual score margin versus projected score margin, with ties worth half a win. Excludes lame games, byes, and games without both projections.', 'keyID': 'Good Gambler', 'MinMax': null, 'meta': ['name'], 'agg': 'person'}
     
     ]
     const smallList = ['Poor Outlook','Not My Week','Life is Often Disappointing','Life is Easy','The Mouse that Roared',
@@ -66,6 +67,7 @@ export function getAwardsProj(vars,input){
         else{
             for(const name of names){
                 if(vars.lameDucks.includes(name)){continue}
+                if(key==='Good Gambler'&&overall[key][name].record.every(count=>count===0)){continue}
                 value = overall[key][name]['value']
                 onlyVals.push(value)
                 // const meta = overall[key][name]['meta']

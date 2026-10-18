@@ -37,17 +37,18 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
         // colDecs.push(<col></col>)
         let allVals,myVal
         const showComp = key!=='KO by'
+        const isRecord = key==='Record vs Mid'||key==='Good Gambler'
         if(showComp){
             const lameVals = dict[key]
             const filtVals = Object.fromEntries(Object.entries(lameVals).filter(([k])=>vars.activeNames.includes(k)))
-            allVals=key!=='Record vs Mid'?Object.values(filtVals):Object.values(filtVals).map(x=>RecordToFrac(x))}
+            allVals=isRecord?Object.values(filtVals).map(x=>RecordToFrac(x)):Object.values(filtVals)}
         let vals = []
         for(const name in dict[key]){
             if(name=='t0'){continue}
             if(dict['games played'][name]==0){continue}
             if(focusName!=='All'&&name!==focusName){continue}
             let value
-            if(key=='Record vs Mid'){value = dict[key][name][0]+'-'+dict[key][name][1]+'-'+dict[key][name][2];
+            if(isRecord){value = dict[key][name][0]+'-'+dict[key][name][1]+'-'+dict[key][name][2];
                 myVal = RecordToFrac(dict[key][name])
             }
             else if(key=='KO by'||key=='last until'){value=dict[key][name]}
@@ -59,7 +60,7 @@ export const SummaryTable = ({records,pickMacro,vars}) =>{
         }
         cols.push(
             <div className="tableRow" key={key}>
-                <div className="headerCell headerRow" style={{left:0,zIndex:3}} key={'a'+key}><p className="txt" key={'b'+key}>{key}</p></div>
+                <div className="headerCell headerRow" style={{left:0,zIndex:3}} key={'a'+key}><p className="txt" key={'b'+key}>{key==='Good Gambler'?'Spread Covered':key}</p></div>
                 {vals}
             </div>
 

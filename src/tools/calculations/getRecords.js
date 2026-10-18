@@ -44,6 +44,11 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
          if(year>=2018){   
             const yearStatsProj = getYearStatsProj(vars,raw,proj,fa,year,tables)
             out['yearProj'][year] = yearStatsProj
+            out['year'][year]['Good Gambler'] = Object.fromEntries(
+               Object.keys(yearStatsProj.scores['Good Gambler W']).map(name=>[
+                  name,['W','L','T'].map(result=>yearStatsProj.scores['Good Gambler '+result][name])
+               ])
+            )
             out['year'][year]['Total Score - Proj'] = yearStatsProj['scores']['Total Score - Proj']
             out['year'][year]['Total Score - Proj Per Game'] = yearStatsProj['scores']['Total Score - Proj']
             for(const key of Object.keys(yearStatsProj['scores']['Total Score - Proj'])){
@@ -58,6 +63,9 @@ export default async function GetRecords(vars,yearMax,setRecords,raw,proj,fa){
       out['matchupTable'] = overall.matchupTable
       const overallProj = getOverallStatsProj(vars,out)
       out['overallProj'] = overallProj
+      out['overall']['Good Gambler'] = Object.fromEntries(
+         Object.entries(overallProj['Good Gambler']).map(([name,stats])=>[name,stats.record])
+      )
       const nameAwards = getNameAwards(vars,out)
       out['nameAwards'] = nameAwards  
       const nyAwards = getNameYearAwards(vars,out)

@@ -22,7 +22,7 @@ export function CompareRecords(records,oldRecords){
             if(type=='nmn'){return NMN(x)}
         }
         const bestPBAwards = ['Poor Outlook','Never a Bad Week','Life is Easy','Uphill Both Ways','Always Cocky','Uphill Battle',
-            'Thinking Positive','Glass Half Empty','I Shall Overcome!','Defeatist',"Gotta Catch 'Em All!",'Tinkerer',
+            'Thinking Positive','Glass Half Empty','I Shall Overcome!','Defeatist','Good Gambler',"Gotta Catch 'Em All!",'Tinkerer',
             "What's a Drop/Add?",'Never Tinkerer','Diversity Today','A Stable Life',"Who's On My Team Again?",'Same Old Same Old',
             'Never Injured','Streamer',"I Haven't Learned to do Drop/Adds",'Frantic Tinkerer'
 ]
@@ -77,7 +77,7 @@ export function CompareRecords(records,oldRecords){
             const oldAward = oldRecords[item[0]][i]
             let idType = item[1]
             if(['King of the Rock','Noodle Armed'].includes(award.title)){idType='nwy'}
-            if(['Always Cocky','Uphill Battle','Thinking Positive','Glass Half Empty','I Shall Overcome!','Defeatist'].includes(award.title)){idType='name'}
+            if(['Always Cocky','Uphill Battle','Thinking Positive','Glass Half Empty','I Shall Overcome!','Defeatist','Good Gambler'].includes(award.title)){idType='name'}
             if(['Here We Go Again','Workhorse','Riding the pine'].includes(award.title)){idType='nmn'}
             if(['Took the Slow Train from Philly','Diversity Today','A Stable Life',"Who's On My Team Again?",'Same Old Same Old','Never Injured','Streamer',"I Haven't Learned to do Drop/Adds",'Frantic Tinkerer'].includes(award.title)){idType='ny'}
             Comparison(award,oldAward,out,idType)

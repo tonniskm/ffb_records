@@ -13,7 +13,7 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
     const WLT = ['W','L','TIE']
     const keys = ['Projected to Win','Projected to Lose','Beat Proj Times','Oppo Beat Proj Times',
             'Proj W W','Proj W L','Proj W T','Proj L W','Proj L L','Proj L T',
-            'Best Proj','Worst Proj','Total Score - Proj',
+            'Best Proj','Worst Proj','Total Score - Proj','Good Gambler W','Good Gambler L','Good Gambler T',
             'Best Beat Proj','Worst Lose Proj','Best Proj Dif','Worst Proj Dif',
             'Best Proj Faced', 'Worst Proj Faced','Best Proj Beaten','Worst Proj Lost To','Biggest Overcome','Biggest Blown'
             ]
@@ -110,6 +110,12 @@ export function getYearStatsProj(vars,rawIn,projIn,fa,year,tables){
             const proj2 = projections[opponent][week]
             const result = outcomes[name][week]
             const i = name
+
+            if(Number.isFinite(proj1)&&Number.isFinite(proj2)){
+                const margin = Math.round((score1-score2-proj1+proj2)*100)
+                const outcome = margin>0?'W':margin<0?'L':'T'
+                scores['Good Gambler '+outcome][i] += 1
+            }
 
             if (proj1 > proj2){
                 scores['Projected to Win'][i] += 1

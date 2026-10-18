@@ -79,10 +79,12 @@ try{
             else{name=WLteams[ind];score=WLscores[ind]}
             oppo = teams.filter(x=>x!==name)[0]
             const oppoScore = scores.filter(x=>x!==score)[0]
+            const projected = records.yearProj[year]?.projections[name]?.[week]
             // console.log({name,score,winner,loser,ind})
             const topLineStats = [
             <p className="bigText" key={'tl'+name}>{name}</p>,
-            <p className="bigText" key={'tl1'+name}>{score}</p>,
+            <p className="bigText" style={Number.isFinite(projected)?{marginBottom:'0.5rem'}:undefined} key={'tl1'+name}>{score}</p>,
+            Number.isFinite(projected)&&<p className="smallText" key={'projection'+name}><em>({Round(projected)})</em></p>,
             <p className="titleText" key={'tl2'+name}>Score</p>,
             <div className="smallText" key={'tl3'+name}>vs all: {SummaryLine(score,highScores,'max','value')[0].props.children.join("")}</div>,
             <div className="smallText" key={'tl4'+name}>vs self: {SummaryLine(score,highScores.filter(x=>x.name===name),'max','value')[0].props.children.join("")}</div>,
@@ -113,14 +115,19 @@ try{
                 winStats.push(<div className="titleText" key={pos}>{pos}</div>)
                 for(let l=0;l<myStart.length;l++){
                     const line = myStart[l]
+                    const projection = Number.isFinite(line.projected)&&(
+                        <div className="smallText" key={line.NFLName+'projection'}><em>({Round(line.projected)})</em></div>
+                    )
                     if(line.slot==='FLEX'){
                         flexStats.push(<div className="midText" key={line.NFLName+1}>{line.NFLName}, {line.actual}</div>)
+                        flexStats.push(projection)
                         flexStats.push(<div className="smallText" key={line.NFLName+2}>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
                         flexStats.push(<div className="smallText" key={line.NFLName+3}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
                         flexStats.push(<div className="smallText" key={line.NFLName+4}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
                         flexStats.push(<div className="smallText" key={line.NFLName+5}>vs {line.NFLName}: {SummaryLine(line.actual,all.filter(x=>x.NFLName===line.NFLName),'max','actual')[0].props.children.join("")}</div>)
                     }else{
                         winStats.push(<div className="midText" key={line.NFLName+1}>{line.NFLName}, {line.actual}</div>)
+                        winStats.push(projection)
                         winStats.push(<div className="smallText" key={line.NFLName+2}><p></p>{pos}s: {SummaryLine(line.actual,allPos,'max','actual')[0].props.children.join("")}</div>)
                         winStats.push(<div className="smallText" key={line.NFLName+3}>{name}'s {pos}s: {SummaryLine(line.actual,allMyPos,'max','actual')[0].props.children.join("")}</div>)
                         winStats.push(<div className="smallText" key={line.NFLName+4}>{pos}s vs {oppo}: {SummaryLine(line.actual,allPosVsOppo,'max','actual')[0].props.children.join("")}</div>)
